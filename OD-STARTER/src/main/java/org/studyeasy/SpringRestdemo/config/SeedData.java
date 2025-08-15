@@ -16,17 +16,26 @@ public class SeedData implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         Account account01 = new Account();
-        Account account02 = new Account();
+        // Account account02 = new Account();
 
+
+        account01.setRegisterNo("43111436");
+        account01.setAge(19);
+        account01.setBranch("BE");
+        account01.setDepartment("CSE");
+        account01.setEvents_attended(10);
+        account01.setMobile_no("9346229311");
+        account01.setCo_ordinator("Dr.S.Gayathri");
+        account01.setSection("E4");
         account01.setEmail("user@user.com");
-        account01.setPassword("pass987");
+        account01.setPassword("22-04-2006");
         account01.setAuthorities(Authority.USER.toString());
         accountService.save(account01);
 
-        account02.setEmail("admin@admin.com");
-        account02.setPassword("pass987");
-        account02.setAuthorities(Authority.ADMIN.toString() +" "+Authority.USER.toString() );
-        accountService.save(account02);
+        // account02.setEmail("admin@admin.com");
+        // account02.setPassword("pass987");
+        // account02.setAuthorities(Authority.ADMIN.toString() +" "+Authority.USER.toString() );
+        // accountService.save(account02);
         
     }
     

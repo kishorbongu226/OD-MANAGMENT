@@ -42,8 +42,8 @@ public class AccountService implements UserDetailsService{
 
     }
 
-    public Optional<Account> findByEmail(String email) {
-        return accountRepository.findByEmail(email);
+    public Optional<Account> findByRegisterNumber(String register_no){
+        return accountRepository.findByRegisterNo(register_no);
         
     }
 
@@ -57,8 +57,8 @@ public class AccountService implements UserDetailsService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-       Optional<Account> optionaAccount =  accountRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String registerno) throws UsernameNotFoundException {
+       Optional<Account> optionaAccount =  accountRepository.findByRegisterNo(registerno);
        if (!optionaAccount.isPresent()){
             throw new UsernameNotFoundException("Account not found");
        }
@@ -66,7 +66,7 @@ public class AccountService implements UserDetailsService{
 
        List<GrantedAuthority> grantedAuthoriy = new ArrayList<>();
        grantedAuthoriy.add(new SimpleGrantedAuthority(account.getAuthorities()));
-       return new User(account.getEmail(), account.getPassword(), grantedAuthoriy);
+       return new User(account.getRegisterNo(),account.getPassword(),grantedAuthoriy);
     }
 
 }

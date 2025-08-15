@@ -51,7 +51,7 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager
                     .authenticate(
-                            new UsernamePasswordAuthenticationToken(userLogin.getEmail(), userLogin.getPassword()));
+                            new UsernamePasswordAuthenticationToken(userLogin.getRegister_no(), userLogin.getPassword()));
             return ResponseEntity.ok(new TokenDTO(tokenService.generateToken(authentication)));
         } catch (Exception e) {
             log.debug(AccountError.TOKEN_GENERATION_ERROR.toString() + ": " + e.getMessage());
@@ -65,10 +65,10 @@ public class AuthController {
     @Operation(summary = "View profile")
     @SecurityRequirement(name = "studyeasy-demo-api")
     public ProfileDTO profile(Authentication authentication) {
-        String email = authentication.getName();
-        Optional<Account> optionalAccount = accountService.findByEmail(email);
+        String register_no = authentication.getName();
+        Optional<Account> optionalAccount = accountService.findByRegisterNumber(register_no);
         Account account = optionalAccount.get();
-        ProfileDTO profileDTO = new ProfileDTO(account.getId(), account.getEmail(), account.getAuthorities());
+        ProfileDTO profileDTO = new ProfileDTO(account.getId(), account.getRegisterNo(),account.getAge(),account.getCo_ordinator(), account.getBranch(), account.getDepartment(),account.getSection(), account.getMobile_no(), account.getEvents_attended(), account.getEmail(), account.getPassword(),account.getAuthorities());
         return profileDTO;
 
     }
