@@ -167,12 +167,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/db-console/**", "/api/v1/auth/**","/api/v1/albums/**"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/db-console/**", "/api/v1/auth/**","/api/v1/events/**"))
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/v1/auth/token").permitAll()
             .requestMatchers("/api/v1/auth/users/add").permitAll()
-            .requestMatchers("/api/v1/auth/users").hasAuthority("SCOPE_ADMIN")  // Require user role for user listing
+            .requestMatchers("/api/v1/auth/users").hasAuthority("ROLE_ADMIN")
+            .requestMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")  // Require user role for user listing
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/**").permitAll()
             .requestMatchers("/db-console/**").permitAll()
             .requestMatchers("/test").authenticated()  // Example of restricted endpoint

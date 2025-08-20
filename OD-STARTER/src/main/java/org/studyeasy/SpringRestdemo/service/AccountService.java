@@ -30,7 +30,7 @@ public class AccountService implements UserDetailsService{
     public Account save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         if (account.getAuthorities() == null){
-            account.setAuthorities(Authority.USER.toString());
+            account.setAuthorities(Authority.ROLE_USER.toString());
         }
         return accountRepository.save(account);
         
