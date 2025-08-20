@@ -16,7 +16,7 @@ public class UserLoginDTO {
     private String register_no;
 
     @Size(min = 6, max = 20)
-    @Schema(description = "Password", example = "pass987", 
+    @Schema(description = "Password", example = "22-04-2006", 
     requiredMode = RequiredMode.REQUIRED, maxLength = 20, minLength = 6)
     private String password;
 

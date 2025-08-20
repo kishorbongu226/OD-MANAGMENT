@@ -29,7 +29,7 @@ public class SeedData implements CommandLineRunner{
         account01.setSection("E4");
         account01.setEmail("user@user.com");
         account01.setPassword("22-04-2006");
-        account01.setAuthorities(Authority.ROLE_ADMIN.toString());
+        account01.setAuthorities(Authority.ADMIN.toString());
         accountService.save(account01);
 
         // account02.setEmail("admin@admin.com");

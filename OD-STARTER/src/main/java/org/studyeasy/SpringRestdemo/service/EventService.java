@@ -10,7 +10,7 @@ import org.studyeasy.SpringRestdemo.repository.EventRepository;
 
 
 @Service
-public class AdminService {
+public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
