@@ -22,6 +22,7 @@ public class SeedData implements CommandLineRunner{
         account01.setRegisterNo("43111436");
         account01.setAge(19);
         account01.setBranch("BE");
+        account01.setAcademicYear(2);
         account01.setDepartment("CSE");
         account01.setEvents_attended(10);
         account01.setMobile_no("9346229311");

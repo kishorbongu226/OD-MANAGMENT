@@ -1,5 +1,7 @@
 package org.studyeasy.SpringRestdemo.payload.auth.student;
 
+import org.studyeasy.SpringRestdemo.util.constants.RequestStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificateDTO {
+public class EnrollmentDTO {
     private Long id;
     private String registerNo;
-    private String eventName;
-    private String certificateUrl;
-    private String issuedDate;
+    private Long eventId;
+    private RequestStatus status;  // PENDING / APPROVED / DECLINED
 }
 

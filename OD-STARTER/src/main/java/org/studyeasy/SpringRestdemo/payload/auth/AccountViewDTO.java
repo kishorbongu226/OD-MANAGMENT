@@ -15,6 +15,8 @@ public class AccountViewDTO {
 
     private String register_no;
 
+    private long academicYear;
+
     private long age;
 
     private String co_ordinator;

@@ -336,3 +336,12 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Spring boot/S
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 61 more
+2025-08-21 21:38:36.035324+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create global temporary table HTE_account(rn_ integer not null, age bigint, events_attended bigint, id bigint, [*]year bigint, authorities varchar(255), branch varchar(255), co_ordinator varchar(255), department varchar(255), email varchar(255), mobile_no varchar(255), password varchar(255), register_no varchar(255), section varchar(255), primary key (rn_)) TRANSACTIONAL"; expected "identifier"; SQL statement:
+create global temporary table HTE_account(rn_ integer not null, age bigint, events_attended bigint, id bigint, year bigint, authorities varchar(255), branch varchar(255), co_ordinator varchar(255), department varchar(255), email varchar(255), mobile_no varchar(255), password varchar(255), register_no varchar(255), section varchar(255), primary key (rn_)) TRANSACTIONAL [42001-232]
+2025-08-21 21:38:36.214344+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table account (age bigint not null, events_attended bigint not null, id bigint not null, [*]year bigint not null, authorities varchar(255), branch varchar(255), co_ordinator varchar(255), department varchar(255), email varchar(255), mobile_no varchar(255), password varchar(255), register_no varchar(255) unique, section varchar(255), primary key (id))"; expected "identifier"; SQL statement:
+create table account (age bigint not null, events_attended bigint not null, id bigint not null, year bigint not null, authorities varchar(255), branch varchar(255), co_ordinator varchar(255), department varchar(255), email varchar(255), mobile_no varchar(255), password varchar(255), register_no varchar(255) unique, section varchar(255), primary key (id)) [42001-232]
+2025-08-21 21:38:38.712386+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACCOUNT" not found; SQL statement:
+insert into account (authorities,age,branch,co_ordinator,department,email,events_attended,mobile_no,password,register_no,section,year,id) values (?,?,?,?,?,?,?,?,?,?,?,?,?) [42102-232]

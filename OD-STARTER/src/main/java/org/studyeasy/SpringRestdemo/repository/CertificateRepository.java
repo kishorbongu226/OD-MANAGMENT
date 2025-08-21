@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.studyeasy.SpringRestdemo.model.Enrollment;
+import org.studyeasy.SpringRestdemo.model.Certificate;
 
 @Repository
-public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-    List<Enrollment> findByRegisterNo(String registerNo);
+public interface CertificateRepository extends JpaRepository<Certificate, Long> {
+    List<Certificate> findByResisterNo(String registerNo);
 }

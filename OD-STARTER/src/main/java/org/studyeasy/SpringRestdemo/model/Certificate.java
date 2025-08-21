@@ -1,6 +1,5 @@
 package org.studyeasy.SpringRestdemo.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,17 +12,14 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Feedback {
+public class Certificate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "register_no", unique = true)
-    private String registerNo;
-    
+    private Long accountId;
     private Long eventId;
 
-    private String comments;
-    private int rating;  // 1–5
+    private String certificateUrl;
 }

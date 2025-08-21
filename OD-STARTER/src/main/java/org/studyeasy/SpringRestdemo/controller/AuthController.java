@@ -68,7 +68,7 @@ public class AuthController {
         String register_no = authentication.getName();
         Optional<Account> optionalAccount = accountService.findByRegisterNumber(register_no);
         Account account = optionalAccount.get();
-        ProfileDTO profileDTO = new ProfileDTO(account.getId(), account.getRegisterNo(),account.getAge(),account.getCo_ordinator(), account.getBranch(), account.getDepartment(),account.getSection(), account.getMobile_no(), account.getEvents_attended(), account.getEmail(), account.getPassword(),account.getAuthorities());
+        ProfileDTO profileDTO = new ProfileDTO(account.getId(), account.getRegisterNo(),account.getAcademicYear(),account.getAge(),account.getCo_ordinator(), account.getBranch(), account.getDepartment(),account.getSection(), account.getMobile_no(), account.getEvents_attended(), account.getEmail(), account.getPassword(),account.getAuthorities());
         return profileDTO;
 
     }

@@ -29,6 +29,8 @@ public class Account {
 
     private String branch;
 
+    private long academicYear;
+
     private String department;
 
     private String section;
