@@ -1058,3 +1058,40 @@ java.lang.Error: Unresolved compilation problem:
 2025-08-20 15:14:48,818 [INFO] o.s.w.s.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2025-08-20 15:14:48,824 [INFO] o.s.w.s.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 4 ms
 2025-08-20 15:14:50,010 [INFO] o.s.a.AbstractOpenApiResource [http-nio-8080-exec-3] Init duration for springdoc-openapi is: 548 ms
+2025-08-20 21:28:50,387 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 22.0.1 with PID 20964 (C:\Spring boot\SpringStarter\OD-MANAGMENT\OD-STARTER\target\classes started by HP in C:\Spring boot\SpringStarter\OD-MANAGMENT)
+2025-08-20 21:28:50,389 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-20 21:28:50,390 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-20 21:28:51,387 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-20 21:28:51,452 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 54 ms. Found 2 JPA repository interfaces.
+2025-08-20 21:28:52,148 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-20 21:28:52,163 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-20 21:28:52,164 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-20 21:28:52,229 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-20 21:28:52,230 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1773 ms
+2025-08-20 21:28:52,497 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-20 21:28:52,571 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-20 21:28:52,602 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-20 21:28:52,943 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-20 21:28:53,004 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-20 21:28:53,279 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-20 21:28:53,281 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-20 21:28:53,297 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-20 21:28:53,332 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-20 21:28:54,077 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-20 21:28:54,105 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-20 21:28:55,095 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-20 21:28:55,865 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-20 21:28:56,343 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-20 21:28:56,417 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-20 21:28:56,432 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 6.974 seconds (process running for 7.353)
+2025-08-20 21:29:37,143 [INFO] o.a.c.c.C.[.[.[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-20 21:29:37,144 [INFO] o.s.w.s.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2025-08-20 21:29:37,145 [INFO] o.s.w.s.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2025-08-20 21:29:37,760 [INFO] o.s.a.AbstractOpenApiResource [http-nio-8080-exec-7] Init duration for springdoc-openapi is: 315 ms
