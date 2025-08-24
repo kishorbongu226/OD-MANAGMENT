@@ -26,7 +26,17 @@ public class ApprovalRequest {
    @Column(name = "register_no", unique = true)
     private String registerNo;
     
+    
     private Long enrollmentId;
+
+    // 🔹 Type of request: OD / CERTIFICATE / EVENT etc.
+    private String requestType;
+
+    // 🔹 Reason (mainly for OD or certificate)
+    private String reason;
+
+    // 🔹 Who needs to approve (teacher’s registerNo or admin)
+    private String approver;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;    // PENDING, APPROVED, DECLINED

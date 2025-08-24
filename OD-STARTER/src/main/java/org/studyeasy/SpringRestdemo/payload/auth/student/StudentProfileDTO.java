@@ -9,15 +9,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentProfileDTO {
+      private String registerNo;
 
-    private String registerNo;
-    private int age;
+     private long age;
+
+    private String co_ordinator;
+
     private String branch;
+
+    private long academicYear;
+
     private String department;
+
     private String section;
-    private String mobileNo;
-    private String email;
-    private String academicYear;
-    private int eventsAttended;
+
+    private String mobile_no;
+
+    private long events_attended;
 }
 

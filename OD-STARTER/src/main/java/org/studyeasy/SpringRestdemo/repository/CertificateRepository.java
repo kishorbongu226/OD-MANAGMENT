@@ -8,5 +8,4 @@ import org.studyeasy.SpringRestdemo.model.Certificate;
 
 @Repository
 public interface CertificateRepository extends JpaRepository<Certificate, Long> {
-    List<Certificate> findByResisterNo(String registerNo);
-}
+ List<Certificate> findByAccount_RegisterNo(String registerNo);}

@@ -8,5 +8,5 @@ import org.studyeasy.SpringRestdemo.model.Enrollment;
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-    List<Enrollment> findByRegisterNo(String registerNo);
+List<Enrollment> findByAccount_RegisterNo(String registerNo);
 }

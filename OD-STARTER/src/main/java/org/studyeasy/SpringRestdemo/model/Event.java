@@ -2,7 +2,11 @@ package org.studyeasy.SpringRestdemo.model;
 
 import java.time.LocalDateTime;
 
+import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,5 +34,12 @@ public class Event {
 
     private LocalDateTime endTime;
 
-   
+    // @ManyToMany
+    // @JoinColumn(name="register_id", referencedColumnName = "register_no", nullable = false)
+    // private Account account; 
+
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;   // PENDING, APPROVED, DECLINED
+
+    private String createdBy;
 }

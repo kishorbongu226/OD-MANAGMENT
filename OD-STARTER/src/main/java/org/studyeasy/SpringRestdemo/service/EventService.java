@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.studyeasy.SpringRestdemo.model.Event;
 import org.studyeasy.SpringRestdemo.repository.EventRepository;
+import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
 
 
 @Service
@@ -30,5 +31,19 @@ public class EventService {
     public void deleteById(Long id) {
         eventRepository.deleteById(id);
     }
+    public List<Event> findByStatus(EventStatus status) {
+    return eventRepository.findByStatus(status);
+    }
+
+    public Event createEvent(Event event, String role) {
+    if ("ADMIN".equals(role)) {
+        event.setStatus(EventStatus.APPROVED);  // Directly approved
+    } else {
+        event.setStatus(EventStatus.PENDING);   // Needs admin approval
+    }
+    return eventRepository.save(event);
+    }
+
+
 }
 

@@ -11,6 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,10 +25,11 @@ public class Enrollment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "enrollement_id", unique = true)
+
     private Long id;
 
-    @Column(name = "register_no", unique = true)
-    private String registerNo;
+   
     
     private Long eventId;   // FK → Event
 
@@ -34,4 +37,8 @@ public class Enrollment {
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;    // REQUESTED, APPROVED, DECLINED
+
+     @ManyToOne
+    @JoinColumn(name="register_id", referencedColumnName = "register_no", nullable = false)
+    private Account account;
 }

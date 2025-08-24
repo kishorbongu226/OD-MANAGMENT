@@ -1,8 +1,8 @@
 package org.studyeasy.SpringRestdemo.util.constants;
 
-public enum RequestStatus {
+public enum EventStatus {
     PENDING,
     APPROVED,
-    DECLINED,
-    ENROLLED
+    DECLINED
 }
+

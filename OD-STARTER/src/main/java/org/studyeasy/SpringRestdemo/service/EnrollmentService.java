@@ -27,7 +27,7 @@ public class EnrollmentService {
     }
 
     public List<Enrollment> findByAccountId(String registerNo) {
-        return enrollmentRepository.findByRegisterNo(registerNo);
+        return enrollmentRepository.findByAccount_RegisterNo(registerNo);
     }
 
     public void deleteById(Long id) {

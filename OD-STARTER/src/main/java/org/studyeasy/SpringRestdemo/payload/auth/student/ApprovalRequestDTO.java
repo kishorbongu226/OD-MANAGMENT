@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class ApprovalRequestDTO {
     private Long id;
     private String registerNo;
-    private String requestType; // e.g., "Leave", "Certificate"
-    private String reason;
+    // private String requestType; // e.g., "Leave", "Certificate"
+    // private String reason;
     private RequestStatus status;  // PENDING / APPROVED / DECLINED
 }
 

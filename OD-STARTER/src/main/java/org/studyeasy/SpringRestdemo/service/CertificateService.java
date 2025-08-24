@@ -26,9 +26,8 @@ public class CertificateService {
         return certificateRepository.findAll();
     }
 
-    public List<Certificate> findByAccountId(String registerNo) {
-        return certificateRepository.findByResisterNo(registerNo);
-    }
+    public List<Certificate> findByRegisterId(String registerNo) {
+    return certificateRepository.findByAccount_RegisterNo(registerNo);    }
 
     public void deleteById(Long id) {
         certificateRepository.deleteById(id);

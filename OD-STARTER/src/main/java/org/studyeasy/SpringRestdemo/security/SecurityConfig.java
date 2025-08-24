@@ -174,7 +174,9 @@ public class SecurityConfig {
             .requestMatchers("/api/v1/auth/users/add").permitAll()
             .requestMatchers("/api/v1/auth/users").hasAuthority("ROLE_ADMIN")
             // .requestMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")  // Require user role for user listing
-            .requestMatchers("/api/v1/**").hasAuthority("SCOPE_ADMIN")  // Require user role for user listing
+            .requestMatchers("/api/v1/events/**").hasAuthority("SCOPE_ADMIN")  // Require user role for user listing
+            .requestMatchers("/api/v1/teacher/**").hasAuthority("SCOPE_TEACHER")  // Require user role for user listing
+            .requestMatchers("/api/v1/student/**").hasAuthority("SCOPE_STUDENT")  // Require user role for user listing
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/**").permitAll()
             .requestMatchers("/db-console/**").permitAll()
             .requestMatchers("/test").authenticated()  // Example of restricted endpoint
