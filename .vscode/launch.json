@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot",
+      "request": "launch",
+      "mainClass": "org.studyeasy.SpringRestdemoApplication",
+      "projectName": "OD-STARTER",
+      "cwd": "D:/5TH SEMESTER/MAJOR PROJECTS/OD-MANAGMENT/backend/OD-STARTER"
+    }
+  ]
+}
