@@ -8,5 +8,13 @@ import org.studyeasy.SpringRestdemo.model.Enrollment;
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-List<Enrollment> findByAccount_RegisterNo(String registerNo);
+
+    List<Enrollment> findByAccount_RegisterNo(String registerNo);
+
+    // 🔑 New method: Find specific enrollment for event + student
+    java.util.Optional<Enrollment> findByEvent_IdAndAccount_RegisterNo(Long eventId, String registerNo);
+
+    // (Optional) Get all enrollments of an event
+    List<Enrollment> findByEvent_Id(Long eventId);
 }
+

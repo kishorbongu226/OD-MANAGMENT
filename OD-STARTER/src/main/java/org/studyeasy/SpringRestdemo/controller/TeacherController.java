@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.studyeasy.SpringRestdemo.model.ApprovalRequest;
 import org.studyeasy.SpringRestdemo.model.Event;
+import org.studyeasy.SpringRestdemo.model.ODRequest;
 import org.studyeasy.SpringRestdemo.payload.auth.EventRequestDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.EventResponseDTO;
+import org.studyeasy.SpringRestdemo.payload.auth.ODResponseDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.student.ApprovalRequestDTO;
 import org.studyeasy.SpringRestdemo.service.ApprovalService;
 import org.studyeasy.SpringRestdemo.service.EventService;
+import org.studyeasy.SpringRestdemo.service.ODRequestService;
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
+import org.studyeasy.SpringRestdemo.util.constants.ODStatus;
 import org.studyeasy.SpringRestdemo.util.constants.RequestStatus;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -39,6 +42,8 @@ public class TeacherController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private ODRequestService odRequestService;
     
 
     @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
@@ -52,34 +57,37 @@ public class TeacherController {
         return ResponseEntity.ok(requests);
     }
 
-    // ✅ Approve OD
+    //  Approve OD
     @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
     @PostMapping("/od-requests/{id}/approve")
-    public ResponseEntity<ApprovalRequestDTO> approveOD(@PathVariable Long id) {
-        ApprovalRequest req = approvalService.findById(id)
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<ODResponseDTO> approveOD(@PathVariable Long id) {
+        ODRequest odRequest = odRequestService.findById(id)
             .orElseThrow(() -> new RuntimeException("Request not found"));
-        req.setStatus(RequestStatus.APPROVED);
-        ApprovalRequest saved = approvalService.save(req);
-        return ResponseEntity.ok(new ApprovalRequestDTO(saved.getId(), saved.getRegisterNo(), saved.getStatus()));
+        odRequest.setStatus(ODStatus.APPROVED);
+        ODRequest saved = odRequestService.save(odRequest);
+        return ResponseEntity.ok(new ODResponseDTO(saved.getId(), saved.getEnrollment().getAccount().getRegisterNo(), saved.getStatus()));
     }
 
-    // ✅ Decline OD
+    // Decline OD
     @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
     @PostMapping("/od-requests/{id}/decline")
-    public ResponseEntity<ApprovalRequestDTO> declineOD(@PathVariable Long id) {
-        ApprovalRequest req = approvalService.findById(id)
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<ODResponseDTO> declineOD(@PathVariable Long id) {
+        ODRequest req =  odRequestService.findById(id)
             .orElseThrow(() -> new RuntimeException("Request not found"));
-        req.setStatus(RequestStatus.DECLINED);
-        ApprovalRequest saved = approvalService.save(req);
-        return ResponseEntity.ok(new ApprovalRequestDTO(saved.getId(), saved.getRegisterNo(), saved.getStatus()));
+        req.setStatus(ODStatus.DECLINED);
+        ODRequest saved =  odRequestService.save(req);
+        return ResponseEntity.ok(new ODResponseDTO(saved.getId(), saved.getEnrollment().getAccount().getRegisterNo(), saved.getStatus()));
     }
 
-    // ✅ Submit Event (goes into PENDING state)
+    // Submit Event (goes into PENDING state)
     @PreAuthorize("hasAuthority('TEACHER')")
     @PostMapping("/events/submit")
-        @SecurityRequirement(name="studyeasy-demo-api")
+    @SecurityRequirement(name="studyeasy-demo-api")
 
-    public ResponseEntity<EventResponseDTO> submitEvent(@Valid @RequestBody EventRequestDTO dto) {
+    public ResponseEntity<EventResponseDTO> submitEvent(@Valid @RequestBody EventRequestDTO dto,Authentication authentication) {
+        String register = authentication.getName();
         Event event = new Event();
         event.setTitle(dto.getTitle());
         event.setDescription(dto.getDescription());
@@ -87,6 +95,9 @@ public class TeacherController {
         event.setStartTime(dto.getStartTime());
         event.setEndTime(dto.getEndTime());
         event.setStatus(EventStatus.PENDING);
+        event.setEventCordinator(dto.getEventCordinator());
+        event.setEligibleYears(dto.getEligibleYears());
+        event.setCreatedBy(register);
 
         Event saved = eventService.save(event);
 
@@ -96,7 +107,9 @@ public class TeacherController {
             saved.getDescription(),
             saved.getLocation(),
             saved.getStartTime(),
-            saved.getEndTime()
+            saved.getEndTime(),
+            saved.getEventCordinator(),
+            saved.getEligibleYears()
         );
         return ResponseEntity.ok(response);
     }

@@ -12,11 +12,11 @@ import lombok.Setter;
 public class UserLoginDTO {
    
     @NotBlank(message="register number required")
-    @Schema(description = "Register number", example = "43111436", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "Register number", example = "A1001", requiredMode = RequiredMode.REQUIRED)
     private String register_no;
 
     @Size(min = 6, max = 20)
-    @Schema(description = "Password", example = "22-04-2006", 
+    @Schema(description = "Password", example = "password", 
     requiredMode = RequiredMode.REQUIRED, maxLength = 20, minLength = 6)
     private String password;
 

@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.studyeasy.SpringRestdemo.model.Account;
+import org.studyeasy.SpringRestdemo.model.ProfessorAccount;
+import org.studyeasy.SpringRestdemo.payload.auth.ProfessorProfileDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.ProfileDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.TokenDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.UserLoginDTO;
 import org.studyeasy.SpringRestdemo.service.AccountService;
+import org.studyeasy.SpringRestdemo.service.ProfessorService;
 import org.studyeasy.SpringRestdemo.service.TokenService;
 import org.studyeasy.SpringRestdemo.util.constants.AccountError;
 
@@ -45,6 +48,9 @@ public class AuthController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ProfessorService professorService;
+
     @PostMapping("/token")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TokenDTO> token(@Valid @RequestBody UserLoginDTO userLogin) throws AuthenticationException {
@@ -64,13 +70,56 @@ public class AuthController {
     @ApiResponse(responseCode = "403", description = "Token Error")
     @Operation(summary = "View profile")
     @SecurityRequirement(name = "studyeasy-demo-api")
-    public ProfileDTO profile(Authentication authentication) {
+    public ResponseEntity<ProfileDTO> profile(Authentication authentication) {
         String register_no = authentication.getName();
         Optional<Account> optionalAccount = accountService.findByRegisterNumber(register_no);
         Account account = optionalAccount.get();
-        ProfileDTO profileDTO = new ProfileDTO(account.getId(), account.getRegisterNo(),account.getAcademicYear(),account.getAge(),account.getCo_ordinator(), account.getBranch(), account.getDepartment(),account.getSection(), account.getMobile_no(), account.getEvents_attended(), account.getEmail(), account.getPassword(),account.getAuthorities());
-        return profileDTO;
+        ProfileDTO profileDTO = new ProfileDTO(
+            account.getId(),
+            account.getRegisterNo(),
+            account.getAcademicYear(),
+            account.getAge(),
+            account.getBranch(),
+            account.getDepartment(),
+            account.getSection(),
+            account.getMobile_no(),
+            account.getEvents_attended(),
+            account.getEmail(),
+            account.getAuthorities(),
+            account.getCoordinator() != null ? account.getCoordinator().getName() : null);
 
+    return ResponseEntity.ok(profileDTO);
+
+    }
+
+    @GetMapping(value = "/professor/profile", produces = "application/json")
+    @ApiResponse(responseCode = "200", description = "View Professor Profile")
+    @ApiResponse(responseCode = "401", description = "Token missing")
+    @ApiResponse(responseCode = "403", description = "Unauthorized")
+    @Operation(summary = "View Professor Profile")
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<ProfessorProfileDTO> professorProfile(Authentication authentication) {
+        String registerNo = authentication.getName();
+        Optional<ProfessorAccount> optionalProfessor = professorService.findByRegisterNumber(registerNo);
+
+        if (optionalProfessor.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        ProfessorAccount professor = optionalProfessor.get();
+
+        ProfessorProfileDTO profileDTO = new ProfessorProfileDTO(
+                professor.getId(),
+                professor.getRegisterNo(),
+                professor.getName(),
+                professor.getDesignation(),
+                professor.getEmail(),
+                professor.getDepartment(),
+                professor.getBranch(),
+                professor.getAge()
+        );
+
+        return ResponseEntity.ok(profileDTO);
     }
 
   

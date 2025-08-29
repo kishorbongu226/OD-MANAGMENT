@@ -16,7 +16,7 @@ public class ProfileDTO {
 
     private long age;
 
-    private String co_ordinator;
+    
 
     private String branch;
 
@@ -30,8 +30,9 @@ public class ProfileDTO {
 
     private String email;
 
-    private String password;
 
     private String authorities;
+
+    private String coordinator;
     
 }

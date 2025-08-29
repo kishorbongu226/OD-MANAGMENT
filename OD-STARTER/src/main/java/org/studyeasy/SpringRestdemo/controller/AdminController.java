@@ -55,17 +55,20 @@ public class AdminController {
     event.setStartTime(dto.getStartTime());
     event.setEndTime(dto.getEndTime());
     event.setCreatedBy(adminRegisterNo);
+    event.setEventCordinator(dto.getEventCordinator());
+    event.setEligibleYears(dto.getEligibleYears());
+    
 
     Event saved = eventService.createEvent(event, "ADMIN");
 
     EventResponseDTO response = new EventResponseDTO(
         saved.getId(), saved.getTitle(), saved.getDescription(),
-        saved.getLocation(), saved.getStartTime(), saved.getEndTime()
+        saved.getLocation(), saved.getStartTime(), saved.getEndTime(),saved.getEventCordinator(),saved.getEligibleYears()
     );
     return ResponseEntity.ok(response);
     }
 
-    // ✅ Get Event by ID
+    //  Get Event by ID
 //     @GetMapping("/{id}")
 //     public ResponseEntity<EventResponseDTO> getEvent(@PathVariable Long id) {
 //         Event event = eventService.findById(id)
@@ -96,7 +99,9 @@ public class AdminController {
                 event.getDescription(),
                 event.getLocation(),
                 event.getStartTime(),
-                event.getEndTime()
+                event.getEndTime(),
+                event.getEventCordinator(),
+                event.getEligibleYears()
                 ))
                 .toList();
 
@@ -119,6 +124,7 @@ public class AdminController {
 
         @PreAuthorize("hasAuthority('ADMIN')")
         @PostMapping("/events/{id}/decline")
+        @SecurityRequirement(name="studyeasy-demo-api")
         public ResponseEntity<List<EventResponseDTO>> declineEvent(@PathVariable Long id) {
         Event event = eventService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -146,7 +152,9 @@ public class AdminController {
                                 event.getDescription(),
                                 event.getLocation(),
                                 event.getStartTime(),
-                                event.getEndTime()
+                                event.getEndTime(),
+                                event.getEventCordinator(),
+                                event.getEligibleYears()
                         ))
                         .collect(Collectors.toList());
 
@@ -183,7 +191,9 @@ public class AdminController {
                 updated.getDescription(),
                 updated.getLocation(),
                 updated.getStartTime(),
-                updated.getEndTime()
+                updated.getEndTime(),
+                updated.getEventCordinator(),
+                updated.getEligibleYears()
         );
 
         return ResponseEntity.ok(response);
