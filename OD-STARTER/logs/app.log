@@ -1,0 +1,318 @@
+2025-08-29 11:59:09,856 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 11:59:10,044 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 1944 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 11:59:10,049 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 11:59:10,052 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 11:59:12,428 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 11:59:12,743 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 271 ms. Found 6 JPA repository interfaces.
+2025-08-29 11:59:14,863 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 11:59:14,926 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 11:59:14,932 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 11:59:14,934 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 11:59:15,221 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 11:59:15,224 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4993 ms
+2025-08-29 11:59:15,806 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 11:59:15,969 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 11:59:16,078 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 11:59:16,885 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 11:59:16,974 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 11:59:17,501 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 11:59:17,513 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 11:59:17,598 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 11:59:17,675 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 11:59:20,261 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 11:59:20,389 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 11:59:23,021 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 11:59:25,855 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 11:59:26,831 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 11:59:27,015 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 11:59:27,097 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 11:59:27,126 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 18.345 seconds (process running for 19.395)
+2025-08-29 12:02:04,614 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:02:04,766 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 17688 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:02:04,769 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:02:04,771 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:02:07,433 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:02:07,623 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 167 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:02:09,274 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:02:09,306 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:02:09,313 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:02:09,313 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:02:09,858 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:02:09,864 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4946 ms
+2025-08-29 12:02:10,441 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:02:10,571 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:02:10,667 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:02:11,427 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:02:11,508 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:02:12,013 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:02:12,018 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:02:12,079 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:02:12,139 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:02:14,049 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:02:14,149 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:02:15,985 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:02:17,888 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:02:18,716 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:02:18,839 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:02:18,899 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:02:18,918 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 15.322 seconds (process running for 16.023)
+2025-08-29 12:06:25,119 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:06:25,258 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 21368 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:06:25,260 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:06:25,262 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:06:28,110 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:06:28,360 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 217 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:06:30,033 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:06:30,051 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:06:30,055 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:06:30,055 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:06:30,187 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:06:30,189 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 4765 ms
+2025-08-29 12:06:30,697 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:06:30,810 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:06:30,893 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:06:31,539 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:06:31,604 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:06:32,038 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:06:32,041 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:06:32,086 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:06:32,127 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:06:33,979 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:06:34,074 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:06:35,765 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:06:37,524 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:06:38,340 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:06:38,513 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:06:38,601 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:06:38,632 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 14.596 seconds (process running for 15.649)
+2025-08-29 12:06:38,642 [INFO] o.s.S.c.SeedData [main] Seeding initial account data...
+2025-08-29 12:06:39,005 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:06:39,175 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:06:39,357 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:06:39,358 [INFO] o.s.S.c.SeedData [main] Seeding completed.
+2025-08-29 12:06:53,621 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:06:53,815 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 19120 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:06:53,817 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:06:53,820 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:06:55,986 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:06:56,167 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 159 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:06:57,551 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:06:57,576 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:06:57,581 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:06:57,582 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:06:57,770 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:06:57,774 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3714 ms
+2025-08-29 12:06:58,219 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:06:58,377 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:06:58,485 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:06:59,185 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:06:59,242 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:06:59,794 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:06:59,799 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:06:59,862 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:06:59,917 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:07:01,762 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:07:01,886 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:07:04,802 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:07:06,768 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:07:07,515 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:07:07,659 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:07:07,731 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:07:07,758 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 15.476 seconds (process running for 16.217)
+2025-08-29 12:07:07,767 [INFO] o.s.S.c.SeedData [main] Seeding initial account data...
+2025-08-29 12:07:08,200 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:07:08,366 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:07:08,528 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:07:08,528 [INFO] o.s.S.c.SeedData [main] Seeding completed.
+2025-08-29 12:09:22,873 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:09:23,023 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 13752 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:09:23,026 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:09:23,028 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:09:25,906 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:09:26,124 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 196 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:09:28,215 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:09:28,241 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:09:28,245 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:09:28,245 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:09:28,460 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:09:28,464 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5285 ms
+2025-08-29 12:09:29,091 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:09:29,228 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:09:29,326 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:09:30,195 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:09:30,305 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:09:30,804 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:09:30,807 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:09:30,863 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:09:30,925 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:09:32,782 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:09:32,872 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:09:34,573 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:09:36,370 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:09:37,151 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:09:37,321 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:09:37,442 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:09:37,489 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 15.564 seconds (process running for 16.254)
+2025-08-29 12:09:37,500 [INFO] o.s.S.c.SeedData [main] Seeding initial account data...
+2025-08-29 12:09:37,903 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:09:38,077 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:09:38,243 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:09:38,243 [INFO] o.s.S.c.SeedData [main] Seeding completed.
+2025-08-29 12:09:43,291 [INFO] o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:09:43,418 [INFO] o.s.S.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 4288 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:09:43,421 [DEBUG] o.s.S.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:09:43,422 [INFO] o.s.S.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:09:46,530 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:09:46,767 [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 199 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:09:48,379 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:09:48,400 [INFO] o.a.c.h.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:09:48,405 [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:09:48,405 [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:09:48,616 [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:09:48,619 [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5035 ms
+2025-08-29 12:09:49,049 [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:09:49,159 [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:09:49,233 [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:09:49,817 [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:09:49,904 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:09:50,680 [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:09:50,684 [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:09:50,750 [WARN] o.h.o.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:09:50,804 [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:09:53,294 [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:09:53,412 [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:09:56,182 [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:09:58,373 [INFO] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:09:59,349 [INFO] o.s.b.a.h.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:09:59,500 [INFO] o.a.c.h.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:09:59,564 [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:09:59,589 [INFO] o.s.S.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 17.21 seconds (process running for 17.885)
+2025-08-29 12:09:59,597 [INFO] o.s.S.c.SeedData [main] Seeding initial account data...
+2025-08-29 12:09:59,996 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:10:00,222 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:10:00,424 [INFO] o.s.S.c.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:10:00,425 [INFO] o.s.S.c.SeedData [main] Seeding completed.
+2025-08-29 12:11:42,594 [INFO] org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:11:42,725 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 16220 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:11:42,729 [DEBUG] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:11:42,730 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:11:45,318 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:11:45,587 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 230 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:11:47,842 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:11:47,873 [INFO] org.apache.coyote.http11.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:11:47,880 [INFO] org.apache.catalina.core.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:11:47,881 [INFO] org.apache.catalina.core.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:11:48,037 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:11:48,039 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5180 ms
+2025-08-29 12:11:48,437 [INFO] org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:11:48,570 [INFO] org.hibernate.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:11:48,737 [INFO] org.hibernate.cache.internal.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:11:49,716 [INFO] org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:11:49,777 [INFO] com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:11:50,288 [INFO] com.zaxxer.hikari.pool.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:11:50,290 [INFO] com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:11:50,326 [WARN] org.hibernate.orm.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:11:50,368 [INFO] org.hibernate.orm.connections.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:11:52,158 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:11:52,243 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:11:53,958 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:11:56,608 [INFO] org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:11:57,503 [INFO] org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:11:57,730 [INFO] org.apache.coyote.http11.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:11:57,838 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:11:57,882 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 16.185 seconds (process running for 16.868)
+2025-08-29 12:11:57,912 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] Seeding initial account data...
+2025-08-29 12:11:58,353 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:11:58,540 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:11:58,715 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:11:58,716 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] Seeding completed.
+2025-08-29 12:12:02,489 [INFO] org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 8.0.2.Final
+2025-08-29 12:12:02,758 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Starting SpringRestdemoApplication using Java 17.0.15 with PID 18000 (D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER\target\classes started by Teja in D:\5TH SEMESTER\MAJOR PROJECTS\OD-MANAGMENT\backend\OD-STARTER)
+2025-08-29 12:12:02,762 [DEBUG] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-29 12:12:02,764 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] No active profile set, falling back to 1 default profile: "default"
+2025-08-29 12:12:05,811 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-29 12:12:06,492 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 620 ms. Found 6 JPA repository interfaces.
+2025-08-29 12:12:09,092 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2025-08-29 12:12:09,124 [INFO] org.apache.coyote.http11.Http11NioProtocol [main] Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:12:09,130 [INFO] org.apache.catalina.core.StandardService [main] Starting service [Tomcat]
+2025-08-29 12:12:09,131 [INFO] org.apache.catalina.core.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-29 12:12:09,407 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [main] Initializing Spring embedded WebApplicationContext
+2025-08-29 12:12:09,411 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 6441 ms
+2025-08-29 12:12:09,944 [INFO] org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-29 12:12:10,100 [INFO] org.hibernate.Version [main] HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-08-29 12:12:10,209 [INFO] org.hibernate.cache.internal.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2025-08-29 12:12:11,515 [INFO] org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-29 12:12:11,653 [INFO] com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2025-08-29 12:12:12,260 [INFO] com.zaxxer.hikari.pool.HikariPool [main] HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./db/db user=ADMIN
+2025-08-29 12:12:12,263 [INFO] com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2025-08-29 12:12:12,306 [WARN] org.hibernate.orm.deprecation [main] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-29 12:12:12,343 [INFO] org.hibernate.orm.connections.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-29 12:12:14,517 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-29 12:12:14,682 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-29 12:12:17,461 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-29 12:12:19,747 [INFO] org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [main] Global AuthenticationManager configured with UserDetailsService bean with name accountService
+2025-08-29 12:12:20,647 [INFO] org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/db-console'. Database available at 'jdbc:h2:file:./db/db'
+2025-08-29 12:12:20,845 [INFO] org.apache.coyote.http11.Http11NioProtocol [main] Starting ProtocolHandler ["http-nio-8080"]
+2025-08-29 12:12:20,916 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+2025-08-29 12:12:20,946 [INFO] org.studyeasy.SpringRestdemo.SpringRestdemoApplication [main] Started SpringRestdemoApplication in 19.813 seconds (process running for 20.559)
+2025-08-29 12:12:20,955 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] Seeding initial account data...
+2025-08-29 12:12:21,407 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111436, Role=ADMIN
+2025-08-29 12:12:21,586 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111437, Role=STUDENT
+2025-08-29 12:12:21,754 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] ? Account seeded successfully: RegisterNo=43111438, Role=TEACHER
+2025-08-29 12:12:21,755 [INFO] org.studyeasy.SpringRestdemo.config.SeedData [main] Seeding completed.
