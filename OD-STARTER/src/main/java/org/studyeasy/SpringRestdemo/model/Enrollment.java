@@ -2,6 +2,7 @@ package org.studyeasy.SpringRestdemo.model;
 
 import java.time.LocalDateTime;
 
+import org.studyeasy.SpringRestdemo.util.constants.AttendenceStatus;
 import org.studyeasy.SpringRestdemo.util.constants.RequestStatus;
 
 import jakarta.persistence.Column;
@@ -30,15 +31,19 @@ public class Enrollment {
     private Long id;
 
    
-    
-    private Long eventId;   // FK → Event
+    @ManyToOne
+    @JoinColumn(name="event_id",referencedColumnName = "id", nullable = false)
+    private Event event;   // FK → Event
 
     private LocalDateTime enrolledAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;    // REQUESTED, APPROVED, DECLINED
 
-     @ManyToOne
+    @Enumerated(EnumType.STRING)
+    private AttendenceStatus attendenceStatus = AttendenceStatus.PENDING;
+
+    @ManyToOne
     @JoinColumn(name="register_id", referencedColumnName = "register_no", nullable = false)
     private Account account;
 }

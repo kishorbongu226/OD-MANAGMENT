@@ -1,12 +1,14 @@
 package org.studyeasy.SpringRestdemo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,7 +17,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Account {
+public class ProfessorAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,27 +26,24 @@ public class Account {
     @Column(name = "register_no", unique = true)
     private String registerNo;
 
-    private long age;
+    private String name;
 
-    private String branch;
-
-    private long academicYear;
-
-    private String department;
-
-    private String section;
-
-    private String mobile_no;
-
-    private long events_attended;
+    private String designation;
 
     private String email;
 
+    private String department;
+
+    private String branch;
+
+    private long age;
+
     private String password;
 
-    private String Authorities;
+    private String Authorities;//ADMIN,TEACHER are the authorities that can be used here for event and teacher management
 
-    @ManyToOne
-    @JoinColumn(name = "coordinator_id", nullable = false) 
-    private ProfessorAccount coordinator;
+    @OneToMany(mappedBy = "coordinator")
+    private List<Account> students = new ArrayList<>();
+
+    
 }

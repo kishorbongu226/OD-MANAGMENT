@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.studyeasy.SpringRestdemo.model.Account;
+import org.studyeasy.SpringRestdemo.model.ProfessorAccount;
+import org.studyeasy.SpringRestdemo.repository.AccountRepository;
+import org.studyeasy.SpringRestdemo.repository.ProfessorRepository;
 import org.studyeasy.SpringRestdemo.service.AccountService;
+import org.studyeasy.SpringRestdemo.service.ProfessorService;
 import org.studyeasy.SpringRestdemo.util.constants.Authority;
 
 @Component
@@ -13,61 +17,127 @@ public class SeedData implements CommandLineRunner{
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ProfessorService professorService;
+    @Autowired
+    private  ProfessorRepository professorRepository;
+    @Autowired
+    private  AccountRepository accountRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        Account account01 = new Account();
-        Account account02 = new Account();
-        Account account03 = new Account();
-        // Account account02 = new Account();
+
+    ProfessorAccount professor1 = new ProfessorAccount();
+    if (!professorRepository.existsByRegisterNo("P1001")) {
+        professor1.setRegisterNo("P1001");
+}
+    professor1.setName("Dr. S. Gayathri");
+    professor1.setDesignation("Assistant Professor");
+    professor1.setEmail("gayathri@univ.com");
+    professor1.setDepartment("CSE");
+    professor1.setBranch("BE");
+    professor1.setPassword("password");
+    professor1.setAge(40);
+    professor1.setAuthorities(Authority.TEACHER.toString());
+    professorService.save(professor1);
+
+    // Professor 2
+    ProfessorAccount professor2 = new ProfessorAccount();
+        if (!professorRepository.existsByRegisterNo("P1002")) {
+        professor2.setRegisterNo("P1002");
+}
+
+    professor2.setName("Dr. R. Kumar");
+    professor2.setDesignation("Associate Professor");
+    professor2.setEmail("kumar@univ.com");
+    professor2.setDepartment("ECE");
+    professor2.setBranch("BE");
+    professor2.setAge(45);
+    professor2.setPassword("password");
+    professor2.setAuthorities(Authority.TEACHER.toString());
+    professorService.save(professor2);    
+        // Student 1
+    Account student1 = new Account();
+            if (!accountRepository.existsByRegisterNo("43111437")) {
+        student1.setRegisterNo("43111437");
+}
+
+student1.setAge(19);
+student1.setBranch("BE");
+student1.setAcademicYear(2);
+student1.setDepartment("CSE");
+student1.setEvents_attended(5);
+student1.setMobile_no("9346229311");
+student1.setSection("E4");
+student1.setEmail("student1@univ.com");
+student1.setPassword("password123");
+student1.setAuthorities(Authority.STUDENT.toString());
+// Assign coordinator later once professors are created
+student1.setCoordinator(professor1);
+accountService.save(student1);
+
+// Student 2
+Account student2 = new Account();
+if (!accountRepository.existsByRegisterNo("43111438")) {
+student1.setRegisterNo("43111438");
+}
+
+student2.setAge(20);
+student2.setBranch("BE");
+student2.setAcademicYear(3);
+student2.setDepartment("ECE");
+student2.setEvents_attended(3);
+student2.setMobile_no("9346229312");
+student2.setSection("B2");
+student2.setEmail("student2@univ.com");
+    student2.setPassword("password123");
+    student2.setAuthorities(Authority.STUDENT.toString());
+    student2.setCoordinator(professor2);
+    accountService.save(student2);
+
+    Account student3 = new Account();
+    if (!accountRepository.existsByRegisterNo("43111439")) {
+    student1.setRegisterNo("43111439");
+    }
+    
+    student3.setBranch("BE");
+    student3.setAcademicYear(1);
+    student3.setDepartment("ECE");
+    student3.setEvents_attended(3);
+    student3.setMobile_no("9346229312");
+    student3.setSection("B2");
+    student3.setEmail("student2@univ.com");
+    student3.setPassword("password123");
+    student3.setAuthorities(Authority.STUDENT.toString());
+    student3.setCoordinator(professor2);
+    accountService.save(student3);
+
+    // Professor 1 (Coordinator)
+   
+
+    ProfessorAccount admin = new ProfessorAccount();
+           if (!professorRepository.existsByRegisterNo("A1001")) {
+        professor2.setRegisterNo("A1001");
+
+    
+    admin.setName("System Admin");
+    admin.setDesignation("Administrator");
+    admin.setEmail("admin@univ.com");
+    admin.setDepartment("Administration");
+    admin.setBranch("N/A");
+    admin.setAge(35);
+    admin.setPassword("password");
+    admin.setAuthorities(Authority.ADMIN.toString());
+    professorService.save(admin);
 
 
-        account01.setRegisterNo("43111436");
-        account01.setAge(19);
-        account01.setBranch("BE");
-        account01.setAcademicYear(2);
-        account01.setDepartment("CSE");
-        account01.setEvents_attended(10);
-        account01.setMobile_no("9346229311");
-        account01.setCo_ordinator("Dr.S.Gayathri");
-        account01.setSection("E4");
-        account01.setEmail("user@user.com");
-        account01.setPassword("22-04-2006");
-        account01.setAuthorities(Authority.ADMIN.toString());
-        accountService.save(account01);
+    // Assign Professor Gayathri as coordinator to student1
 
-        account02.setRegisterNo("43111437");
-        account02.setAge(19);
-        account02.setBranch("BE");
-        account02.setAcademicYear(2);
-        account02.setDepartment("CSE");
-        account02.setEvents_attended(10);
-        account02.setMobile_no("9346229311");
-        account02.setCo_ordinator("Dr.S.Gayathri");
-        account02.setSection("E4");
-        account02.setEmail("user@user.com");
-        account02.setPassword("22-04-2006");
-        account02.setAuthorities(Authority.STUDENT.toString());
-        accountService.save(account02); 
+    // Assign Professor Kumar as coordinator to student2
 
-        account03.setRegisterNo("43111438");
-        account03.setAge(19);
-        account03.setBranch("BE");
-        account03.setAcademicYear(2);
-        account03.setDepartment("CSE");
-        account03.setEvents_attended(10);
-        account03.setMobile_no("9346229311");
-        account03.setCo_ordinator("Dr.S.Gayathri");
-        account03.setSection("E4");
-        account03.setEmail("user@user.com");
-        account03.setPassword("22-04-2006");
-        account03.setAuthorities(Authority.TEACHER.toString());
-        accountService.save(account03);
-
-        // account02.setEmail("admin@admin.com");
-        // account02.setPassword("pass987");
-        // account02.setAuthorities(Authority.ADMIN.toString() +" "+Authority.USER.toString() );
-        // accountService.save(account02);
         
     }
     
+}
+
 }

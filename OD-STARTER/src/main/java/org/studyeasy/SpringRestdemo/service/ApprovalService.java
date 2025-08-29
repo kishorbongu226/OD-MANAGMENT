@@ -5,10 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.studyeasy.SpringRestdemo.model.ApprovalRequest;
 import org.studyeasy.SpringRestdemo.repository.ApprovalRequestRepository;
 import org.studyeasy.SpringRestdemo.util.constants.RequestStatus;
 
+
+@Transactional
 @Service
 public class ApprovalService {
 

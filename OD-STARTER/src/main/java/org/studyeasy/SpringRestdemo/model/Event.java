@@ -1,12 +1,15 @@
 package org.studyeasy.SpringRestdemo.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,18 +31,22 @@ public class Event {
 
     private String description;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> eventCordinator;
+
     private String location;
 
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
 
-    // @ManyToMany
-    // @JoinColumn(name="register_id", referencedColumnName = "register_no", nullable = false)
-    // private Account account; 
+  
 
     @Enumerated(EnumType.STRING)
     private EventStatus status;   // PENDING, APPROVED, DECLINED
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> eligibleYears;
 
     private String createdBy;
 }
