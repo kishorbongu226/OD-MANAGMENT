@@ -128,6 +128,12 @@ public class StudentController {
                             .body("you are not eligible to enroll in this event");
         }
 
+        Optional<Enrollment> existingEnrollment = enrollmentService.findByAccountAndEvent(student, event);
+        if (existingEnrollment.isPresent()) {
+        return ResponseEntity.status(HttpStatus.CONFLICT) // 409 Conflict
+                .body("You are already enrolled in this event");
+        }
+
         
         Enrollment enrollment = new Enrollment();
         enrollment.setAccount(accOpt.get());
@@ -154,7 +160,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        List<EnrollmentDTO> enrollments = enrollmentService.findByAccountId(accOpt.get().getRegisterNo())
+        List<EnrollmentDTO> enrollments = enrollmentService.findByRegisterNo(accOpt.get().getRegisterNo())
                 .stream()
                 .map(e -> new EnrollmentDTO(e.getId(),e.getAccount().getRegisterNo(), e.getEvent().getId(), e.getStatus()))
                 .collect(Collectors.toList());

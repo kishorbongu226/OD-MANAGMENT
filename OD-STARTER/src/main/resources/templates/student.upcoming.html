@@ -1,0 +1,809 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #831238;
+            --primary-dark: #6d0f2a;
+            --accent-color: #66bb6a;
+            --accent-hover: #5aa456;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-light: #ffffff;
+            --bg-gray: #f5f5f7;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --shadow-lg: 0 6px 16px rgba(0,0,0,0.16);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --gray-100: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            width: 100%;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #5c1e3c; 
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .menu-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background-color:  rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .mobile-menu.active .menu-content {
+            transform: translateX(0);
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .menu-close:hover {
+            color: var(--primary-color);
+        }
+
+        .menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .menu-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .menu-links a i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .menu-links a:hover {
+        background-color: var(--gray-100);
+        color: var(--primary);
+        }
+
+        .menu-links a.active {
+        background-color:  rgba(255, 255, 255, 0.5);
+        color: var(--primary);
+        font-weight: 600;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .page-title {
+            margin-bottom: 24px;
+            color: var(--primary-color);
+        }
+
+        .upcoming-events {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 24px;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        #search {
+            width: 100%;
+            padding: 14px 20px;
+            padding-left: 45px;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--bg-light);
+            box-shadow: var(--shadow-sm);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        #search:focus {
+            outline: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-light);
+            box-shadow: var(--shadow-sm);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 16px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: var(--bg-gray);
+            font-weight: 600;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        table tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        table tr:hover {
+            background-color: rgba(0,0,0,0.01);
+        }
+
+        .view-btn, .enroll-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .view-btn:hover, .enroll-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .event-type.technical {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .event-type.non-technical {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .eligibility {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .eligibility.yes {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .eligibility.no {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .image-container {
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .image-container.show {
+            max-height: 600px;
+            opacity: 1;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+            display: block;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            margin-top: 20px;
+        }
+
+        .no-events i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 16px;
+        }
+
+        .no-events p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1051;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 12px 16px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            table th, table td {
+                padding: 12px;
+            }
+            
+            .event-details {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            table th, table td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .view-btn, .enroll-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+          <div class="left-section">
+            <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+    
+          <div class="header-title">
+            Upcoming Events
+          </div>
+    
+          <div class="header-actions">
+            <button class="icon-button" title="Language" aria-label="Language">
+              <i class="fas fa-globe"></i>
+            </button>
+            <button class="icon-button" title="Notifications" aria-label="Notifications">
+              <i class="fas fa-bell"></i>
+            </button>
+            <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='student.profile.html'">
+              <i class="fas fa-user-circle"></i>
+            </button>
+          </div>
+        </div>
+    </header>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="menu-content">
+          <div class="menu-header">
+            <div class="logo">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Student Portal</span>
+            </div>
+            <button class="menu-close" id="menu-close" aria-label="Close menu">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="menu-links">
+            <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="student.profile.html" ><i class="fas fa-user"></i> Profile</a>
+            <a href="student.upcoming.html" class="active"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+            <a href="student.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+            <a href="student.participated.html"><i class="fas fa-calendar"></i> Events participated</a>        
+            <a href="student.approval.html"><i class="fas fa-clipboard-check"></i> Approval</a>
+            <a href="student.attendance.html"><i class="fas fa-clipboard-list"></i> Attendance</a>
+            <a href="student.feedback.html"><i class="fas fa-comment-alt"></i> Feedback</a>
+        </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <h1 class="page-title">Upcoming Events</h1>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input id="search" type="text" placeholder="Search events or venues" autocomplete="off">
+            </div>
+            <table id="events-table">
+                <thead>
+                    <tr>
+                        <th>EVENT NAME</th>
+                        <th>EVENT VENUE</th>
+                        <th>DATE & TIME</th>
+                        <th>TYPE</th>
+                        <th>ELIGIBILITY</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Event 1</td>
+                        <td>Venue 1</td>
+                        <td>01/01/2024 (10:00 AM)</td>
+                        <td><span class="event-type technical">Technical</span></td>
+                        <td><span class="eligibility yes">Eligible</span></td>
+                        <td>
+                            <button onclick="toggleImage(this)" class="view-btn">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="image-container hidden">
+                                <img src="Jeppiar_two.jpg" alt="Event 1 Banner">
+                                <button class="enroll-btn" onclick="enrollEvent(this)">
+                                    <i class="fas fa-user-plus"></i> ENROLL
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Event 2</td>
+                        <td>Venue 2</td>
+                        <td>02/01/2024 (02:00 PM)</td>
+                        <td><span class="event-type non-technical">Non-Technical</span></td>
+                        <td><span class="eligibility no">Not Eligible</span></td>
+                        <td>
+                            <button onclick="toggleImage(this)" class="view-btn">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="image-container hidden">
+                                <img src="Jeppiar_two.jpg" alt="Event 2 Banner">
+                                <button class="enroll-btn" onclick="enrollEvent(this)">
+                                    <i class="fas fa-user-plus"></i> ENROLL
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Event 3</td>
+                        <td>Venue 3</td>
+                        <td>03/01/2024 (09:00 AM)</td>
+                        <td><span class="event-type technical">Technical</span></td>
+                        <td><span class="eligibility yes">Eligible</span></td>
+                        <td>
+                            <button onclick="toggleImage(this)" class="view-btn">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="image-container hidden">
+                                <img src="Jeppiar_two.jpg" alt="Event 3 Banner">
+                                <button class="enroll-btn" onclick="enrollEvent(this)">
+                                    <i class="fas fa-user-plus"></i> ENROLL
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Event 4</td>
+                        <td>Venue 4</td>
+                        <td>04/01/2024 (01:00 PM)</td>
+                        <td><span class="event-type non-technical">Non-Technical</span></td>
+                        <td><span class="eligibility yes">Eligible</span></td>
+                        <td>
+                            <button onclick="toggleImage(this)" class="view-btn">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="image-container hidden">
+                                <img src="Jeppiar_two.jpg" alt="Event 4 Banner">
+                                <button class="enroll-btn" onclick="enrollEvent(this)">
+                                    <i class="fas fa-user-plus"></i> ENROLL
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Event 5</td>
+                        <td>Venue 5</td>
+                        <td>05/01/2024 (11:00 AM)</td>
+                        <td><span class="event-type technical">Technical</span></td>
+                        <td><span class="eligibility no">Not Eligible</span></td>
+                        <td>
+                            <button onclick="toggleImage(this)" class="view-btn">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="image-container hidden">
+                                <img src="Jeppiar_two.jpg" alt="Event 5 Banner">
+                                <button class="enroll-btn" onclick="enrollEvent(this)">
+                                    <i class="fas fa-user-plus"></i> ENROLL
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal for zoomed image -->
+    <div id="myModal" class="modal">
+        <span class="close" id="closeModal">&times;</span>
+        <img class="modal-content" id="img01" alt="Zoomed Profile Image">
+    </div>
+
+    <script>
+        // Toggle menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        const menuContent = document.querySelector('.menu-content');
+        
+        // Open mobile menu
+        menuToggle.addEventListener('click', function() {
+          mobileMenu.classList.add('active');
+        });
+        
+        // Close mobile menu with close button
+        menuClose.addEventListener('click', function(e) {
+          e.stopPropagation(); // Stop event from bubbling up
+          mobileMenu.classList.remove('active');
+        });
+        
+        // Close mobile menu when clicking outside the menu content
+        mobileMenu.addEventListener('click', function(e) {
+          // Check if the click is on the menu-content itself or one of its children
+          if (!menuContent.contains(e.target) || e.target === menuContent) {
+            mobileMenu.classList.remove('active');
+          }
+        });
+        
+        // Prevent clicks inside menu content from closing the menu
+        menuContent.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+        
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function() {
+            const searchText = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#events-table tbody tr');
+            let hasMatches = false;
+
+            for (let i = 0; i < rows.length; i += 2) {
+                const row = rows[i];
+                if (row.cells) {
+                    const eventName = row.cells[0].textContent.toLowerCase();
+                    const eventVenue = row.cells[1].textContent.toLowerCase();
+                    const eventDate = row.cells[2].textContent.toLowerCase();
+                    
+                    if (eventName.includes(searchText) || eventVenue.includes(searchText) || eventDate.includes(searchText)) {
+                        row.classList.remove('hidden');
+                        if (rows[i+1]) rows[i+1].classList.remove('hidden');
+                        hasMatches = true;
+                    } else {
+                        row.classList.add('hidden');
+                        if (rows[i+1]) rows[i+1].classList.add('hidden');
+                    }
+                }
+            }
+            
+            // Show no-events message if no matches
+            const existingNoEvents = document.querySelector('.no-events');
+            if (existingNoEvents) {
+                existingNoEvents.remove();
+            }
+            
+            if (!hasMatches && searchText !== '') {
+                const noEventsMessage = document.createElement('div');
+                noEventsMessage.className = 'no-events';
+                noEventsMessage.innerHTML = '<i class="far fa-frown"></i><p>No events match your search.</p>';
+                document.querySelector('.container').appendChild(noEventsMessage);
+            }
+        });
+
+        function toggleImage(button) {
+            const imageContainer = button.closest('tr').nextElementSibling.querySelector('.image-container');
+            imageContainer.classList.toggle('show');
+            imageContainer.classList.toggle('hidden');
+            
+            if (imageContainer.classList.contains('show')) {
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
+            } else {
+                button.innerHTML = '<i class="fas fa-eye"></i> View';
+            }
+        }
+
+        function enrollEvent(button) {
+            button.innerHTML = '<i class="fas fa-check"></i> ENROLLED';
+            button.disabled = true;
+            button.style.backgroundColor = '#4CAF50';
+            button.style.cursor = 'default';
+        }
+
+        // Modal functionality for event images
+        const eventImages = document.querySelectorAll('.image-container img');
+        const modal = document.getElementById('myModal');
+        const modalImg = document.getElementById('img01');
+        const closeModal = document.getElementById('closeModal');
+        
+        eventImages.forEach(img => {
+          img.addEventListener('click', function() {
+            modal.style.display = 'flex';
+            modalImg.src = this.src;
+          });
+        });
+        
+        closeModal.addEventListener('click', function() {
+          modal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside the image
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            modal.style.display = 'none';
+          }
+        });
+        
+        // Close modal with escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+          }
+        });
+    </script>
+</body>
+</html>

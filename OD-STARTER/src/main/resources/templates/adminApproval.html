@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event Approval</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* keep your CSS here (same as before) */
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <button class="menu-button" id="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-title">Event Approval</div>
+        <div class="header-actions">
+          <button class="icon-button"><i class="fas fa-globe"></i></button>
+          <button class="icon-button"><i class="fas fa-bell"></i></button>
+          <button
+            class="icon-button"
+            onclick="window.location.href='admin.profile.html'"
+          >
+            <i class="fas fa-user-circle"></i>
+          </button>
+        </div>
+      </div>
+      <style>
+        :root {
+          --primary: #831238;
+          --primary-dark: #6d0f2a;
+          --secondary: #f3f4f6;
+          --text-dark: #1f2937;
+          --text-light: #6b7280;
+          --white: #ffffff;
+          --danger: #ef4444;
+          --success: #10b981;
+          --warning: #f59e0b;
+          --gray-100: #f3f4f6;
+          --gray-200: #e5e7eb;
+          --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #f9fafb;
+          color: var(--text-dark);
+          line-height: 1.6;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 1rem;
+        }
+
+        header {
+          background-color: rgba(255, 255, 255, 0.95);
+          box-shadow: var(--shadow-lg);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .logo {
+          font-weight: 700;
+          font-size: 1.25rem;
+          color: var(--primary);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .header-title {
+          font-weight: 700;
+          font-size: 1.25rem;
+          color: #5c1e3c;
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .icon-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: var(--text-light);
+          font-size: 1.25rem;
+          padding: 0.5rem;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+          background-color: var(--gray-100);
+          color: var(--primary);
+        }
+
+        .menu-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 0.375rem;
+          font-size: 1.25rem;
+          color: var(--text-dark);
+          transition: all 0.2s ease;
+        }
+
+        .menu-button:hover {
+          background-color: var(--gray-100);
+          color: var(--primary);
+        }
+
+        .mobile-menu {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+          backdrop-filter: blur(5px);
+        }
+
+        .mobile-menu.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .menu-content {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 80%;
+          max-width: 300px;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.5);
+          box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          padding: 2rem 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          backdrop-filter: blur(10px);
+        }
+
+        .mobile-menu.active .menu-content {
+          transform: translateX(0);
+        }
+
+        .menu-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+
+        .menu-close {
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          color: var(--text-light);
+        }
+
+        .menu-close:hover {
+          color: var(--primary);
+        }
+
+        .menu-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .menu-links a {
+          color: var(--text-dark);
+          text-decoration: none;
+          font-weight: 500;
+          padding: 0.75rem 1rem;
+          border-radius: 0.375rem;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .menu-links a i {
+          color: var(--primary);
+          font-size: 1.1rem;
+          width: 20px;
+        }
+
+        .menu-links a:hover {
+          background-color: var(--gray-100);
+          color: var(--primary);
+        }
+
+        .menu-links a.active {
+          background-color: rgba(255, 255, 255, 0.5);
+          color: var(--primary);
+          font-weight: 600;
+        }
+
+        .page-title {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: var(--primary);
+          margin: 2rem 0 1.5rem;
+          text-align: center;
+        }
+
+        .search-container {
+          position: relative;
+          max-width: 600px;
+          margin: 0 auto 2rem;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 0.75rem 1rem 0.75rem 2.5rem;
+          border: 1px solid var(--gray-200);
+          border-radius: 0.5rem;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+          box-shadow: var(--shadow);
+        }
+
+        .search-input:focus {
+          outline: none;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.1);
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 0.75rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: var(--text-light);
+          font-size: 1rem;
+        }
+
+        .events-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 1.5rem;
+          margin-bottom: 2.5rem;
+        }
+
+        .event-card {
+          background-color: var(--white);
+          border-radius: 0.75rem;
+          box-shadow: var(--shadow);
+          overflow: hidden;
+          transition: all 0.3s ease;
+          border: 1px solid var(--gray-200);
+        }
+
+        .event-card:hover {
+          transform: translateY(-5px);
+          box-shadow: var(--shadow-lg);
+        }
+
+        .event-header {
+          position: relative;
+          padding: 1.5rem;
+          text-align: center;
+          background-color: var(--gray-100);
+          border-bottom: 1px solid var(--gray-200);
+        }
+
+        .event-img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 3px solid var(--white);
+          box-shadow: var(--shadow);
+        }
+
+        .event-badge {
+          position: absolute;
+          top: 0.75rem;
+          right: 0.75rem;
+          background-color: var(--primary);
+          color: var(--white);
+          padding: 0.25rem 0.75rem;
+          border-radius: 1rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+
+        .event-body {
+          padding: 1.5rem;
+        }
+
+        .event-name {
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin-bottom: 0.75rem;
+          color: var(--text-dark);
+        }
+
+        .event-info {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0.75rem;
+          color: var(--text-light);
+          font-size: 0.9rem;
+        }
+
+        .event-info i {
+          margin-right: 0.5rem;
+          color: var(--primary);
+          width: 1rem;
+          text-align: center;
+        }
+
+        .event-status {
+          margin-top: 1rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          text-align: center;
+          color: var(--white);
+          font-size: 0.875rem;
+          letter-spacing: 0.5px;
+        }
+
+        .status-approved {
+          background-color: var(--success);
+        }
+
+        .status-pending {
+          background-color: var(--warning);
+          color: #7c2d12;
+        }
+
+        .status-declined {
+          background-color: var(--danger);
+        }
+
+        .details-btn {
+          display: block;
+          width: 100%;
+          padding: 0.75rem;
+          margin-top: 1rem;
+          background-color: transparent;
+          border: 1px solid var(--gray-200);
+          border-radius: 0.5rem;
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          color: var(--text-dark);
+        }
+
+        .details-btn:hover {
+          background-color: var(--gray-100);
+          border-color: var(--gray-300);
+        }
+
+        .details-btn:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.1);
+        }
+
+        .event-details {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--gray-200);
+          display: none;
+          color: var(--text-light);
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
+
+        .no-events {
+          text-align: center;
+          padding: 3rem 1rem;
+          color: var(--text-light);
+          background-color: var(--white);
+          border-radius: 0.75rem;
+          box-shadow: var(--shadow);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .no-events i {
+          font-size: 2.5rem;
+          color: var(--primary);
+          opacity: 0.7;
+        }
+
+        /* Action buttons */
+        .action-buttons {
+          display: flex;
+          gap: 0.75rem;
+          margin-top: 1rem;
+        }
+
+        .approve-btn {
+          flex: 1;
+          padding: 0.75rem;
+          background-color: var(--success);
+          color: white;
+          border: none;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .approve-btn:hover {
+          background-color: #0d9b6c;
+        }
+
+        .decline-btn {
+          flex: 1;
+          padding: 0.75rem;
+          background-color: var(--danger);
+          color: white;
+          border: none;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .decline-btn:hover {
+          background-color: #dc2626;
+        }
+
+        /* Modal styles */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+          margin: auto;
+          display: block;
+          max-width: 80%;
+          max-height: 80%;
+          padding: 20px;
+        }
+
+        .close {
+          position: absolute;
+          top: 15px;
+          right: 35px;
+          color: var(--white);
+          font-size: 40px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .close:hover {
+          color: var(--primary);
+        }
+      </style>
+    </header>
+
+    <main>
+      <div class="container">
+        <h1 class="page-title">Event Approval Dashboard</h1>
+
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="search"
+            class="search-input"
+            placeholder="Search events..."
+          />
+        </div>
+
+        <div class="events-grid">
+          <div th:each="event,iterStat : ${events}" class="event-card">
+            <div class="event-header">
+              <img
+                th:src="@{/images/Jeppiar_two.jpg}"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">TECHNICAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name" th:text="${event.title}">Event Title</h3>
+
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span
+                  th:text="${#temporals.format(event.startTime, 'MMM dd, yyyy')}"
+                ></span>
+              </div>
+
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span th:text="${event.location}">Location</span>
+              </div>
+
+              <div class="event-info">
+                <i class="fas fa-id-card"></i>
+                <span th:text="'Faculty: ' + ${event.eventCordinator}"
+                  >Faculty</span
+                >
+              </div>
+
+              <div
+                th:classappend="${event.status == 'APPROVED'} ? ' status-approved' :
+                               (${event.status == 'PENDING'} ? ' status-pending' : ' status-declined')"
+                class="event-status"
+                th:text="${event.status}"
+              >
+                STATUS
+              </div>
+
+              <div class="action-buttons">
+                <!-- Approve Form -->
+                <form
+                  th:action="@{/api/v1/events/{id}/approve(id=${event.id})}"
+                  method="post"
+                  style="display: inline"
+                >
+                  <button type="submit" class="approve-btn">Approve</button>
+                </form>
+
+                <!-- Decline Form -->
+                <form
+                  th:action="@{/api/v1/events/{id}/decline(id=${event.id})}"
+                  method="post"
+                  style="display: inline"
+                >
+                  <button type="submit" class="decline-btn">Decline</button>
+                </form>
+              </div>
+
+              <button
+                class="details-btn"
+                th:attr="data-target='details-' + ${iterStat.index}"
+              >
+                View Details
+              </button>
+
+              <div class="event-details" th:id="'details-' + ${iterStat.index}">
+                <p th:text="${event.description}">Description</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const detailButtons = document.querySelectorAll(".details-btn");
+
+        detailButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const targetId = button.getAttribute("data-target");
+            const details = document.getElementById(targetId);
+
+            if (details.style.display === "block") {
+              details.style.display = "none";
+              button.textContent = "View Details";
+            } else {
+              details.style.display = "block";
+              button.textContent = "Hide Details";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

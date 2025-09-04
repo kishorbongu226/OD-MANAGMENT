@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Attendance Tracking</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary: #831238;
+      --primary-dark: #6d0f2a;
+      --primary-light: #fdf2f6;
+      --secondary: #f3f4f6;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --white: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #5c1e3c;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 1.25rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .icon-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .menu-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu.active .menu-content {
+      transform: translateX(0);
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .menu-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+
+    .menu-close:hover {
+      color: var(--primary);
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .menu-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-links a i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      width: 20px;
+    }
+
+    .menu-links a:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-links a.active {
+      background-color: rgba(255, 255, 255, 0.5);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 2rem 0 1.5rem;
+      text-align: center;
+    }
+
+    /* Attendance specific styles */
+    .card {
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid var(--gray-200);
+      margin: 2rem auto;
+      max-width: 600px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem auto;
+      width: 300px;
+      height: 300px;
+      background-color: var(--gray-100);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .qr-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--text-light);
+    }
+
+    .qr-placeholder i {
+      font-size: 3rem;
+      opacity: 0.5;
+    }
+
+    .qr-container img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .pulse-animation {
+      animation: pulse 1s;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(131, 18, 56, 0.7);
+      }
+      
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(131, 18, 56, 0);
+      }
+      
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(131, 18, 56, 0);
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.3);
+    }
+
+    .success-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: var(--success);
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .success-indicator.visible {
+      opacity: 1;
+    }
+
+    .card-text {
+      margin-top: 1.5rem;
+      color: var(--text-light);
+    }
+
+    .attendance-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: center;
+    }
+
+    .stat-card {
+      background-color: var(--primary-light);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      min-width: 150px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .event-selector {
+      margin: 2rem auto;
+      max-width: 600px;
+    }
+
+    .select-wrapper {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .select-wrapper::after {
+      content: "\f107";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      pointer-events: none;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-200);
+      background-color: var(--white);
+      font-size: 1rem;
+      color: var(--text-dark);
+      appearance: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.1);
+    }
+
+    /* History table */
+    .history-section {
+      margin-top: 3rem;
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid var(--gray-200);
+      padding: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title i {
+      color: var(--primary);
+    }
+
+    .attendance-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .attendance-table th {
+      background-color: var(--gray-100);
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .attendance-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .attendance-table tbody tr:hover {
+      background-color: var(--gray-100);
+    }
+
+    .status-active {
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .status-expired {
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .qr-container {
+        width: 250px;
+        height: 250px;
+      }
+
+      .attendance-stats {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .stat-card {
+        width: 100%;
+      }
+
+      .attendance-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-section">
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="header-title">Attendance Tracking</div>
+
+      <div class="header-actions">
+        <button class="icon-button" title="Language" aria-label="Language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="icon-button" title="Notifications" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='teacher.profile.html'">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="menu-content">
+      <div class="menu-header">
+        <div class="logo">
+            <i class="fas fa-users"></i>
+            <span>Faculty Portal</span>
+        </div>
+        <button class="menu-close" id="menu-close" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="teacher.profile.html"><i class="fas fa-user"></i> Profile</a>
+        <a href="teacher.upcoming.html"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+        <a href="teacher.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+        <a href="teacher.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>        
+        <a href="teacher.approval.html" ><i class="fas fa-clipboard-check"></i>Event Request</a>
+        <a href="teacher.odapproval.html" ><i class="fas fa-clipboard-check"></i>Od Approval</a>
+        <a href="teacher.attendance.html" class="active"><i class="fas fa-clipboard-list"></i> Attendance</a>
+        <a href="teacher.feedback.html"><i class="fas fa-comment-alt"></i> Feedback</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <h1 class="page-title">Attendance Management</h1>
+      
+      <!-- Event selector -->
+      <div class="event-selector">
+        <div class="select-wrapper">
+          <select id="event-select">
+            <option value="">Select an Event</option>
+            <option value="1" selected>Workshop on AI Ethics - April 15, 2025</option>
+            <option value="2">Career Fair - April 10, 2025</option>
+            <option value="3">Guest Lecture: Future of Technology - April 5, 2025</option>
+            <option value="4">Seminar on Blockchain - March 28, 2025</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Attendance stats -->
+      <div class="attendance-stats">
+        <div class="stat-card">
+          <div class="stat-number">45</div>
+          <div class="stat-label">Registered</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">32</div>
+          <div class="stat-label">Attended</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">71%</div>
+          <div class="stat-label">Attendance Rate</div>
+        </div>
+      </div>
+      
+      <!-- QR Code card -->
+      <div class="card">
+        <h2 class="card-title">Generate QR Code for Attendance</h2>
+        <div class="qr-container" id="qrcode">
+          <div class="qr-placeholder">
+            <i class="fas fa-qrcode"></i>
+            <p>Generate a QR code for students to scan</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="generate-qr-btn">
+          <i class="fas fa-qrcode"></i>
+          <span>Generate QR Code</span>
+        </button>
+        <div class="success-indicator" id="success-indicator"></div>
+        <p class="card-text">Students can scan this QR code to mark their attendance</p>
+      </div>
+      
+      <!-- Attendance history -->
+      <div class="history-section">
+        <h3 class="section-title"><i class="fas fa-history"></i> QR Code History</h3>
+        <div class="table-responsive">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Generated On</th>
+                <th>Event</th>
+                <th>Active For</th>
+                <th>Status</th>
+                <th>Scans</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Apr 19, 10:15 AM</td>
+                <td>Workshop on AI Ethics</td>
+                <td>15 minutes</td>
+                <td><span class="status-active"><i class="fas fa-circle"></i> Active</span></td>
+                <td><span class="badge badge-success">12</span></td>
+              </tr>
+              <tr>
+                <td>Apr 19, 9:30 AM</td>
+                <td>Workshop on AI Ethics</td>
+                <td>15 minutes</td>
+                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
+                <td><span class="badge badge-success">20</span></td>
+              </tr>
+              <tr>
+                <td>Apr 10, 2:45 PM</td>
+                <td>Career Fair</td>
+                <td>30 minutes</td>
+                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
+                <td><span class="badge badge-success">32</span></td>
+              </tr>
+              <tr>
+                <td>Apr 5, 11:00 AM</td>
+                <td>Guest Lecture: Future of Technology</td>
+                <td>15 minutes</td>
+                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
+                <td><span class="badge badge-success">28</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuClose = document.getElementById("menu-close");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.add("active");
+    });
+
+    menuClose.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+    });
+
+    // Click outside to close menu
+    document.addEventListener("click", (e) => {
+      if (mobileMenu.classList.contains("active") && 
+          !e.target.closest(".menu-content") && 
+          !e.target.closest("#menu-toggle")) {
+        mobileMenu.classList.remove("active");
+      }
+    });
+
+    // Notification button
+    const notificationBtn = document.querySelector('.icon-button[title="Notifications"]');
+    if (notificationBtn) {
+      notificationBtn.addEventListener('click', () => {
+        alert('You have no new notifications.');
+      });
+    }
+
+    // Account button
+    const accountBtn = document.querySelector('.icon-button[title="Account"]');
+    if (accountBtn) {
+      accountBtn.addEventListener('click', () => {
+        alert('User profile functionality coming soon.');
+      });
+    }
+
+    // Event selection
+    const eventSelect = document.getElementById("event-select");
+    if (eventSelect) {
+      eventSelect.addEventListener("change", () => {
+        // We would typically fetch data for the selected event here
+        // For demo purposes, we're just displaying a message
+        if (eventSelect.value) {
+          const eventText = eventSelect.options[eventSelect.selectedIndex].text;
+          console.log(`Selected event: ${eventText}`);
+        }
+      });
+    }
+
+    // QR Code generation
+    const generateQRBtn = document.getElementById("generate-qr-btn");
+    const qrcodeContainer = document.getElementById("qrcode");
+    const successIndicator = document.getElementById("success-indicator");
+    let firstClick = true;
+
+    if (generateQRBtn && qrcodeContainer) {
+      generateQRBtn.addEventListener("click", generateQRCode);
+
+      function generateQRCode() {
+        // Create a unique URL with timestamp and event ID
+        const eventId = document.getElementById("event-select").value || "1";
+        const timestamp = new Date().getTime();
+        const uniqueId = Math.random().toString(36).substring(2, 15);
+        
+        // In a real application, this would link to your attendance system
+        const baseUrl = "https://faculty-portal.example.com/attendance";
+        const attendanceUrl = `${baseUrl}?event=${eventId}&ts=${timestamp}&uid=${uniqueId}`;
+
+        // Clear previous QR code
+        qrcodeContainer.innerHTML = "";
+
+        // Generate new QR code
+        new QRCode(qrcodeContainer, {
+          text: attendanceUrl,
+          width: 256,
+          height: 256,
+          colorDark: "#831238",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+
+        // Add animation effect
+        qrcodeContainer.classList.add("pulse-animation");
+        setTimeout(() => {
+          qrcodeContainer.classList.remove("pulse-animation");
+        }, 1000);
+
+        // Update success indicator
+        if (successIndicator) {
+          successIndicator.innerHTML = `<i class="fas fa-check-circle"></i><span>QR Code generated successfully</span>`;
+          successIndicator.classList.add("visible");
+          
+          // Hide the success message after 3 seconds
+          setTimeout(() => {
+            successIndicator.classList.remove("visible");
+          }, 3000);
+        }
+
+        // Update button text after first click
+        if (firstClick) {
+          firstClick = false;
+          generateQRBtn.innerHTML = `<i class="fas fa-sync-alt"></i><span>Regenerate QR Code</span>`;
+        }
+        
+        // In a real app, you would record this QR code generation in your database
+        logQRGeneration(eventId);
+      }
+      
+      function logQRGeneration(eventId) {
+        // Simulate logging to a database
+        console.log(`QR code generated for event ID: ${eventId} at ${new Date().toLocaleString()}`);
+        
+        // In a real application, you would send this data to your backend
+        // Example:
+        // fetch('/api/log-qr-generation', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ eventId, timestamp: new Date() })
+        // });
+        
+        // Update the table with the new entry (for demo purposes)
+        const table = document.querySelector('.attendance-table tbody');
+        if (table) {
+          const now = new Date();
+          const formattedTime = now.toLocaleString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            hour: 'numeric', 
+            minute: '2-digit', 
+            hour12: true 
+          });
+          
+          const eventText = document.getElementById("event-select").options[
+            document.getElementById("event-select").selectedIndex
+          ].text;
+          
+          const newRow = table.insertRow(0);
+          newRow.innerHTML = `
+            <td>${formattedTime}</td>
+            <td>${eventText.split(' - ')[0]}</td>
+            <td>15 minutes</td>
+            <td><span class="status-active"><i class="fas fa-circle"></i> Active</span></td>
+            <td><span class="badge badge-success">0</span></td>
+          `;
+          
+          // If there was a previously active QR code, mark it as expired
+          const activeRows = table.querySelectorAll('.status-active');
+          if (activeRows.length > 1) {
+            for (let i = 1; i < activeRows.length; i++) {
+              activeRows[i].className = 'status-expired';
+              activeRows[i].innerHTML = '<i class="fas fa-circle"></i> Expired';
+            }
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

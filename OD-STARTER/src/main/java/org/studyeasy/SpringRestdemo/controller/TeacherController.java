@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.studyeasy.SpringRestdemo.model.Enrollment;
 import org.studyeasy.SpringRestdemo.model.Event;
 import org.studyeasy.SpringRestdemo.model.ODRequest;
 import org.studyeasy.SpringRestdemo.payload.auth.EventRequestDTO;
@@ -20,6 +21,7 @@ import org.studyeasy.SpringRestdemo.payload.auth.EventResponseDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.ODResponseDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.student.ApprovalRequestDTO;
 import org.studyeasy.SpringRestdemo.service.ApprovalService;
+import org.studyeasy.SpringRestdemo.service.EnrollmentService;
 import org.studyeasy.SpringRestdemo.service.EventService;
 import org.studyeasy.SpringRestdemo.service.ODRequestService;
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
@@ -44,6 +46,9 @@ public class TeacherController {
     private EventService eventService;
     @Autowired
     private ODRequestService odRequestService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
     
 
     @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
@@ -109,9 +114,53 @@ public class TeacherController {
             saved.getStartTime(),
             saved.getEndTime(),
             saved.getEventCordinator(),
-            saved.getEligibleYears()
+            saved.getEligibleYears(),
+            saved.getStatus()
         );
         return ResponseEntity.ok(response);
     }
+
+
+    @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
+    @GetMapping("/my-events/event-cordinator")
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<List<EventResponseDTO>> getMyEvents(Authentication authentication) {
+        String teacherRegNo = authentication.getName();
+
+        List<Event> events = eventService.findByEventCordinator(teacherRegNo);
+
+        List<EventResponseDTO> response = events.stream()
+            .map(e -> new EventResponseDTO(
+                e.getId(),
+                e.getTitle(),
+                e.getDescription(),
+                e.getLocation(),
+                e.getStartTime(),
+                e.getEndTime(),
+                e.getEventCordinator(),
+                e.getEligibleYears(),
+                e.getStatus()
+            ))
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
+    @GetMapping("/events/{eventId}/students")
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<List<String>> getStudentsForEvent(@PathVariable Long eventId) {
+        List<Enrollment> enrollments = enrollmentService.findByEventId(eventId);
+
+        // Extract student register numbers (or names, emails, etc.)
+        List<String> students = enrollments.stream()
+            .map(e -> e.getAccount().getRegisterNo()) // adjust based on your Account model
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(students);
+    }
+
+
 }
 

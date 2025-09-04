@@ -24,11 +24,14 @@ public class Account {
     @Column(name = "register_no", unique = true)
     private String registerNo;
 
+    private String studentName;
+
     private long age;
 
     private String branch;
 
-    private long academicYear;
+ @Column(nullable = false)
+private Long academicYear = 2025L;
 
     private String department;
 
@@ -36,7 +39,7 @@ public class Account {
 
     private String mobile_no;
 
-    private long events_attended;
+    private Long events_attended;
 
     private String email;
 

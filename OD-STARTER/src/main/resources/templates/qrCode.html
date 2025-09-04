@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>BloggerZZ</title>
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      th:href="@{/images/bloggerzz.png}"
+      type="image/png"
+    />
+
+    <!-- Bootstrap core css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" />
+
+    <!-- Owl slider stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+
+    <!-- Nice select -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+    />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <!-- Responsive styles -->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+  </head>
+  <body>
+    <h1>Welcome to BloggerZZ 🎉</h1>
+
+    <!-- Example of dynamic data from Spring Model -->
+    <p th:text="'Event Title: ' + ${event.title}"></p>
+    <p th:text="'Event Description: ' + ${event.description}"></p>
+    <p th:text="'Created By: ' + ${event.createdBy}"></p>
+
+    <form
+      th:action="@{/api/v1/teacher/event/{id}(id=${event.id})}"
+      method="post"
+    >
+      <button type="submit" class="btn btn-primary">Generate QR Code</button>
+    </form>
+
+    <h2>QR Code for Event [[${eventId}]]</h2>
+    <img th:src="'data:image/png;base64,' + ${qrCode}" alt="QR Code" />
+  </body>
+</html>

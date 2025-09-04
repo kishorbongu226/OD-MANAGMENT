@@ -13,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,6 +28,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String type;
+
     private String title;
 
     private String description;
@@ -40,6 +43,7 @@ public class Event {
 
     private LocalDateTime endTime;
 
+    
   
 
     @Enumerated(EnumType.STRING)
@@ -49,4 +53,11 @@ public class Event {
     private List<Long> eligibleYears;
 
     private String createdBy;
+        private String eventKey;
+
+    @PrePersist
+    public void generateEventKey() {
+        this.eventKey = "EVT-" + java.util.UUID.randomUUID().toString().substring(0, 8);
+    }
+
 }

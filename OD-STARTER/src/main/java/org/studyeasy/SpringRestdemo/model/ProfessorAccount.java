@@ -32,6 +32,8 @@ public class ProfessorAccount {
 
     private String email;
 
+    private String profName;
+
     private String department;
 
     private String branch;

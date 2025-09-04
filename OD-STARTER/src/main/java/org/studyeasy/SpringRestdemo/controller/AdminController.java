@@ -1,24 +1,26 @@
 package org.studyeasy.SpringRestdemo.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.studyeasy.SpringRestdemo.model.Event;
-import org.studyeasy.SpringRestdemo.payload.auth.EventRequestDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.EventResponseDTO;
 import org.studyeasy.SpringRestdemo.service.EventService;
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
@@ -30,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+@Controller
 @RequestMapping("/api/v1")
 @Tag(name="Event Controller",description = "controller for event management")
 @Slf4j
@@ -39,34 +41,51 @@ public class AdminController {
     @Autowired
     private EventService eventService;
 
+      private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping(value="/events/add",consumes="application/json",produces="application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiResponse(responseCode="400",description="please ass valid name and description")
-    @ApiResponse(responseCode="201",description="Event added")
-    @Operation(summary="Add an event")
+    @PostMapping("/events/add")
+  
     @SecurityRequirement(name="studyeasy-demo-api")
-    public ResponseEntity<EventResponseDTO> createEvent(@Valid @RequestBody EventRequestDTO dto,Authentication authentication) {
-         String adminRegisterNo = authentication.getName();
-    Event event = new Event();
-    event.setTitle(dto.getTitle());
-    event.setDescription(dto.getDescription());
-    event.setLocation(dto.getLocation());
-    event.setStartTime(dto.getStartTime());
-    event.setEndTime(dto.getEndTime());
-    event.setCreatedBy(adminRegisterNo);
-    event.setEventCordinator(dto.getEventCordinator());
-    event.setEligibleYears(dto.getEligibleYears());
-    
+    public String createEvent(@Valid @ModelAttribute Event event,BindingResult bindingResult) {
 
-    Event saved = eventService.createEvent(event, "ADMIN");
+log.info("➡️ Received request to create event");
 
-    EventResponseDTO response = new EventResponseDTO(
-        saved.getId(), saved.getTitle(), saved.getDescription(),
-        saved.getLocation(), saved.getStartTime(), saved.getEndTime(),saved.getEventCordinator(),saved.getEligibleYears()
-    );
-    return ResponseEntity.ok(response);
+    if (bindingResult.hasErrors()) {
+        log.warn("❌ Validation failed for event: {}", event);
+        return "event-form"; // back to form page
     }
+
+    log.debug("Event data received: title={}, type={}, venue={}, start={}, end={}, coordinator={}, eligibleYears={}",
+            event.getTitle(), event.getType(), event.getLocation(),
+            event.getStartTime(), event.getEndTime(),
+            event.getEventCordinator(), event.getEligibleYears());
+
+    Event create_event = new Event();
+    create_event.setType(event.getType());
+    create_event.setTitle(event.getTitle());
+    create_event.setDescription(event.getDescription());
+    create_event.setEventCordinator(event.getEventCordinator());
+    create_event.setLocation(event.getLocation());
+    create_event.setStartTime(event.getStartTime());
+    create_event.setEndTime(event.getEndTime());
+    create_event.setEligibleYears(event.getEligibleYears());
+
+    log.info("📌 Saving new event: {}", create_event.getTitle());
+    eventService.createEvent(create_event, "ADMIN");
+    log.info("✅ Event '{}' created successfully", create_event.getTitle());
+
+    return "redirect:/api/v1/events/add";
+}
+
+@GetMapping("/events/add")
+public String getUpcomingevents(Model model){
+
+ List<Event> events = eventService.findAll();
+        model.addAttribute("events",events);
+     model.addAttribute("event", new Event());
+     
+        return "adminUpcoming";
+}
 
     //  Get Event by ID
 //     @GetMapping("/{id}")
@@ -87,121 +106,195 @@ public class AdminController {
 //     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-        @GetMapping("/events/pending")
-        public ResponseEntity<List<EventResponseDTO>> getPendingEvents() {
-        List<Event> pendingEvents = eventService.findByStatus(EventStatus.PENDING);
+ 
+@GetMapping("/events/pending")
+public String getPendingEvents(Model model) {
+    List<Event> events = eventService.findByStatus(EventStatus.PENDING);
 
-        List<EventResponseDTO> response = pendingEvents.stream()
-                .map(event -> new EventResponseDTO(
-                event.getId(),
-                event.getTitle(),
-                event.getDescription(),
-                event.getLocation(),
-                event.getStartTime(),
-                event.getEndTime(),
-                event.getEventCordinator(),
-                event.getEligibleYears()
-                ))
-                .toList();
+    List<EventResponseDTO> response = events.stream()
+            .map(event -> new EventResponseDTO(
+                    event.getId(),
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getLocation(),
+                    event.getStartTime(),
+                    event.getEndTime(),
+                    event.getEventCordinator(),
+                    event.getEligibleYears(),
+                    event.getStatus()
+            ))
+            .toList();
 
-        return ResponseEntity.ok(response);
-        }
+    // Add data to the model
+    model.addAttribute("events", response);
 
-        @PreAuthorize("hasAuthority('ADMIN')")
-        @PostMapping("/events/{id}/approve")
-                @SecurityRequirement(name="studyeasy-demo-api")
+    // return the name of your HTML template (e.g., pending-events.html in templates/)
+    return "redirect:/api/v1/events";
+}
 
-        public ResponseEntity<List<EventResponseDTO>> approveEvent(@PathVariable Long id) {
+
+      @PreAuthorize("hasAuthority('ADMIN')")
+@PostMapping("/events/{id}/approve")
+@SecurityRequirement(name="studyeasy-demo-api")
+    public String approveEvent(@PathVariable Long id) {
+        logger.info("Received request to approve event with id: {}", id);
+
         Event event = eventService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> {
+                    logger.error("Event with id {} not found", id);
+                    return new RuntimeException("Event not found");
+                });
+        logger.debug("Fetched event from DB: {}", event);
+
         event.setStatus(EventStatus.APPROVED);
+        logger.info("Updated event status to APPROVED for id: {}", id);
+
         eventService.save(event);
+        logger.info("Event with id {} saved successfully", id);
 
-        // Return updated pending list
-        return getPendingEvents();
-        }
+        logger.info("Redirecting to /events after approval");
+        return "redirect:/api/v1/events";
+    }
 
-        @PreAuthorize("hasAuthority('ADMIN')")
-        @PostMapping("/events/{id}/decline")
-        @SecurityRequirement(name="studyeasy-demo-api")
-        public ResponseEntity<List<EventResponseDTO>> declineEvent(@PathVariable Long id) {
-        Event event = eventService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
-        event.setStatus(EventStatus.DECLINED);
-        eventService.save(event);
+@PreAuthorize("hasAuthority('ADMIN')")
+@PostMapping("/events/{id}/decline")
+@SecurityRequirement(name="studyeasy-demo-api")
+public String declineEvent(@PathVariable Long id) {
+    Event event = eventService.findById(id)
+            .orElseThrow(() -> new RuntimeException("Event not found"));
+    event.setStatus(EventStatus.DECLINED);
+    eventService.save(event);
 
-        // Return updated pending list
-        return getPendingEvents();
-        }
+    // Redirect to the event list page
+    return "redirect:/api/v1/events";
+}
 
 
         // ✅ Get All Events
-        @GetMapping(value="/events",produces="application/json")
-        @ApiResponse(responseCode="200",description="List of events")
-        @ApiResponse(responseCode="401",description="Token Missing")
-        @ApiResponse(responseCode="403",description="Token Error")
-        @Operation(summary = "List event api")
-        @SecurityRequirement(name="studyeasy-demo-api")
-        public List<EventResponseDTO> events(Authentication authentication) {
-                List<EventResponseDTO> events = eventService.findAll()
-                        .stream()
-                        .map(event -> new EventResponseDTO(
-                                event.getId(),
-                                event.getTitle(),
-                                event.getDescription(),
-                                event.getLocation(),
-                                event.getStartTime(),
-                                event.getEndTime(),
-                                event.getEventCordinator(),
-                                event.getEligibleYears()
-                        ))
-                        .collect(Collectors.toList());
 
-                return events;
-        }
+
+
+    @GetMapping("/events")
+    public String eventsPage(Model model) {
+        List<EventResponseDTO> events = eventService.findAll()
+                .stream()
+                .map(event -> new EventResponseDTO(
+                        event.getId(),
+                        event.getTitle(),
+                        event.getDescription(),
+                        event.getLocation(),
+                        event.getStartTime(),
+                        event.getEndTime(),
+                        event.getEventCordinator(),
+                        event.getEligibleYears(),
+                        event.getStatus()
+                ))
+                .toList();
+
+        model.addAttribute("events", events);
+        return "adminApproval"; // maps to templates/events.html
+    }
+
+
 
     // ✅ Update Event
-    @PutMapping(value="/events/{id}/update",consumes="application/json",produces="application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiResponse(responseCode="400",description="please add valid name and description")
-    @ApiResponse(responseCode="204",description="Event update")
-    @Operation(summary="Update an event")
-    @SecurityRequirement(name="studyeasy-demo-api")
-    public ResponseEntity<EventResponseDTO> updateEvent(@Valid
+    // @PutMapping(value="/events/{id}/update",consumes="application/json",produces="application/json")
+    // @ResponseStatus(HttpStatus.CREATED)
+    // @ApiResponse(responseCode="400",description="please add valid name and description")
+    // @ApiResponse(responseCode="204",description="Event update")
+    // @Operation(summary="Update an event")
+    // @SecurityRequirement(name="studyeasy-demo-api")
+    // public ResponseEntity<EventResponseDTO> updateEvent(@Valid
+    //         @PathVariable Long id,
+    //         @RequestBody EventRequestDTO request,Authentication authentication) {
+
+    //     try
+    //     {
+    //             Event event = eventService.findById(id)
+    //             .orElseThrow(() -> new RuntimeException("Event not found"));
+
+    //     event.setTitle(request.getTitle());
+    //     event.setDescription(request.getDescription());
+    //     event.setLocation(request.getLocation());
+    //     event.setStartTime(request.getStartTime());
+    //     event.setEndTime(request.getEndTime());
+
+    //     Event updated = eventService.save(event);
+
+    //     EventResponseDTO response = new EventResponseDTO(
+    //             updated.getId(),
+    //             updated.getTitle(),
+    //             updated.getDescription(),
+    //             updated.getLocation(),
+    //             updated.getStartTime(),
+    //             updated.getEndTime(),
+    //             updated.getEventCordinator(),
+    //             updated.getEligibleYears(),
+    //             updated.getStatus()
+    //     );
+
+    //     return ResponseEntity.ok(response);
+    //     }
+    //     catch(Exception e)
+    //     {
+    //             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    //     }
+    // }
+
+
+
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        logger.info("Request received to edit event with id: {}", id);
+
+        Event event = eventService.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Event not found with id: {}", id);
+                    return new RuntimeException("Event not found");
+                });
+
+        logger.debug("Loaded event for edit: {}", event);
+        model.addAttribute("event", event);
+        return "adminUpcoming"; // same page, modal will be prefilled
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateEvent(
             @PathVariable Long id,
-            @RequestBody EventRequestDTO request,Authentication authentication) {
+            @Valid @ModelAttribute("event") Event event,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
 
-        try
-        {
-                Event event = eventService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+        logger.info("Request received to update event with id: {}", id);
 
-        event.setTitle(request.getTitle());
-        event.setDescription(request.getDescription());
-        event.setLocation(request.getLocation());
-        event.setStartTime(request.getStartTime());
-        event.setEndTime(request.getEndTime());
-
-        Event updated = eventService.save(event);
-
-        EventResponseDTO response = new EventResponseDTO(
-                updated.getId(),
-                updated.getTitle(),
-                updated.getDescription(),
-                updated.getLocation(),
-                updated.getStartTime(),
-                updated.getEndTime(),
-                updated.getEventCordinator(),
-                updated.getEligibleYears()
-        );
-
-        return ResponseEntity.ok(response);
+        if (result.hasErrors()) {
+            logger.warn("Validation errors while updating event with id {}: {}", id, result.getAllErrors());
+            return "adminUpcoming"; // redisplay with validation errors
         }
-        catch(Exception e)
-        {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+
+        Event existing = eventService.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Event not found while updating, id: {}", id);
+                    return new RuntimeException("Event not found");
+                });
+
+        logger.debug("Existing event before update: {}", existing);
+
+        existing.setTitle(event.getTitle());
+        existing.setDescription(event.getDescription());
+        existing.setLocation(event.getLocation());
+        existing.setStartTime(event.getStartTime());
+        existing.setEndTime(event.getEndTime());
+        existing.setType(event.getType());
+        existing.setEligibleYears(event.getEligibleYears());
+
+        eventService.save(existing);
+
+        logger.info("Event with id {} updated successfully", id);
+
+        redirectAttributes.addFlashAttribute("success", "Event updated successfully!");
+        return "redirect:/events/add"; // back to list after update
     }
 
     // ✅ Delete Event
@@ -218,6 +311,22 @@ public class AdminController {
         return ResponseEntity.ok("Event deleted successfully");
     }
 
+    @GetMapping("/events/ongoing")
+    public String ongoingEventsPage(Model model) {
+    List<Event> events = eventService.getOngoingApprovedEvents();
 
+    model.addAttribute("events", events);
+    return "adminOngoing";  // maps to templates/adminOngoing.html
+}
+
+
+    // @GetMapping("/events/ongoing/api")
+    // @ResponseBody
+    // public List<Event> getOngoingEvents() {
+    //     logger.info("API call: Fetching ongoing approved events...");
+    //     List<Event> events = eventService.getOngoingApprovedEvents();
+    //     logger.info("API call: Number of ongoing approved events returned: {}", events.size());
+    //     return events;
+    // }
 
 }

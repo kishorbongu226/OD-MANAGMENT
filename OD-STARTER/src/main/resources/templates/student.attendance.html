@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    :root {
+      --primary: #831238;
+      --primary-dark: #6d0f2a;
+      --secondary: #f3f4f6;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --white: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #5c1e3c; 
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 1.25rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .icon-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .menu-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color:  rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu.active .menu-content {
+      transform: translateX(0);
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .menu-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+
+    .menu-close:hover {
+      color: var(--primary);
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .menu-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-links a i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      width: 20px;
+    }
+
+    .menu-links a:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-links a.active {
+      background-color:  rgba(255, 255, 255, 0.5);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 2rem 0 1.5rem;
+      text-align: center;
+    }
+
+    /* QR Scanner styles */
+    .scanner-container {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 1.5rem;
+    }
+
+    .scanner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .scanner-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .camera-select {
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--gray-200);
+      background-color: var(--white);
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    #qr-reader {
+      width: 100%;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      height: 300px;
+    }
+
+    #qr-reader-status {
+      text-align: center;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background-color: var(--gray-100);
+      color: var(--text-dark);
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--gray-200);
+    }
+
+    .scan-result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-200);
+      background-color: var(--gray-100);
+      display: none;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-title {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .result-status {
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      color: var(--white);
+      background-color: var(--success);
+    }
+
+    .result-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .result-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .result-info i {
+      color: var(--primary);
+      width: 1rem;
+      text-align: center;
+    }
+
+    .scan-instructions {
+      margin-top: 2rem;
+      color: var(--text-light);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .error-message {
+      color: var(--danger);
+      text-align: center;
+      margin: 1rem 0;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background-color: rgba(239, 68, 68, 0.1);
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .scanner-container {
+        margin: 1rem;
+      }
+      
+      .page-title {
+        font-size: 1.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      #qr-reader {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-section">
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="header-title">
+        QR Scanner
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-button" title="Language" aria-label="Language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="icon-button" title="Notifications" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='student.profile.html'">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="menu-content">
+      <div class="menu-header">
+        <div class="logo">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Student Portal</span>
+        </div>
+        <button class="menu-close" id="menu-close" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="student.profile.html"><i class="fas fa-user"></i> Profile</a>
+        <a href="student.upcoming.html"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+        <a href="student.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+        <a href="student.participated.html"><i class="fas fa-calendar"></i> Events participated</a>        
+        <a href="student.approval.html"><i class="fas fa-clipboard-check"></i> Approval</a>
+        <a href="student.attendance.html"><i class="fas fa-clipboard-list"></i> Attendance</a>
+        <a href="student.feedback.html"><i class="fas fa-comment-alt"></i> Feedback</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <h1 class="page-title">Scan Event QR Code</h1>
+      
+      <div class="scanner-container">
+        <div class="scanner-header">
+          <h2 class="scanner-title">Camera Scanner</h2>
+          <select id="camera-select" class="camera-select">
+            <option value="">Select Camera</option>
+          </select>
+        </div>
+        
+        <div id="qr-reader"></div>
+        <div id="qr-reader-status">Select a camera and press Start Scanning</div>
+        
+        <div id="error-message" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> 
+          <span id="error-text">Error message will appear here</span>
+        </div>
+        
+        <div class="action-buttons">
+          <button id="start-scan" class="action-btn btn-primary">
+            <i class="fas fa-camera"></i> Start Scanning
+          </button>
+          <button id="stop-scan" class="action-btn btn-secondary" disabled>
+            <i class="fas fa-stop"></i> Stop Scanning
+          </button>
+        </div>
+        
+        <div id="scan-result" class="scan-result">
+          <div class="result-header">
+            <div class="result-title">Event Detected</div>
+            <div class="result-status">Success</div>
+          </div>
+          <div class="result-details">
+            <div class="result-info">
+              <i class="fas fa-tag"></i>
+              <span id="event-name">AI Workshop</span>
+            </div>
+            <div class="result-info">
+              <i class="far fa-calendar-alt"></i>
+              <span id="event-date">May 15, 2025</span>
+            </div>
+            <div class="result-info">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="event-location">REMIBAI AUDITORIUM</span>
+            </div>
+            <div class="result-info">
+              <i class="fas fa-check-circle"></i>
+              <span id="scan-time">Scanned on: Apr 18, 2025 15:45</span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="scan-instructions">
+          <i class="fas fa-info-circle"></i> Point your camera at the event QR code to scan and verify your attendance.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Toggle menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuClose = document.getElementById('menu-close');
+    const menuContent = document.querySelector('.menu-content');
+    
+    // Open mobile menu
+    menuToggle.addEventListener('click', function() {
+      mobileMenu.classList.add('active');
+    });
+    
+    // Close mobile menu with close button
+    menuClose.addEventListener('click', function(e) {
+      e.stopPropagation(); // Stop event from bubbling up
+      mobileMenu.classList.remove('active');
+    });
+    
+    // Close mobile menu when clicking outside the menu content
+    mobileMenu.addEventListener('click', function(e) {
+      // Check if the click is on the menu-content itself or one of its children
+      if (!menuContent.contains(e.target) || e.target === menuContent) {
+        mobileMenu.classList.remove('active');
+      }
+    });
+    
+    // Prevent clicks inside menu content from closing the menu
+    menuContent.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+    
+    // QR Code Scanner functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const cameraSelect = document.getElementById('camera-select');
+      const startScanButton = document.getElementById('start-scan');
+      const stopScanButton = document.getElementById('stop-scan');
+      const scanResult = document.getElementById('scan-result');
+      const eventName = document.getElementById('event-name');
+      const eventDate = document.getElementById('event-date');
+      const eventLocation = document.getElementById('event-location');
+      const scanTime = document.getElementById('scan-time');
+      const qrReaderElement = document.getElementById('qr-reader');
+      const qrReaderStatus = document.getElementById('qr-reader-status');
+      const errorMessage = document.getElementById('error-message');
+      const errorText = document.getElementById('error-text');
+      
+      let html5QrCode = null;
+      let isScanning = false;
+      
+      // Initialize camera selection
+      function initCameras() {
+        cameraSelect.innerHTML = '<option value="">Select Camera</option>';
+        
+        Html5Qrcode.getCameras()
+          .then(devices => {
+            if (devices && devices.length) {
+              // Add default option if no devices found
+              if (devices.length === 0) {
+                const option = document.createElement('option');
+                option.value = "";
+                option.text = "No cameras found";
+                cameraSelect.add(option);
+                startScanButton.disabled = true;
+              } else {
+                // Populate the cameraSelect dropdown
+                devices.forEach((device, index) => {
+                  const option = document.createElement('option');
+                  option.value = device.id;
+                  option.text = device.label || `Camera ${index + 1}`;
+                  cameraSelect.add(option);
+                });
+                
+                // Auto-select first camera if only one available
+                if (devices.length === 1) {
+                  cameraSelect.value = devices[0].id;
+                }
+              }
+            }
+          })
+          .catch(err => {
+            console.error('Error getting cameras', err);
+            showError('Could not access cameras. Please ensure camera permissions are granted.');
+          });
+      }
+      
+      // Initialize QR code scanner
+      function initQrScanner() {
+        if (html5QrCode) {
+          html5QrCode.clear();
+        }
+        
+        html5QrCode = new Html5Qrcode("qr-reader", { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE] });
+        
+        // Set minimal styling for the scanner
+        qrReaderElement.style.height = '300px';
+        
+        // Hide any error message
+        hideError();
+      }
+      
+      // Show error message
+      function showError(message) {
+        errorText.textContent = message;
+        errorMessage.style.display = 'block';
+        qrReaderStatus.textContent = 'Error: ' + message;
+      }
+      
+      // Hide error message
+      function hideError() {
+        errorMessage.style.display = 'none';
+      }
+      
+      // Initialize the scanner
+      initQrScanner();
+      initCameras();
+      
+      // Start scanning
+      startScanButton.addEventListener('click', function() {
+        const cameraId = cameraSelect.value;
+        
+        if (!cameraId) {
+          showError('Please select a camera first.');
+          return;
+        }
+        
+        // Hide previous results and errors
+        scanResult.style.display = 'none';
+        hideError();
+        
+        // Configure scanning
+        const config = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 }
+        };
+        
+        // Update status
+        qrReaderStatus.textContent = 'Starting camera...';
+        
+        // Start scanning
+        html5QrCode.start(
+          cameraId, 
+          config,
+          onScanSuccess,
+          onScanProgress
+        )
+        .then(() => {
+          isScanning = true;
+          startScanButton.disabled = true;
+          stopScanButton.disabled = false;
+          qrReaderStatus.textContent = 'Scanning... Point camera at QR code';
+        })
+        .catch(err => {
+          console.error('Unable to start scanning:', err);
+          showError('Failed to start camera: ' + err.message || 'Unknown error');
+          startScanButton.disabled = false;
+          stopScanButton.disabled = true;
+        });
+      });
+      
+      // Stop scanning
+      stopScanButton.addEventListener('click', function() {
+        stopScanning();
+      });
+      
+      // Helper function to stop scanning
+      function stopScanning() {
+        if (html5QrCode && isScanning) {
+          html5QrCode.stop()
+            .then(() => {
+              isScanning = false;
+              startScanButton.disabled = false;
+              stopScanButton.disabled = true;
+              qrReaderStatus.textContent = 'Scanner stopped';
+            })
+            .catch(err => {
+              console.error('Error stopping scanner', err);
+              showError('Error stopping scanner: ' + err.message);
+            });
+        }
+      }
+      
+      // QR code scan progress callback (show status updates)
+      function onScanProgress(errorMessage, status) {
+        // This is called frequently during scanning, but we only need to handle errors
+        if (errorMessage) {
+          console.warn('QR scan error:', errorMessage);
+          // Don't show transient errors to the user to avoid flickering
+        }
+      }
+      
+      // QR code scan success callback
+      function onScanSuccess(decodedText, decodedResult) {
+        // Stop scanning
+        stopScanning();
+        
+        // Process the scanned QR code data
+        try {
+          // First try to parse as JSON
+          let eventData;
+          try {
+            eventData = JSON.parse(decodedText);
+          } catch (e) {
+            // If not JSON, use the raw text as the event name
+            eventData = {
+              name: decodedText,
+              date: "Not specified",
+              location: "Not specified"
+            };
+          }
+          
+          // Update the result display
+          eventName.textContent = eventData.name || 'Unknown Event';
+          eventDate.textContent = eventData.date || 'Date not specified';
+          eventLocation.textContent = eventData.location || 'Location not specified';
+          
+          // Get current time for scan timestamp
+          const now = new Date();
+          const timeString = now.toLocaleDateString() + ' ' + 
+              now.getHours().toString().padStart(2, '0') + ':' +
+              now.getMinutes().toString().padStart(2, '0');
+          
+          scanTime.textContent = 'Scanned on: ' + timeString;
+          
+          // Show the result
+          scanResult.style.display = 'block';
+          qrReaderStatus.textContent = 'QR code successfully scanned!';
+          
+          // Here you would usually send the scan data to your server
+          console.log('Scan successful:', eventData);
+          
+        } catch (error) {
+          console.error('Error processing QR code data:', error);
+          showError('Failed to process QR code data: ' + error.message);
+        }
+      }
+      
+      // Handle camera permission errors better
+      window.addEventListener('camera-permission-denied', function() {
+        showError('Camera permission denied. Please allow camera access and try again.');
+      });
+      
+      // Prevent page unload while scanning
+      window.addEventListener('beforeunload', function(e) {
+        if (isScanning) {
+          stopScanning();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
