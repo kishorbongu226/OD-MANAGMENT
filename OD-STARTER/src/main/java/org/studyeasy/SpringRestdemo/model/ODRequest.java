@@ -31,8 +31,14 @@ public class ODRequest {
     @JoinColumn(name="enrollement_id", referencedColumnName = "enrollement_id", nullable = false)
     private Enrollment enrollment;
 
+    private String approver;
+
     @Enumerated(EnumType.STRING)
     private ODStatus status;
+
+    @OneToOne
+    @JoinColumn(name="event_id", referencedColumnName="id", nullable=true)
+    private Event event;
 
     
 }

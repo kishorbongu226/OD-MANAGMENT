@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Approval</title>
+    <title>Events Page</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -733,46 +733,9 @@
       </div>
     </header>
 
-    <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobile-menu">
-      <div class="menu-content">
-        <div class="menu-header">
-          <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>Student Portal</span>
-          </div>
-          <button class="menu-close" id="menu-close" aria-label="Close menu">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="menu-links">
-          <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-          <a href="student.profile.html"><i class="fas fa-user"></i> Profile</a>
-          <a href="student.upcoming.html"
-            ><i class="fas fa-calendar-day"></i> Events Upcoming</a
-          >
-          <a href="student.ongoing.html"
-            ><i class="fas fa-check-circle"></i> Events Ongoing</a
-          >
-          <a href="student.participated.html"
-            ><i class="fas fa-calendar"></i> Events participated</a
-          >
-          <a href="student.approval.html"
-            ><i class="fas fa-clipboard-check"></i>Events OD Approval</a
-          >
-          <a href="student.attendance.html"
-            ><i class="fas fa-clipboard-list"></i> Attendance</a
-          >
-          <a href="student.feedback.html"
-            ><i class="fas fa-comment-alt"></i> Feedback</a
-          >
-        </div>
-      </div>
-    </div>
-
     <main>
       <div class="container">
-        <h1 class="page-title">Events OD Approval Dashboard</h1>
+        <h1 class="page-title">My Enrollments</h1>
 
         <div class="search-container">
           <i class="fas fa-search search-icon"></i>
@@ -780,194 +743,77 @@
             type="text"
             id="search"
             class="search-input"
-            placeholder="Search events..."
+            placeholder="Search enrollments..."
           />
         </div>
 
         <div class="events-grid" id="events-container">
-          <!-- Event Card 1 -->
-          <div class="event-card">
+          <!-- Dynamic Enrollments -->
+          <div
+            class="event-card"
+            th:each="enrollment, iterStat : ${enrollments}"
+          >
             <div class="event-header">
               <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
+              <span class="event-badge" th:text="${enrollment.event.type}"
+                >TECHNICAL</span
+              >
             </div>
             <div class="event-body">
-              <h3 class="event-name">AI Workshop</h3>
+              <h3 class="event-name" th:text="${enrollment.event.title}">
+                Event Title
+              </h3>
+
+              <!-- Start Date & Time -->
               <div class="event-info">
                 <i class="far fa-calendar-alt"></i>
-                <span>May 15, 2025</span>
+                <span
+                  th:text="'Start: ' + ${#temporals.format(enrollment.event.startTime, 'MMM dd, yyyy HH:mm')}"
+                >
+                  Start Date
+                </span>
               </div>
+
+              <!-- End Date & Time -->
+              <div class="event-info">
+                <i class="far fa-calendar-check"></i>
+                <span
+                  th:text="'End: ' + ${#temporals.format(enrollment.event.endTime, 'MMM dd, yyyy HH:mm')}"
+                >
+                  End Date
+                </span>
+              </div>
+
+              <!-- Location -->
               <div class="event-info">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>REMIBAI AUDITORIUM</span>
+                <span th:text="${enrollment.event.location}"
+                  >Event Location</span
+                >
               </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
+
+              <!-- Buttons: Request OD FIRST, then View Details -->
+              <button
+                class="od-btn"
+                th:attr="data-id=${enrollment.id}"
+                onclick="requestOd(this)"
+              >
+                <i class="fas fa-user"></i> Request OD
               </button>
-              <button class="details-btn" data-target="details-1">
+              <button
+                class="details-btn"
+                th:attr="data-target='details-' + ${iterStat.index}"
+              >
                 View Details
               </button>
 
-              <div class="event-details" id="details-1">
-                <p>
-                  This technical AI workshop covers machine learning
-                  fundamentals and applications. The event will include hands-on
-                  sessions and keynote speakers from the industry.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Event Card 2 -->
-          <div class="event-card">
-            <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-name">Hackathon 2025</h3>
-              <div class="event-info">
-                <i class="far fa-calendar-alt"></i>
-                <span>June 10, 2025</span>
-              </div>
-              <div class="event-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>ECE SEMINAR HALL</span>
-              </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
-              </button>
-              <button class="details-btn" data-target="details-2">
-                View Details
-              </button>
-              <div class="event-details" id="details-2">
-                <p>
-                  A 24-hour coding competition for students to build innovative
-                  solutions. Prizes will be awarded to the top three teams.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Event Card 3 -->
-          <div class="event-card">
-            <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-name">Web Dev Bootcamp</h3>
-              <div class="event-info">
-                <i class="far fa-calendar-alt"></i>
-                <span>July 5, 2025</span>
-              </div>
-              <div class="event-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>ECE SEMINAR HALL</span>
-              </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
-              </button>
-              <button class="details-btn" data-target="details-3">
-                View Details
-              </button>
-              <div class="event-details" id="details-3">
-                <p>
-                  Learn modern web development frameworks and technologies in
-                  this intensive three-day bootcamp.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Event Card 4 -->
-          <div class="event-card">
-            <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-name">Data Science Summit</h3>
-              <div class="event-info">
-                <i class="far fa-calendar-alt"></i>
-                <span>July 20, 2025</span>
-              </div>
-              <div class="event-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>ECE SEMINAR HALL</span>
-              </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
-              </button>
-              <button class="details-btn" data-target="details-4">
-                View Details
-              </button>
-              <div class="event-details" id="details-4">
-                <p>
-                  A conference focused on the latest trends in data science,
-                  featuring speakers from leading tech companies.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Event Card 5 -->
-          <div class="event-card">
-            <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-name">Robotics Workshop</h3>
-              <div class="event-info">
-                <i class="far fa-calendar-alt"></i>
-                <span>August 2, 2025</span>
-              </div>
-              <div class="event-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>ECE SEMINAR HALL</span>
-              </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
-              </button>
-              <button class="details-btn" data-target="details-5">
-                View Details
-              </button>
-              <div class="event-details" id="details-5">
-                <p>
-                  Hands-on workshop on building and programming autonomous
-                  robots. Materials will be provided.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Event Card 6 -->
-          <div class="event-card">
-            <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img" />
-              <span class="event-badge">TECHNICAL</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-name">Cloud Computing Seminar</h3>
-              <div class="event-info">
-                <i class="far fa-calendar-alt"></i>
-                <span>August 15, 2025</span>
-              </div>
-              <div class="event-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>ECE SEMINAR HALL</span>
-              </div>
-              <button class="od-btn" onclick="requestOD(this)">
-                Request OD
-              </button>
-              <button class="details-btn" data-target="details-6">
-                View Details
-              </button>
-              <div class="event-details" id="details-6">
-                <p>
-                  Learn about cloud platforms, serverless architecture, and best
-                  practices in cloud security.
+              <!-- Collapsible details -->
+              <div
+                class="event-details"
+                th:attr="id='details-' + ${iterStat.index}"
+              >
+                <p th:text="${enrollment.event.description}">
+                  Event description goes here.
                 </p>
               </div>
             </div>
@@ -975,12 +821,6 @@
         </div>
       </div>
     </main>
-
-    <!-- Modal for zoomed image -->
-    <div id="myModal" class="modal">
-      <span class="close" id="closeModal">&times;</span>
-      <img class="modal-content" id="img01" alt="Zoomed Profile Image" />
-    </div>
 
     <script>
       function requestOD(button) {
@@ -1252,6 +1092,31 @@
         // Show success message
         alert("Your event request has been submitted successfully!");
       });
+
+      function requestOd(button) {
+        // Get enrollment id from the button
+        const enrollmentId = button.getAttribute("data-id");
+
+        // Send POST request (form style, no JSON body)
+        fetch(`/api/v1/student/ODRequest/${enrollmentId}/submit`, {
+          method: "POST",
+        })
+          .then((response) => {
+            if (response.redirected) {
+              // If server returns a Thymeleaf view, follow the redirect
+              window.location.href = response.url;
+            } else if (response.ok) {
+              // Reload page in case Spring returns the same Thymeleaf template
+              window.location.reload();
+            } else {
+              alert("Failed to submit OD request. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error submitting OD request:", error);
+            alert("Something went wrong!");
+          });
+      }
     </script>
   </body>
 </html>
