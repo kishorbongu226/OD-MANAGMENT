@@ -63,7 +63,17 @@ public class EventService {
         return eventRepository.findByStatus(status);
     }
 
-   
+   public Optional<Event> findByEventKey(String eventKey) {
+    return eventRepository.findByEventKey(eventKey);
+    }
+
+    public List<Event> findByEndTimeBefore(LocalDateTime time) {
+        return eventRepository.findByEndTime(time);
+    }
+
+    public List<Event> findByEventCordinator(String teacherRegNo) {
+            return eventRepository.findByEventCordinator(teacherRegNo);
+    }
 
 
 }

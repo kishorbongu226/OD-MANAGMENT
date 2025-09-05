@@ -2,6 +2,8 @@ package org.studyeasy.SpringRestdemo.controller;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +11,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.studyeasy.SpringRestdemo.model.Account;
 import org.studyeasy.SpringRestdemo.model.ProfessorAccount;
-import org.studyeasy.SpringRestdemo.payload.auth.ProfessorProfileDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.ProfileDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.TokenDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.UserLoginDTO;
@@ -33,12 +35,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+@Controller
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Auth Controller", description = "Controller for Account management")
 @Slf4j
 public class AuthController {
-
+  Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -93,33 +95,31 @@ public class AuthController {
     }
 
     @GetMapping(value = "/professor/profile", produces = "application/json")
-    @ApiResponse(responseCode = "200", description = "View Professor Profile")
-    @ApiResponse(responseCode = "401", description = "Token missing")
-    @ApiResponse(responseCode = "403", description = "Unauthorized")
-    @Operation(summary = "View Professor Profile")
+ 
+   
     @SecurityRequirement(name = "studyeasy-demo-api")
-    public ResponseEntity<ProfessorProfileDTO> professorProfile(Authentication authentication) {
-        String registerNo = authentication.getName();
-        Optional<ProfessorAccount> optionalProfessor = professorService.findByRegisterNumber(registerNo);
+    public String professorProfile(Model model) {
+    logger.info("📌 Entered professorProfile() endpoint");
 
-        if (optionalProfessor.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    String registerNo = "A1001";
+    logger.debug("Looking up professor with register number: {}", registerNo);
 
-        ProfessorAccount professor = optionalProfessor.get();
+    Optional<ProfessorAccount> optionalProfessor = professorService.findByRegisterNumber(registerNo);
 
-        ProfessorProfileDTO profileDTO = new ProfessorProfileDTO(
-                professor.getId(),
-                professor.getRegisterNo(),
-                professor.getName(),
-                professor.getDesignation(),
-                professor.getEmail(),
-                professor.getDepartment(),
-                professor.getBranch(),
-                professor.getAge()
-        );
+    if (optionalProfessor.isEmpty()) {
+        logger.warn("⚠️ No professor found with register number: {}", registerNo);
+        // You could redirect or return an error page
+        return "errorPage";
+    }
 
-        return ResponseEntity.ok(profileDTO);
+    ProfessorAccount professor = optionalProfessor.get();
+    logger.info("✅ Professor found: {}", professor.getName());
+
+    model.addAttribute("profile", professor);
+    logger.debug("Profile object added to model: {}", professor);
+
+    logger.info("➡️ Returning view: adminProfile");
+    return "adminProfile";
     }
 
   

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>BloggerZZ</title>
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      th:href="@{/images/bloggerzz.png}"
+      type="image/png"
+    />
+
+    <!-- Bootstrap core css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" />
+
+    <!-- Owl slider stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+
+    <!-- Nice select -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+    />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <!-- Responsive styles -->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+  </head>
+  <body>
+    <h1>All Events</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Event ID</th>
+          <th>Event Name</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="event : ${events}">
+          <td th:text="${event.id}"></td>
+          <td th:text="${event.title}"></td>
+          <td th:text="${event.description}"></td>
+          <td>
+            <a th:href="@{/api/v1/teacher/event/{id}(id=${event.id})}"
+              >View QR</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

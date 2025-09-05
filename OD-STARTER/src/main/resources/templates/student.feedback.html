@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Feedback</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary: #831238;
+      --primary-dark: #6d0f2a;
+      --secondary: #f3f4f6;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --white: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #5c1e3c;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 1.25rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .icon-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .menu-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu.active .menu-content {
+      transform: translateX(0);
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .menu-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+
+    .menu-close:hover {
+      color: var(--primary);
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .menu-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-links a i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      width: 20px;
+    }
+
+    .menu-links a:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-links a.active {
+      background-color: rgba(255, 255, 255, 0.5);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 2rem 0 1.5rem;
+      text-align: center;
+    }
+
+    /* New CSS for feedback page */
+    .events-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .tab-button:hover {
+      background-color: var(--gray-100);
+    }
+
+    .tab-button.active {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: var(--white);
+    }
+
+    .event-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .event-card {
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid var(--gray-200);
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .event-header {
+      position: relative;
+      padding: 1.5rem;
+      text-align: center;
+      background-color: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .event-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .event-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .event-body {
+      padding: 1.5rem;
+    }
+
+    .event-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-dark);
+    }
+
+    .event-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .event-info i {
+      margin-right: 0.5rem;
+      color: var(--primary);
+      width: 1rem;
+      text-align: center;
+    }
+
+    .feedback-btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .feedback-btn:hover {
+      background-color: var(--primary-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .feedback-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.3);
+    }
+
+    .completed-badge {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background-color: var(--success);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow-lg);
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.2s ease;
+    }
+
+    .close-modal:hover {
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .rating-container {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .rating-label {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      color: var(--text-dark);
+      min-width: 180px;
+    }
+
+    .star-rating {
+      display: flex;
+      flex-direction: row;
+      gap: 0.25rem;
+      justify-content: flex-start;
+      align-items: center;
+      min-width: 150px;
+    }
+
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 2rem;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #fbbf24;
+      transition: color 0.2s ease;
+    }
+
+    /* Fix for correct star rating order */
+    .star-rating input:checked + label,
+    .star-rating input:checked + label ~ label {
+      color: #fbbf24;
+      transition: color 0.2s ease;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--white);
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .submit-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.3);
+    }
+
+    .search-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+
+    .event-date {
+      color: var(--text-light);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-message {
+      display: none;
+      padding: 1rem;
+      background-color: var(--success);
+      color: var(--white);
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .no-events {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .no-events i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .event-cards {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+      }
+
+      .event-tabs button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .event-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .header-container {
+        padding: 0.75rem 1rem;
+      }
+
+      .header-title {
+        font-size: 1.1rem;
+      }
+
+      .event-header {
+        padding: 1rem;
+      }
+
+      .event-img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .event-body {
+        padding: 1.25rem;
+      }
+
+      .modal-content {
+        padding: 1.25rem;
+      }
+
+      .star-rating label {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-section">
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="header-title">Student Feedback</div>
+
+      <div class="header-actions">
+        <button class="icon-button" title="Language" aria-label="Language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="icon-button" title="Notifications" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='student.profile.html'">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="menu-content">
+      <div class="menu-header">
+        <div class="logo">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Student Portal</span>
+        </div>
+        <button class="menu-close" id="menu-close" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="student.profile.html"><i class="fas fa-user"></i> Profile</a>
+        <a href="student.upcoming.html"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+        <a href="student.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+        <a href="student.participated.html"><i class="fas fa-calendar"></i> Events participated</a>
+        <a href="student.approval.html"><i class="fas fa-clipboard-check"></i> Approval</a>
+        <a href="student.attendance.html"><i class="fas fa-clipboard-list"></i> Attendance</a>
+        <a href="student.feedback.html" class="active"><i class="fas fa-comment-alt"></i> Feedback</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <h1 class="page-title">Event Feedback</h1>
+
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          id="search"
+          class="search-input"
+          placeholder="Search events..."
+        />
+      </div>
+
+      <div class="events-tabs">
+        <button class="tab-button active" data-tab="ongoing">Ongoing Events</button>
+        <button class="tab-button" data-tab="completed">Completed Feedback</button>
+      </div>
+
+      <!-- Ongoing Events Tab -->
+      <div class="tab-content" id="ongoing-tab">
+        <div class="event-cards" id="ongoing-events">
+          <!-- Event Card 1 -->
+          <div class="event-card">
+            <div class="event-header">
+              <img
+                src="WhatsApp Image 2025-04-16 at 11.32.52_b942b4c7.jpg"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">TECHNICAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">Data Science Bootcamp</h3>
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span>April 15-18, 2025</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>ECE SEMINAR HALL</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-user"></i>
+                <span>Dr. Ramanathan & Team</span>
+              </div>
+              <button class="feedback-btn" data-event="event1">Submit Feedback</button>
+            </div>
+          </div>
+
+          <!-- Event Card 2 -->
+          <div class="event-card">
+            <div class="event-header">
+              <img
+                src="Jeppiar_two.jpg"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">CULTURAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">Dance Workshop</h3>
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span>April 16-19, 2025</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>REMIBAI AUDITORIUM</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-user"></i>
+                <span>Ms. Priya & Team</span>
+              </div>
+              <button class="feedback-btn" data-event="event2">Submit Feedback</button>
+            </div>
+          </div>
+
+          <!-- Event Card 3 -->
+          <div class="event-card">
+            <div class="event-header">
+              <img
+                src="WhatsApp Image 2025-04-16 at 11.32.52_b942b4c7.jpg"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">TECHNICAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">Web Development Workshop</h3>
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span>April 17-20, 2025</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>CSE LAB</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-user"></i>
+                <span>Prof. Subramaniam & Team</span>
+              </div>
+              <button class="feedback-btn" data-event="event3">Submit Feedback</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Feedback Tab -->
+      <div class="tab-content" id="completed-tab" style="display: none">
+        <div class="event-cards" id="completed-events">
+          <!-- Completed Event 1 -->
+          <div class="event-card">
+            <div class="event-header">
+              <img
+                src="Chancellor1.jpg"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">TECHNICAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">AI Workshop</h3>
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span>April 10-12, 2025</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>ECE SEMINAR HALL</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-user"></i>
+                <span>Dr. Krishnamoorthy & Team</span>
+              </div>
+              <div class="completed-badge">
+                <i class="fas fa-check-circle"></i> Feedback Submitted
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed Event 2 -->
+          <div class="event-card">
+            <div class="event-header">
+              <img
+                src="Chancellor1.jpg"
+                alt="Event Image"
+                class="event-img"
+              />
+              <span class="event-badge">SEMINAR</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name">Career Guidance Seminar</h3>
+              <div class="event-info">
+                <i class="far fa-calendar-alt"></i>
+                <span>April 5, 2025</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>MAIN AUDITORIUM</span>
+              </div>
+              <div class="event-info">
+                <i class="fas fa-user"></i>
+                <span>Industry Experts</span>
+              </div>
+              <div class="completed-badge">
+                <i class="fas fa-check-circle"></i> Feedback Submitted
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Image Zoom Modal -->
+  <div class="modal" id="image-zoom-modal">
+    <div class="modal-content" id="image-zoom-content">
+      <button class="close-modal" id="close-image-modal" aria-label="Close image zoom">&times;</button>
+      <img src="" alt="Zoomed Image" id="zoomed-image" style="width: 100%; border-radius: 0.75rem;" />
+    </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div class="modal" id="feedback-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Submit Event Feedback</h2>
+        <button class="close-modal" id="close-modal">&times;</button>
+      </div>
+
+      <div id="success-message" class="success-message">
+        <i class="fas fa-check-circle"></i> Thank you! Your feedback has been submitted successfully.
+      </div>
+
+      <form id="feedback-form">
+        <div class="form-group">
+          <label class="form-label">Event Name</label>
+          <p
+            id="modal-event-name"
+            class="form-control"
+            style="background-color: var(--gray-100)"
+          >
+            Data Science Bootcamp
+          </p>
+        </div>
+
+        <div class="ratings-wrapper">
+          <div class="rating-container">
+            <div class="rating-label">Content Quality</div>
+            <div class="star-rating">
+              <input type="radio" id="content1" name="content_rating" value="1" />
+              <label for="content1" class="fas fa-star" title="1 star"></label>
+              <input type="radio" id="content2" name="content_rating" value="2" />
+              <label for="content2" class="fas fa-star" title="2 stars"></label>
+              <input type="radio" id="content3" name="content_rating" value="3" />
+              <label for="content3" class="fas fa-star" title="3 stars"></label>
+              <input type="radio" id="content4" name="content_rating" value="4" />
+              <label for="content4" class="fas fa-star" title="4 stars"></label>
+              <input type="radio" id="content5" name="content_rating" value="5" />
+              <label for="content5" class="fas fa-star" title="5 stars"></label>
+            </div>
+          </div>
+
+          <div class="rating-container">
+            <div class="rating-label">Presenter Knowledge</div>
+            <div class="star-rating">
+              <input type="radio" id="presenter1" name="presenter_rating" value="1" />
+              <label for="presenter1" class="fas fa-star" title="1 star"></label>
+              <input type="radio" id="presenter2" name="presenter_rating" value="2" />
+              <label for="presenter2" class="fas fa-star" title="2 stars"></label>
+              <input type="radio" id="presenter3" name="presenter_rating" value="3" />
+              <label for="presenter3" class="fas fa-star" title="3 stars"></label>
+              <input type="radio" id="presenter4" name="presenter_rating" value="4" />
+              <label for="presenter4" class="fas fa-star" title="4 stars"></label>
+              <input type="radio" id="presenter5" name="presenter_rating" value="5" />
+              <label for="presenter5" class="fas fa-star" title="5 stars"></label>
+            </div>
+          </div>
+
+          <div class="rating-container">
+            <div class="rating-label">Organization & Facilities</div>
+            <div class="star-rating">
+              <input type="radio" id="org1" name="org_rating" value="1" />
+              <label for="org1" class="fas fa-star" title="1 star"></label>
+              <input type="radio" id="org2" name="org_rating" value="2" />
+              <label for="org2" class="fas fa-star" title="2 stars"></label>
+              <input type="radio" id="org3" name="org_rating" value="3" />
+              <label for="org3" class="fas fa-star" title="3 stars"></label>
+              <input type="radio" id="org4" name="org_rating" value="4" />
+              <label for="org4" class="fas fa-star" title="4 stars"></label>
+              <input type="radio" id="org5" name="org_rating" value="5" />
+              <label for="org5" class="fas fa-star" title="5 stars"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="comments" class="form-label">Additional Comments</label>
+          <textarea
+            id="comments"
+            name="comments"
+            class="form-control"
+            placeholder="Write your comments here..."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuClose = document.getElementById("menu-close");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.add("active");
+    });
+
+    menuClose.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+    });
+
+    // Tab switching
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const ongoingTab = document.getElementById("ongoing-tab");
+    const completedTab = document.getElementById("completed-tab");
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        if (button.dataset.tab === "ongoing") {
+          ongoingTab.style.display = "block";
+          completedTab.style.display = "none";
+        } else {
+          ongoingTab.style.display = "none";
+          completedTab.style.display = "block";
+        }
+      });
+    });
+
+    // Feedback modal
+    const feedbackButtons = document.querySelectorAll(".feedback-btn");
+    const feedbackModal = document.getElementById("feedback-modal");
+    const closeModalBtn = document.getElementById("close-modal");
+    const modalEventName = document.getElementById("modal-event-name");
+    const feedbackForm = document.getElementById("feedback-form");
+    const successMessage = document.getElementById("success-message");
+
+    feedbackButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const eventCard = button.closest(".event-card");
+        const eventName = eventCard.querySelector(".event-name").textContent;
+        modalEventName.textContent = eventName;
+        successMessage.style.display = "none";
+        feedbackForm.style.display = "block";
+        feedbackForm.reset();
+        feedbackModal.style.display = "block";
+      });
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      feedbackModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === feedbackModal) {
+        feedbackModal.style.display = "none";
+      }
+    });
+
+    // Form submission
+    feedbackForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Here you can add code to send the feedback data to a server if needed
+
+      feedbackForm.style.display = "none";
+      successMessage.style.display = "block";
+
+      // Optionally, update the event card to show feedback submitted badge and move to completed tab
+      const eventName = modalEventName.textContent;
+      const ongoingEventsContainer = document.getElementById("ongoing-events");
+      const completedEventsContainer = document.getElementById("completed-events");
+      const eventCards = document.querySelectorAll(".event-card");
+      eventCards.forEach((card) => {
+        if (card.querySelector(".event-name").textContent === eventName) {
+          const feedbackBtn = card.querySelector(".feedback-btn");
+          if (feedbackBtn) {
+            feedbackBtn.remove();
+            const badge = document.createElement("div");
+            badge.className = "completed-badge";
+            badge.innerHTML = '<i class="fas fa-check-circle"></i> Feedback Submitted';
+            card.querySelector(".event-body").appendChild(badge);
+            // Move card from ongoing to completed container
+            ongoingEventsContainer.removeChild(card);
+            completedEventsContainer.appendChild(card);
+          }
+        }
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById("search");
+
+    searchInput.addEventListener("input", () => {
+      const filter = searchInput.value.toLowerCase();
+
+      // Filter ongoing events
+      const ongoingEvents = document.querySelectorAll("#ongoing-events .event-card");
+      ongoingEvents.forEach((card) => {
+        const eventName = card.querySelector(".event-name").textContent.toLowerCase();
+        if (eventName.includes(filter)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      // Filter completed events
+      const completedEvents = document.querySelectorAll("#completed-events .event-card");
+      completedEvents.forEach((card) => {
+        const eventName = card.querySelector(".event-name").textContent.toLowerCase();
+        if (eventName.includes(filter)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+
+    // Image zoom modal functionality
+    const imageZoomModal = document.getElementById("image-zoom-modal");
+    const zoomedImage = document.getElementById("zoomed-image");
+    const closeImageModalBtn = document.getElementById("close-image-modal");
+
+    // Add click event to all event images to open zoom modal
+    const eventImages = document.querySelectorAll(".event-img");
+    eventImages.forEach((img) => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", () => {
+        zoomedImage.src = img.src;
+        imageZoomModal.style.display = "block";
+      });
+    });
+
+    // Close image zoom modal
+    function closeImageModal() {
+      imageZoomModal.style.display = "none";
+      zoomedImage.src = "";
+    }
+
+    closeImageModalBtn.addEventListener("click", closeImageModal);
+
+    window.addEventListener("click", (e) => {
+      if (e.target === imageZoomModal) {
+        closeImageModal();
+      }
+    });
+  </script>
+  <script>
+    // Star rating hover and checked highlighting for ascending order stars
+    document.querySelectorAll('.star-rating').forEach(starRating => {
+      const stars = starRating.querySelectorAll('label');
+      const inputs = starRating.querySelectorAll('input');
+
+      function highlightStars(index) {
+        stars.forEach((star, i) => {
+          if (i <= index) {
+            star.style.color = '#fbbf24';
+          } else {
+            star.style.color = '#d1d5db';
+          }
+        });
+      }
+
+      starRating.addEventListener('mouseover', e => {
+        if (e.target.tagName === 'LABEL') {
+          const index = Array.from(stars).indexOf(e.target);
+          highlightStars(index);
+        }
+      });
+
+      starRating.addEventListener('mouseout', e => {
+        const checkedIndex = Array.from(inputs).findIndex(input => input.checked);
+        highlightStars(checkedIndex);
+      });
+
+      inputs.forEach((input, i) => {
+        input.addEventListener('change', () => {
+          highlightStars(i);
+        });
+      });
+
+      // Initialize highlighting based on checked input
+      const checkedIndex = Array.from(inputs).findIndex(input => input.checked);
+      highlightStars(checkedIndex);
+    });
+  </script>
+</body>
+</html>

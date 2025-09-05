@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>BloggerZZ</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+  </head>
+
+  <body>
+    <h1>Available Events</h1>
+
+    <!-- Event List -->
+    <div>
+      <ul>
+        <!-- Loop through all events from backend -->
+        <li th:each="event : ${events}">
+          <!-- Show only student-friendly info -->
+          <span th:text="${event.title}"></span> -
+          <span th:text="${event.description}"></span>
+
+          <!-- Hide eventKey in a data attribute -->
+          <button
+            type="button"
+            th:attr="data-eventkey=${event.id}"
+            onclick="startScan(this)"
+          >
+            Scan QR
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- QR Scanner (hidden until needed) -->
+    <div id="scanner-container" style="display: none; margin-top: 20px">
+      <h3>Scan the QR Code</h3>
+      <div id="reader" style="width: 300px"></div>
+      <p id="result"></p>
+      <button onclick="stopScan()">Close Scanner</button>
+    </div>
+
+    <script>
+      let html5QrcodeScanner;
+      let currentEventKey = null;
+
+      // Start scanning for a specific event (read hidden data attribute)
+      function startScan(buttonElement) {
+        currentEventKey = buttonElement.getAttribute("data-eventkey");
+        document.getElementById("scanner-container").style.display = "block";
+
+        html5QrcodeScanner = new Html5Qrcode("reader");
+        html5QrcodeScanner.start(
+          { facingMode: "environment" }, // rear camera
+          { fps: 10, qrbox: 250 },
+          onScanSuccess,
+          onScanFailure
+        );
+      }
+
+      function stopScan() {
+        if (html5QrcodeScanner) {
+          html5QrcodeScanner.stop().then(() => {
+            document.getElementById("scanner-container").style.display = "none";
+            document.getElementById("reader").innerHTML = "";
+          });
+        }
+      }
+
+      function onScanSuccess(decodedText, decodedResult) {
+        document.getElementById("result").innerText = `Scanned: ${decodedText}`;
+
+        fetch(`/api/v1/student/attend/${decodedText}`, {
+          method: "POST",
+        })
+          .then((res) => res.text())
+          .then((data) => {
+            alert("Attendance marked successfully!");
+          })
+          .catch((err) => console.error(err));
+      }
+
+      function onScanFailure(error) {
+        // Ignore scan errors
+      }
+    </script>
+  </body>
+</html>
