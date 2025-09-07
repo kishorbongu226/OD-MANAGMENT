@@ -23,6 +23,8 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
               long countByAttendenceStatus(AttendenceStatus status);
 
+              List<Enrollment> findByAccountAndAttendenceStatus(Account account, AttendenceStatus status);
+
               long count();
 
 

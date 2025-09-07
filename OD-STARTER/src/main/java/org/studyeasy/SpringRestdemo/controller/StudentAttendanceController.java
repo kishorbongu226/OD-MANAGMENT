@@ -212,6 +212,25 @@ public ResponseEntity<InputStreamResource> generateCertificate(@PathVariable Lon
 public String getAttendance(){
     return "studentAttendance";
 }
+
+
+
+
+
+
+    @GetMapping("/participated")
+    public String participatedEvents(Model model) {
+        // Get logged-in student
+        String registerNo = "43111437";
+        Account account = accountService.findByRegisterNumber(registerNo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Student not found"));
+
+        // Fetch only PRESENT enrollments (participated)
+        List<Enrollment> enrollments = enrollmentService.findByAccountAndAttendenceStatus(account, AttendenceStatus.PRESENT);
+
+        model.addAttribute("enrollments", enrollments);
+        return "studentParticipated"; // thymeleaf template
+    }
 }
 
 

@@ -73,5 +73,12 @@ public long countEnrolledStudents() {
     return enrollmentRepository.count();
 }
 
-   
+public List<Enrollment> findByAccountAndAttendenceStatus(Account account, AttendenceStatus status) {
+    return enrollmentRepository.findByAccountAndAttendenceStatus(account, status);
 }
+}
+
+
+
+   
+
