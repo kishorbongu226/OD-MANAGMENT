@@ -75,6 +75,7 @@ public class EventService {
             return eventRepository.findByEventCordinator(teacherRegNo);
     }
 
+    
 
 }
 

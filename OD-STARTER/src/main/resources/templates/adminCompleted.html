@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Completed Events</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    :root {
+      --primary: #831238;
+      --primary-dark: #6d0f2a;
+      --secondary: #f3f4f6;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --white: #ffffff;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #5c1e3c;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .icon-button:hover {
+            background-color: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .menu-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background-color: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background-color:  rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .mobile-menu.active .menu-content {
+            transform: translateX(0);
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .menu-close:hover {
+            color: var(--primary);
+        }
+
+        .menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .menu-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .menu-links a i {
+            color: var(--primary);
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .menu-links a:hover {
+        background-color: var(--gray-100);
+        color: var(--primary);
+        }
+
+        .menu-links a.active {
+        background-color:  rgba(255, 255, 255, 0.5);
+        color: var(--primary);
+        font-weight: 600;
+        }
+
+        .container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: var(--primary);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #831238 0%, #b72e4a 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(183, 46, 74, 0.4);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6d0f2a 0%, #9e2740 100%);
+            box-shadow: 0 8px 25px rgba(158, 39, 64, 0.6);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: none;
+            font-size: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(131, 18, 56, 0.1);
+            box-shadow: 0 4px 12px rgba(131, 18, 56, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            min-width: 180px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-container {
+            flex-grow: 1;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        #search {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            height: 2.5rem;
+        }
+
+        #search:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .events-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .events-header {
+            padding: 1.5rem;
+            background-color: var(--light);
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .events-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .events-count {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        table th {
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: #f9fafb;
+        }
+
+        table tr {
+            transition: var(--transition);
+        }
+
+        table tr:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .event-type.technical {
+            background-color: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .event-type.workshop {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+
+        .event-type.seminar {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .event-type.conference {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            z-index: 1;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            color: var(--dark);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pagination-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .pagination-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-info-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .modal-info-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-section-title i {
+            color: var(--primary);
+        }
+
+        .upload-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: var(--gray-100);
+        }
+
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-text {
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .file-upload-input {
+            display: none;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .file-preview-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .file-preview-name i {
+            color: var(--success);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-btn-cancel {
+            background-color: var(--gray-100);
+            color: var(--dark);
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modal-btn-cancel:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .modal-btn-submit {
+            background: linear-gradient(135deg, #831238 0%, #b72e4a 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(183, 46, 74, 0.4);
+        }
+        
+        .modal-btn-submit:hover {
+            background: linear-gradient(135deg, #6d0f2a 0%, #9e2740 100%);
+            box-shadow: 0 8px 25px rgba(158, 39, 64, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* Stats cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stat-change.positive {
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: #ef4444;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 1024px) {
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .page-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .filters-container {
+                flex-direction: column;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            table th, table td {
+                padding: 0.75rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            table th:nth-child(4), 
+            table td:nth-child(4),
+            table th:nth-child(5), 
+            table td:nth-child(5) {
+                display: none;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-section">
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="header-title">Events Completed</div>
+
+      <div class="header-actions">
+        <button class="icon-button" title="Language" aria-label="Language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="icon-button" title="Notifications" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-button" title="Account" aria-label="Account"
+          onclick="window.location.href='@{/admin/profile}'">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="menu-content">
+      <div class="menu-header">
+        <div class="logo">
+          <i class="fas fa-user-shield"></i>
+          <span>Admin Portal</span>
+        </div>
+        <button class="menu-close" id="menu-close" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a th:href="@{/admin/profile}"><i class="fas fa-user"></i> Profile</a>
+        <a th:href="@{/admin/upcoming}"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+        <a th:href="@{/admin/ongoing}"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+        <a th:href="@{/admin/completed}" class="active"><i class="fas fa-calendar"></i> Events Completed</a>
+        <a th:href="@{/admin/approval}"><i class="fas fa-clipboard-check"></i> Events Approval</a>
+        <a th:href="@{/admin/messenger}"><i class="fas fa-comments"></i> Messenger</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Completed Events</h1>
+      <div class="page-actions">
+        <button class="btn btn-outline">
+          <i class="fas fa-download"></i> Export
+        </button>
+        <button class="btn btn-primary" id="generate-reports">
+          <i class="fas fa-file-alt"></i> Generate Reports
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3 class="stat-title">Total Completed Events</h3>
+        <p class="stat-value" th:text="${totalCompleted}">24</p>
+      </div>
+      <div class="stat-card">
+        <h3 class="stat-title">Participants</h3>
+        <p class="stat-value" th:text="${totalParticipants}">1,245</p>
+      </div>
+      <div class="stat-card">
+        <h3 class="stat-title">Certificates Issued</h3>
+        <p class="stat-value" th:text="${totalCertificates}">1,120</p>
+      </div>
+      <div class="stat-card">
+        <h3 class="stat-title">Average Rating</h3>
+        <p class="stat-value" th:text="${avgRating}">4.2</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="event-type" class="filter-label">Event Type</label>
+        <select id="event-type" class="filter-select">
+          <option value="">All Types</option>
+          <option value="technical">Technical</option>
+          <option value="workshop">Workshop</option>
+          <option value="seminar">Seminar</option>
+          <option value="conference">Conference</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="time-period" class="filter-label">Time Period</label>
+        <select id="time-period" class="filter-select">
+          <option value="">All Time</option>
+          <option value="week">Last Week</option>
+          <option value="month">Last Month</option>
+          <option value="quarter">Last Quarter</option>
+          <option value="year">Last Year</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="status" class="filter-label">Status</label>
+        <select id="status" class="filter-select">
+          <option value="">All Statuses</option>
+          <option value="completed">Completed</option>
+          <option value="evaluated">Evaluated</option>
+          <option value="certified">Certified</option>
+        </select>
+      </div>
+      <div class="search-container">
+        <label for="search" class="filter-label">Search</label>
+        <div style="position: relative;">
+          <i class="fas fa-search search-icon"></i>
+          <input id="search" type="text" placeholder="Search events..." autocomplete="off" class="filter-select"
+            style="padding-left: 2.5rem;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="events-card">
+      <div class="events-header">
+        <div class="events-title">Completed Events List</div>
+        <div class="events-count" th:text="${#lists.size(events)} + ' Events'">24 Events</div>
+      </div>
+      <table id="events-table">
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Participants</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="event : ${events}">
+            <td th:text="${event.name}">Web Development Workshop</td>
+            <td th:text="${#temporals.format(event.date,'MMM dd, yyyy')}">Jan 15, 2024</td>
+            <td><span class="event-type" th:classappend="${event.type}" th:text="${event.type}">Technical</span></td>
+            <td th:text="${event.participants}">85</td>
+            <td><span class="badge" th:classappend="' badge-' + ${event.statusClass}" th:text="${event.status}">Certified</span></td>
+            <td>
+              <div class="dropdown">
+                <button class="action-btn">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item view-details" th:attr="data-event=${event.id}">
+                    <i class="fas fa-eye"></i> View Details
+                  </a>
+                  <a href="#" class="dropdown-item" th:if="${event.status == 'Certified'}">
+                    <i class="fas fa-download"></i> Download Certificates
+                  </a>
+                  <a href="#" class="dropdown-item" th:if="${event.status == 'Evaluated'}">
+                    <i class="fas fa-upload"></i> Upload Certificates
+                  </a>
+                  <a href="#" class="dropdown-item">
+                    <i class="fas fa-comment-alt"></i> View Feedback
+                  </a>
+                  <a href="#" class="dropdown-item generate-report">
+                    <i class="fas fa-file-pdf"></i> Generate Report
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="pagination-btn disabled">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="pagination-btn active">1</button>
+        <button class="pagination-btn">2</button>
+        <button class="pagination-btn">3</button>
+        <button class="pagination-btn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- keep your modals and JS as is -->
+  <!-- ... (event details modal, upload modal, toast, and <script> remain unchanged) ... -->
+
+</body>
+
+
+        <script>
+        // Menu toggle functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        const menuContent = document.querySelector('.menu-content');
+        
+        // Open mobile menu
+        menuToggle.addEventListener('click', function() {
+          mobileMenu.classList.add('active');
+        });
+        
+        // Close mobile menu with close button
+        menuClose.addEventListener('click', function(e) {
+          e.stopPropagation();
+          mobileMenu.classList.remove('active');
+        });
+        
+        // Close mobile menu when clicking outside the menu content
+        mobileMenu.addEventListener('click', function(e) {
+          if (!menuContent.contains(e.target) || e.target === menuContent) {
+            mobileMenu.classList.remove('active');
+          }
+        });
+        
+        // Prevent clicks inside menu content from closing the menu
+        menuContent.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function() {
+            const searchText = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#events-table tbody tr');
+
+            rows.forEach(row => {
+                const eventName = row.querySelector('td').textContent.toLowerCase();
+                row.style.display = eventName.includes(searchText) ? '' : 'none';
+            });
+        });
+
+        // Filter functionality
+        document.getElementById('event-type').addEventListener('change', filterEvents);
+        document.getElementById('time-period').addEventListener('change', filterEvents);
+        document.getElementById('status').addEventListener('change', filterEvents);
+
+        function filterEvents() {
+            const typeFilter = document.getElementById('event-type').value;
+            const periodFilter = document.getElementById('time-period').value;
+            const statusFilter = document.getElementById('status').value;
+            const rows = document.querySelectorAll('#events-table tbody tr');
+
+            rows.forEach(row => {
+                const eventType = row.querySelector('.event-type').className.includes(typeFilter) || typeFilter === '';
+                const eventStatus = row.querySelector('.badge').textContent.toLowerCase().includes(statusFilter) || statusFilter === '';
+                
+                // Simple period filter simulation (would be more complex in real app)
+                const eventDate = new Date(row.querySelector('td:nth-child(2)').textContent);
+                const now = new Date();
+                let periodMatch = true;
+                
+                if (periodFilter === 'week') {
+                    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    periodMatch = eventDate >= oneWeekAgo;
+                } else if (periodFilter === 'month') {
+                    const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    periodMatch = eventDate >= oneMonthAgo;
+                } else if (periodFilter === 'quarter') {
+                    const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                    periodMatch = eventDate >= threeMonthsAgo;
+                } else if (periodFilter === 'year') {
+                    const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+                    periodMatch = eventDate >= oneYearAgo;
+                }
+                
+                row.style.display = (eventType && eventStatus && periodMatch) ? '' : 'none';
+            });
+        }
+
+        // Event details modal
+        const viewDetailsButtons = document.querySelectorAll('.view-details');
+        const eventDetailsModal = document.getElementById('event-details-modal');
+        const detailsModalClose = document.getElementById('details-modal-close');
+        const closeDetailsBtn = document.getElementById('close-details');
+
+        viewDetailsButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const eventId = this.getAttribute('data-event');
+                // In a real app, we would fetch event details based on eventId
+                eventDetailsModal.style.display = 'flex';
+            });
+        });
+
+        detailsModalClose.addEventListener('click', function() {
+            eventDetailsModal.style.display = 'none';
+        });
+
+        closeDetailsBtn.addEventListener('click', function() {
+            eventDetailsModal.style.display = 'none';
+        });
+
+        // Upload certificates modal
+        const uploadCertButtons = document.querySelectorAll('.upload-certificates');
+        const uploadModal = document.getElementById('upload-modal');
+        const modalCloseBtn = document.getElementById('modal-close');
+        const cancelUploadBtn = document.getElementById('cancel-upload');
+        const submitUploadBtn = document.getElementById('submit-upload');
+        const toast = document.getElementById('toast');
+
+        uploadCertButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                uploadModal.style.display = 'flex';
+            });
+        });
+
+        modalCloseBtn.addEventListener('click', function() {
+            uploadModal.style.display = 'none';
+            resetFileInputs();
+        });
+
+        cancelUploadBtn.addEventListener('click', function() {
+            uploadModal.style.display = 'none';
+            resetFileInputs();
+        });
+
+        // File upload preview functionality
+        const certificateTemplateInput = document.getElementById('certificate-template');
+        const excelDataInput = document.getElementById('excel-data');
+        const templatePreview = document.getElementById('template-preview');
+        const excelPreview = document.getElementById('excel-preview');
+
+        certificateTemplateInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                templatePreview.innerHTML = `
+                    <div class="file-preview-name">
+                        <i class="fas fa-check-circle"></i>
+                        <span>${file.name}</span>
+                    </div>
+                `;
+                templatePreview.style.display = 'block';
+            }
+        });
+
+        excelDataInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                excelPreview.innerHTML = `
+                    <div class="file-preview-name">
+                        <i class="fas fa-check-circle"></i>
+                        <span>${file.name}</span>
+                    </div>
+                `;
+                excelPreview.style.display = 'block';
+            }
+        });
+
+        // Submit files when submit button is clicked
+        submitUploadBtn.addEventListener('click', function() {
+            // Here you would normally handle the file upload
+            // For demo purposes, we'll just show a toast message
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+                uploadModal.style.display = 'none';
+                resetFileInputs();
+                
+                // Simulate status change in the table
+                const row = document.querySelector('tr td:contains("Leadership Seminar")').parentNode;
+                row.querySelector('.badge').className = 'badge badge-success';
+                row.querySelector('.badge').textContent = 'Certified';
+                
+                // Update dropdown options
+                const dropdown = row.querySelector('.dropdown-content');
+                dropdown.innerHTML = `
+                    <a href="#" class="dropdown-item view-details" data-event="3">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                    <a href="#" class="dropdown-item download-certificates">
+                        <i class="fas fa-download"></i> Download Certificates
+                    </a>
+                    <a href="#" class="dropdown-item view-feedback">
+                        <i class="fas fa-comment-alt"></i> View Feedback
+                    </a>
+                    <a href="#" class="dropdown-item generate-report">
+                        <i class="fas fa-file-pdf"></i> Generate Report
+                    </a>
+                `;
+            }, 3000);
+        });
+
+        // Function to reset file inputs and previews
+        function resetFileInputs() {
+            certificateTemplateInput.value = '';
+            excelDataInput.value = '';
+            templatePreview.innerHTML = '';
+            templatePreview.style.display = 'none';
+            excelPreview.innerHTML = '';
+            excelPreview.style.display = 'none';
+        }
+
+        // Generate reports button
+        document.getElementById('generate-reports').addEventListener('click', function() {
+            toast.querySelector('.toast-message').textContent = 'Reports are being generated...';
+            toast.className = 'toast warning';
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.className = 'toast success';
+                toast.querySelector('.toast-message').textContent = 'Reports generated successfully!';
+                
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2000);
+            }, 2000);
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', function(e) {
+            if (e.target === eventDetailsModal) {
+                eventDetailsModal.style.display = 'none';
+            }
+            if (e.target === uploadModal) {
+                uploadModal.style.display = 'none';
+                resetFileInputs();
+            }
+        });
+
+        // Helper function for contains selector
+        document.querySelectorAll = function(selector) {
+            if (selector.startsWith('tr td:contains')) {
+                const text = selector.match(/:contains\("(.*)"\)/)[1];
+                const tds = document.querySelectorAll('td');
+                return Array.from(tds).filter(td => td.textContent.includes(text)).map(td => td.parentNode);
+            }
+            return Element.prototype.querySelectorAll.apply(this, arguments);
+        };
+    </script>
+</body>
+</html>

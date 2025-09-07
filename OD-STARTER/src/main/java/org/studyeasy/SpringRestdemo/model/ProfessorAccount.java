@@ -16,7 +16,7 @@ import lombok.ToString;
 @Entity
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "students")
 public class ProfessorAccount {
 
     @Id

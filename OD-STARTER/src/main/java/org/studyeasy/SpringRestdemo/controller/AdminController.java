@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.studyeasy.SpringRestdemo.model.Event;
 import org.studyeasy.SpringRestdemo.payload.auth.EventResponseDTO;
+import org.studyeasy.SpringRestdemo.service.EnrollmentService;
 import org.studyeasy.SpringRestdemo.service.EventService;
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
 
@@ -40,6 +42,9 @@ public class AdminController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
 
       private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -328,5 +333,38 @@ public String declineEvent(@PathVariable Long id) {
     //     logger.info("API call: Number of ongoing approved events returned: {}", events.size());
     //     return events;
     // }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+@GetMapping("/admin/events/statistics")
+public String getEventStatistics(Model model) {
+    long completedEvents = eventService.findByStatus(EventStatus.APPROVED).size();
+    long studentsPresent = enrollmentService.countStudentsPresent();
+    long certificatesIssued = enrollmentService.countStudentsPresent(); // custom method
+
+    model.addAttribute("completedEvents", completedEvents);
+    model.addAttribute("studentsPresent", studentsPresent);
+    model.addAttribute("certificatesIssued", certificatesIssued);
+
+    return "adminCompleted"; // Thymeleaf template name
+}
+
+@PreAuthorize("hasAuthority('ADMIN')")
+@GetMapping("/admin/events/completed")
+public String getCompletedEvents(Model model) {
+    List<Event> completedEvents = eventService.findByStatus(EventStatus.COMPLETED);
+    model.addAttribute("events", completedEvents);
+
+    return "adminCompleted"; 
+}
+
+
+@PreAuthorize("hasAuthority('ADMIN')")
+@GetMapping("/admin/events/enrolled-students")
+public String countEnrolledStudents(Model model) {
+    long enrolledStudents = enrollmentService.countEnrolledStudents();
+    model.addAttribute("enrolled", enrolledStudents);
+    return "adminCompleted";
+}
+
 
 }

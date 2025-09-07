@@ -65,6 +65,13 @@ public List<Enrollment> findByEventId(Long eventId) {
         return enrollmentRepository.findByEventId(eventId);
     }
 
+    public long countStudentsPresent() {
+    return enrollmentRepository.countByAttendenceStatus(AttendenceStatus.PRESENT);
+}
+
+public long countEnrolledStudents() {
+    return enrollmentRepository.count();
+}
 
    
 }

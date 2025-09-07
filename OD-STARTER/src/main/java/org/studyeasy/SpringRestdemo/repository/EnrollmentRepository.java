@@ -21,6 +21,10 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
               List<Enrollment> findByEventId(Long eventId);
 
+              long countByAttendenceStatus(AttendenceStatus status);
+
+              long count();
+
 
 }
 

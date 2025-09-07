@@ -47,7 +47,7 @@ public class Event {
   
 
     @Enumerated(EnumType.STRING)
-    private EventStatus status;   // PENDING, APPROVED, DECLINED
+    private EventStatus status;   // PENDING, APPROVED, DECLINED,COMPLETED
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> eligibleYears;

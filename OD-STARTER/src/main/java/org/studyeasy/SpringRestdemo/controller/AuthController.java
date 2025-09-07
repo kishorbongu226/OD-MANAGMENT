@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.studyeasy.SpringRestdemo.model.Account;
 import org.studyeasy.SpringRestdemo.model.ProfessorAccount;
-import org.studyeasy.SpringRestdemo.payload.auth.ProfileDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.TokenDTO;
 import org.studyeasy.SpringRestdemo.payload.auth.UserLoginDTO;
 import org.studyeasy.SpringRestdemo.service.AccountService;
@@ -29,7 +28,6 @@ import org.studyeasy.SpringRestdemo.service.TokenService;
 import org.studyeasy.SpringRestdemo.util.constants.AccountError;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -66,31 +64,18 @@ public class AuthController {
             return new ResponseEntity<>(new TokenDTO(null), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(value = "/profile", produces = "application/json")
-    @ApiResponse(responseCode = "200", description = "View profile")
-    @ApiResponse(responseCode = "401", description = "Token missing")
-    @ApiResponse(responseCode = "403", description = "Token Error")
+    @GetMapping(value = "/student/profile", produces = "application/json")
+
     @Operation(summary = "View profile")
     @SecurityRequirement(name = "studyeasy-demo-api")
-    public ResponseEntity<ProfileDTO> profile(Authentication authentication) {
-        String register_no = authentication.getName();
+    public String profile(Model model) {
+        String register_no = "43111437";
         Optional<Account> optionalAccount = accountService.findByRegisterNumber(register_no);
         Account account = optionalAccount.get();
-        ProfileDTO profileDTO = new ProfileDTO(
-            account.getId(),
-            account.getRegisterNo(),
-            account.getAcademicYear(),
-            account.getAge(),
-            account.getBranch(),
-            account.getDepartment(),
-            account.getSection(),
-            account.getMobile_no(),
-            account.getEvents_attended(),
-            account.getEmail(),
-            account.getAuthorities(),
-            account.getCoordinator() != null ? account.getCoordinator().getName() : null);
+        model.addAttribute("profile", account);
+        
 
-    return ResponseEntity.ok(profileDTO);
+    return "studentProfile";
 
     }
 
@@ -119,7 +104,7 @@ public class AuthController {
     logger.debug("Profile object added to model: {}", professor);
 
     logger.info("➡️ Returning view: adminProfile");
-    return "adminProfile";
+    return "teacherProfile";
     }
 
   

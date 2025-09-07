@@ -14,7 +14,7 @@ import lombok.ToString;
 @Entity
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "coordinator")
 public class Account {
 
     @Id
