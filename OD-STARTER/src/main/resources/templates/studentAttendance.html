@@ -535,222 +535,147 @@
     });
     
     // QR Code Scanner functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const cameraSelect = document.getElementById('camera-select');
-      const startScanButton = document.getElementById('start-scan');
-      const stopScanButton = document.getElementById('stop-scan');
-      const scanResult = document.getElementById('scan-result');
-      const eventName = document.getElementById('event-name');
-      const eventDate = document.getElementById('event-date');
-      const eventLocation = document.getElementById('event-location');
-      const scanTime = document.getElementById('scan-time');
-      const qrReaderElement = document.getElementById('qr-reader');
-      const qrReaderStatus = document.getElementById('qr-reader-status');
-      const errorMessage = document.getElementById('error-message');
-      const errorText = document.getElementById('error-text');
-      
-      let html5QrCode = null;
-      let isScanning = false;
-      
-      // Initialize camera selection
-      function initCameras() {
-        cameraSelect.innerHTML = '<option value="">Select Camera</option>';
-        
-        Html5Qrcode.getCameras()
-          .then(devices => {
-            if (devices && devices.length) {
-              // Add default option if no devices found
-              if (devices.length === 0) {
-                const option = document.createElement('option');
-                option.value = "";
-                option.text = "No cameras found";
-                cameraSelect.add(option);
-                startScanButton.disabled = true;
-              } else {
-                // Populate the cameraSelect dropdown
-                devices.forEach((device, index) => {
-                  const option = document.createElement('option');
-                  option.value = device.id;
-                  option.text = device.label || `Camera ${index + 1}`;
-                  cameraSelect.add(option);
-                });
-                
-                // Auto-select first camera if only one available
-                if (devices.length === 1) {
-                  cameraSelect.value = devices[0].id;
-                }
-              }
-            }
-          })
-          .catch(err => {
-            console.error('Error getting cameras', err);
-            showError('Could not access cameras. Please ensure camera permissions are granted.');
-          });
-      }
-      
-      // Initialize QR code scanner
-      function initQrScanner() {
-        if (html5QrCode) {
-          html5QrCode.clear();
-        }
-        
-        html5QrCode = new Html5Qrcode("qr-reader", { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE] });
-        
-        // Set minimal styling for the scanner
-        qrReaderElement.style.height = '300px';
-        
-        // Hide any error message
-        hideError();
-      }
-      
-      // Show error message
-      function showError(message) {
+document.addEventListener('DOMContentLoaded', function() {
+    const cameraSelect = document.getElementById('camera-select');
+    const startScanButton = document.getElementById('start-scan');
+    const stopScanButton = document.getElementById('stop-scan');
+    const scanResult = document.getElementById('scan-result');
+    const eventName = document.getElementById('event-name');
+    const eventDate = document.getElementById('event-date');
+    const eventLocation = document.getElementById('event-location');
+    const scanTime = document.getElementById('scan-time');
+    const qrReaderElement = document.getElementById('qr-reader');
+    const qrReaderStatus = document.getElementById('qr-reader-status');
+    const errorMessage = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+
+    let html5QrCode = null;
+    let isScanning = false;
+
+    // Show/hide errors
+    function showError(message) {
         errorText.textContent = message;
         errorMessage.style.display = 'block';
         qrReaderStatus.textContent = 'Error: ' + message;
-      }
-      
-      // Hide error message
-      function hideError() {
+    }
+    function hideError() {
         errorMessage.style.display = 'none';
+    }
+
+    // Initialize camera dropdown
+    function initCameras() {
+        Html5Qrcode.getCameras()
+            .then(devices => {
+                cameraSelect.innerHTML = '<option value="">Select Camera</option>';
+                if (devices && devices.length) {
+                    devices.forEach((device, index) => {
+                        const option = document.createElement('option');
+                        option.value = device.id;
+                        option.text = device.label || `Camera ${index + 1}`;
+                        cameraSelect.add(option);
+                    });
+                    if (devices.length === 1) cameraSelect.value = devices[0].id;
+                } else {
+                    showError('No cameras found.');
+                    startScanButton.disabled = true;
+                }
+            })
+            .catch(err => showError('Could not access cameras. Please allow permissions.'));
+    }
+
+    // Initialize QR scanner
+    function initQrScanner() {
+        if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("qr-reader", { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE] });
+        qrReaderElement.style.height = '300px';
       }
-      
-      // Initialize the scanner
-      initQrScanner();
-      initCameras();
-      
-      // Start scanning
-      startScanButton.addEventListener('click', function() {
-        const cameraId = cameraSelect.value;
-        
-        if (!cameraId) {
-          showError('Please select a camera first.');
-          return;
+      hideError();
+  }
+
+    // Stop scanning helper
+    function stopScanning() {
+        if (html5QrCode && isScanning) {
+            html5QrCode.stop()
+                .then(() => {
+                    isScanning = false;
+                    startScanButton.disabled = false;
+                    stopScanButton.disabled = true;
+                    qrReaderStatus.textContent = 'Scanner stopped';
+                })
+                .catch(err => showError('Error stopping scanner: ' + err.message));
         }
-        
-        // Hide previous results and errors
+    }
+
+    // QR scan success handler
+ // QR code scan success callback
+async function onScanSuccess(decodedText) {
+    stopScanning(); // stop the camera
+    
+    try {
+        // Use the decodedText directly as the eventKey
+        const eventKey = decodedText.trim();
+
+        // Update scan result UI
+        eventName.textContent = 'Event Name: ' + eventKey;
+        eventDate.textContent = '-';
+        eventLocation.textContent = '-';
+        const now = new Date();
+        scanTime.textContent = 'Scanned on: ' + now.toLocaleString();
+        scanResult.style.display = 'block';
+        qrReaderStatus.textContent = 'QR code scanned! Marking attendance...';
+
+        // Call backend to mark attendance
+        const response = await fetch(`/api/v1/student/attend/${eventKey}`, { method: 'POST' });
+
+        if (response.ok) {
+            const msg = await response.text();
+            qrReaderStatus.textContent = msg;
+        } else {
+            const errorMsg = await response.text();
+            showError('Attendance failed: ' + errorMsg);
+        }
+
+    } catch (error) {
+        showError('Failed to process QR code: ' + error.message);
+    }
+}
+
+
+    // Scan progress (optional)
+    function onScanProgress(errorMessage) {
+        if (errorMessage) console.warn('QR scan error:', errorMessage);
+    }
+
+    // Start scanning
+    startScanButton.addEventListener('click', function() {
+        const cameraId = cameraSelect.value;
+        if (!cameraId) { showError('Please select a camera first.'); return; }
+
         scanResult.style.display = 'none';
         hideError();
-        
-        // Configure scanning
-        const config = {
-          fps: 10,
-          qrbox: { width: 250, height: 250 }
-        };
-        
-        // Update status
-        qrReaderStatus.textContent = 'Starting camera...';
-        
-        // Start scanning
-        html5QrCode.start(
-          cameraId, 
-          config,
-          onScanSuccess,
-          onScanProgress
-        )
-        .then(() => {
-          isScanning = true;
-          startScanButton.disabled = true;
-          stopScanButton.disabled = false;
-          qrReaderStatus.textContent = 'Scanning... Point camera at QR code';
-        })
-        .catch(err => {
-          console.error('Unable to start scanning:', err);
-          showError('Failed to start camera: ' + err.message || 'Unknown error');
-          startScanButton.disabled = false;
-          stopScanButton.disabled = true;
-        });
-      });
-      
-      // Stop scanning
-      stopScanButton.addEventListener('click', function() {
-        stopScanning();
-      });
-      
-      // Helper function to stop scanning
-      function stopScanning() {
-        if (html5QrCode && isScanning) {
-          html5QrCode.stop()
+
+        html5QrCode.start(cameraId, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess)
             .then(() => {
-              isScanning = false;
-              startScanButton.disabled = false;
-              stopScanButton.disabled = true;
-              qrReaderStatus.textContent = 'Scanner stopped';
+                isScanning = true;
+                startScanButton.disabled = true;
+                stopScanButton.disabled = false;
+                qrReaderStatus.textContent = 'Scanning... Point camera at QR code';
             })
-            .catch(err => {
-              console.error('Error stopping scanner', err);
-              showError('Error stopping scanner: ' + err.message);
-            });
-        }
-      }
-      
-      // QR code scan progress callback (show status updates)
-      function onScanProgress(errorMessage, status) {
-        // This is called frequently during scanning, but we only need to handle errors
-        if (errorMessage) {
-          console.warn('QR scan error:', errorMessage);
-          // Don't show transient errors to the user to avoid flickering
-        }
-      }
-      
-      // QR code scan success callback
-      function onScanSuccess(decodedText, decodedResult) {
-        // Stop scanning
-        stopScanning();
-        
-        // Process the scanned QR code data
-        try {
-          // First try to parse as JSON
-          let eventData;
-          try {
-            eventData = JSON.parse(decodedText);
-          } catch (e) {
-            // If not JSON, use the raw text as the event name
-            eventData = {
-              name: decodedText,
-              date: "Not specified",
-              location: "Not specified"
-            };
-          }
-          
-          // Update the result display
-          eventName.textContent = eventData.name || 'Unknown Event';
-          eventDate.textContent = eventData.date || 'Date not specified';
-          eventLocation.textContent = eventData.location || 'Location not specified';
-          
-          // Get current time for scan timestamp
-          const now = new Date();
-          const timeString = now.toLocaleDateString() + ' ' + 
-              now.getHours().toString().padStart(2, '0') + ':' +
-              now.getMinutes().toString().padStart(2, '0');
-          
-          scanTime.textContent = 'Scanned on: ' + timeString;
-          
-          // Show the result
-          scanResult.style.display = 'block';
-          qrReaderStatus.textContent = 'QR code successfully scanned!';
-          
-          // Here you would usually send the scan data to your server
-          console.log('Scan successful:', eventData);
-          
-        } catch (error) {
-          console.error('Error processing QR code data:', error);
-          showError('Failed to process QR code data: ' + error.message);
-        }
-      }
-      
-      // Handle camera permission errors better
-      window.addEventListener('camera-permission-denied', function() {
-        showError('Camera permission denied. Please allow camera access and try again.');
-      });
-      
-      // Prevent page unload while scanning
-      window.addEventListener('beforeunload', function(e) {
-        if (isScanning) {
-          stopScanning();
-        }
-      });
+            .catch(err => showError('Failed to start camera: ' + err.message));
     });
+
+    // Stop scanning
+    stopScanButton.addEventListener('click', stopScanning);
+
+    // Init on page load
+    initQrScanner();
+    initCameras();
+
+    // Stop scanning if page unloads
+    window.addEventListener('beforeunload', function() {
+        if (isScanning) stopScanning();
+    });
+});
   </script>
 </body>
 </html>

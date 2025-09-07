@@ -206,6 +206,12 @@ public ResponseEntity<InputStreamResource> generateCertificate(@PathVariable Lon
             .contentType(MediaType.APPLICATION_PDF)
             .body(new InputStreamResource(bis));
 }
+
+
+@GetMapping("/Attendance")
+public String getAttendance(){
+    return "studentAttendance";
+}
 }
 
 

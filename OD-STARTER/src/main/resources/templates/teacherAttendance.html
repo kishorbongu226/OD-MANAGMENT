@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Attendance Tracking</title>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --primary: #831238;
@@ -290,12 +288,12 @@
         transform: scale(0.95);
         box-shadow: 0 0 0 0 rgba(131, 18, 56, 0.7);
       }
-      
+
       70% {
         transform: scale(1);
         box-shadow: 0 0 0 10px rgba(131, 18, 56, 0);
       }
-      
+
       100% {
         transform: scale(0.95);
         box-shadow: 0 0 0 0 rgba(131, 18, 56, 0);
@@ -531,6 +529,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-container">
@@ -549,7 +548,8 @@
         <button class="icon-button" title="Notifications" aria-label="Notifications">
           <i class="fas fa-bell"></i>
         </button>
-        <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='teacher.profile.html'">
+        <button class="icon-button" title="Account" aria-label="Account"
+          onclick="window.location.href='teacher.profile.html'">
           <i class="fas fa-user-circle"></i>
         </button>
       </div>
@@ -561,8 +561,8 @@
     <div class="menu-content">
       <div class="menu-header">
         <div class="logo">
-            <i class="fas fa-users"></i>
-            <span>Faculty Portal</span>
+          <i class="fas fa-users"></i>
+          <span>Faculty Portal</span>
         </div>
         <button class="menu-close" id="menu-close" aria-label="Close menu">
           <i class="fas fa-times"></i>
@@ -573,9 +573,9 @@
         <a href="teacher.profile.html"><i class="fas fa-user"></i> Profile</a>
         <a href="teacher.upcoming.html"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
         <a href="teacher.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
-        <a href="teacher.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>        
-        <a href="teacher.approval.html" ><i class="fas fa-clipboard-check"></i>Event Request</a>
-        <a href="teacher.odapproval.html" ><i class="fas fa-clipboard-check"></i>Od Approval</a>
+        <a href="teacher.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>
+        <a href="teacher.approval.html"><i class="fas fa-clipboard-check"></i>Event Request</a>
+        <a href="teacher.odapproval.html"><i class="fas fa-clipboard-check"></i>Od Approval</a>
         <a href="teacher.attendance.html" class="active"><i class="fas fa-clipboard-list"></i> Attendance</a>
         <a href="teacher.feedback.html"><i class="fas fa-comment-alt"></i> Feedback</a>
       </div>
@@ -585,20 +585,21 @@
   <main>
     <div class="container">
       <h1 class="page-title">Attendance Management</h1>
-      
+
+
+      <!-- Wanted part -->
       <!-- Event selector -->
       <div class="event-selector">
         <div class="select-wrapper">
-          <select id="event-select">
-            <option value="">Select an Event</option>
-            <option value="1" selected>Workshop on AI Ethics - April 15, 2025</option>
-            <option value="2">Career Fair - April 10, 2025</option>
-            <option value="3">Guest Lecture: Future of Technology - April 5, 2025</option>
-            <option value="4">Seminar on Blockchain - March 28, 2025</option>
+          <select id="event-select" name="event" onchange="redirectToEvent(this)">
+            <option value="">-- Select an Event --</option>
+            <option th:each="e : ${events}" th:value="${e.id}" th:text="${e.title}"
+              th:selected="${event != null and e.id == event.id}">
+            </option>
           </select>
         </div>
       </div>
-      
+
       <!-- Attendance stats -->
       <div class="attendance-stats">
         <div class="stat-card">
@@ -614,158 +615,131 @@
           <div class="stat-label">Attendance Rate</div>
         </div>
       </div>
-      
+
       <!-- QR Code card -->
-      <div class="card">
+      <div class="card" th:if="${event != null}">
         <h2 class="card-title">Generate QR Code for Attendance</h2>
+
         <div class="qr-container" id="qrcode">
-          <div class="qr-placeholder">
+          <img th:if="${qrCode != null}" th:src="'data:image/png;base64,' + ${qrCode}" alt="QR Code" />
+          <div class="qr-placeholder" th:if="${qrCode == null}">
             <i class="fas fa-qrcode"></i>
-            <p>Generate a QR code for students to scan</p>
+            <p>Click the button to generate QR code</p>
           </div>
         </div>
-        <button class="btn btn-primary" id="generate-qr-btn">
-          <i class="fas fa-qrcode"></i>
-          <span>Generate QR Code</span>
-        </button>
-        <div class="success-indicator" id="success-indicator"></div>
-        <p class="card-text">Students can scan this QR code to mark their attendance</p>
-      </div>
-      
-      <!-- Attendance history -->
-      <div class="history-section">
-        <h3 class="section-title"><i class="fas fa-history"></i> QR Code History</h3>
-        <div class="table-responsive">
-          <table class="attendance-table">
-            <thead>
-              <tr>
-                <th>Generated On</th>
-                <th>Event</th>
-                <th>Active For</th>
-                <th>Status</th>
-                <th>Scans</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Apr 19, 10:15 AM</td>
-                <td>Workshop on AI Ethics</td>
-                <td>15 minutes</td>
-                <td><span class="status-active"><i class="fas fa-circle"></i> Active</span></td>
-                <td><span class="badge badge-success">12</span></td>
-              </tr>
-              <tr>
-                <td>Apr 19, 9:30 AM</td>
-                <td>Workshop on AI Ethics</td>
-                <td>15 minutes</td>
-                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
-                <td><span class="badge badge-success">20</span></td>
-              </tr>
-              <tr>
-                <td>Apr 10, 2:45 PM</td>
-                <td>Career Fair</td>
-                <td>30 minutes</td>
-                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
-                <td><span class="badge badge-success">32</span></td>
-              </tr>
-              <tr>
-                <td>Apr 5, 11:00 AM</td>
-                <td>Guest Lecture: Future of Technology</td>
-                <td>15 minutes</td>
-                <td><span class="status-expired"><i class="fas fa-circle"></i> Expired</span></td>
-                <td><span class="badge badge-success">28</span></td>
-              </tr>
-            </tbody>
-          </table>
+
+        <form th:action="@{'/api/v1/teacher/event/' + ${event.id} + '/generateQR'}" method="post">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-qrcode"></i>
+            <span th:text="${qrCode != null ? 'Regenerate QR Code' : 'Generate QR Code'}"></span>
+          </button>
+        </form>
+
+        <div class="success-indicator" th:if="${qrCode != null}">
+          <i class="fas fa-check-circle"></i> QR Code generated successfully
         </div>
       </div>
+
+
+
+
     </div>
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script>
-    // Mobile menu toggle
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuClose = document.getElementById("menu-close");
 
-    menuToggle.addEventListener("click", () => {
-      mobileMenu.classList.add("active");
-    });
-
-    menuClose.addEventListener("click", () => {
-      mobileMenu.classList.remove("active");
-    });
-
-    // Click outside to close menu
-    document.addEventListener("click", (e) => {
-      if (mobileMenu.classList.contains("active") && 
-          !e.target.closest(".menu-content") && 
-          !e.target.closest("#menu-toggle")) {
-        mobileMenu.classList.remove("active");
-      }
-    });
-
-    // Notification button
-    const notificationBtn = document.querySelector('.icon-button[title="Notifications"]');
-    if (notificationBtn) {
-      notificationBtn.addEventListener('click', () => {
-        alert('You have no new notifications.');
-      });
-    }
-
-    // Account button
-    const accountBtn = document.querySelector('.icon-button[title="Account"]');
-    if (accountBtn) {
-      accountBtn.addEventListener('click', () => {
-        alert('User profile functionality coming soon.');
-      });
-    }
-
-    // Event selection
-    const eventSelect = document.getElementById("event-select");
-    if (eventSelect) {
-      eventSelect.addEventListener("change", () => {
-        // We would typically fetch data for the selected event here
-        // For demo purposes, we're just displaying a message
-        if (eventSelect.value) {
-          const eventText = eventSelect.options[eventSelect.selectedIndex].text;
-          console.log(`Selected event: ${eventText}`);
-        }
-      });
-    }
-
-    // QR Code generation
+  <script th:inline="javascript">
     const generateQRBtn = document.getElementById("generate-qr-btn");
     const qrcodeContainer = document.getElementById("qrcode");
     const successIndicator = document.getElementById("success-indicator");
     let firstClick = true;
 
+     let eventId = /*[[${event != null} ? ${event.id} : 'null']]*/;
+      console.log("Event ID:", eventId);
+      console.log("Page loaded with Event ID:", eventId);
+      function redirectToEvent(select) {
+        const eventId = select.value;
+        console.log(eventId)
+        if (eventId) {
+          // ✅ Change this depending on your controller mapping
+          window.location.href = "/api/v1/teacher/event/" + eventId;
+          console.log(eventId)
+
+        }
+      }
     if (generateQRBtn && qrcodeContainer) {
+
+
+     
       generateQRBtn.addEventListener("click", generateQRCode);
 
       function generateQRCode() {
-        // Create a unique URL with timestamp and event ID
-        const eventId = document.getElementById("event-select").value || "1";
-        const timestamp = new Date().getTime();
-        const uniqueId = Math.random().toString(36).substring(2, 15);
-        
-        // In a real application, this would link to your attendance system
-        const baseUrl = "https://faculty-portal.example.com/attendance";
-        const attendanceUrl = `${baseUrl}?event=${eventId}&ts=${timestamp}&uid=${uniqueId}`;
+
+
 
         // Clear previous QR code
         qrcodeContainer.innerHTML = "";
 
-        // Generate new QR code
-        new QRCode(qrcodeContainer, {
-          text: attendanceUrl,
-          width: 256,
-          height: 256,
-          colorDark: "#831238",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H,
+        if (qrCodeData && qrCodeData !== "") {
+          const img = document.createElement("img");
+          img.src = "data:image/png;base64," + qrCodeData;
+          img.alt = "QR Code";
+          qrcodeContainer.appendChild(img);
+        }
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuClose = document.getElementById("menu-close");
+
+        menuToggle.addEventListener("click", () => {
+          mobileMenu.classList.add("active");
         });
+
+        menuClose.addEventListener("click", () => {
+          mobileMenu.classList.remove("active");
+        });
+
+        // Click outside to close menu
+        document.addEventListener("click", (e) => {
+          if (mobileMenu.classList.contains("active") &&
+            !e.target.closest(".menu-content") &&
+            !e.target.closest("#menu-toggle")) {
+            mobileMenu.classList.remove("active");
+          }
+        });
+
+        // Notification button
+        const notificationBtn = document.querySelector('.icon-button[title="Notifications"]');
+        if (notificationBtn) {
+          notificationBtn.addEventListener('click', () => {
+            alert('You have no new notifications.');
+          });
+        }
+
+        // Account button
+        const accountBtn = document.querySelector('.icon-button[title="Account"]');
+        if (accountBtn) {
+          accountBtn.addEventListener('click', () => {
+            alert('User profile functionality coming soon.');
+          });
+        }
+
+        // Event selection
+        const eventSelect = document.getElementById("event-select");
+        if (eventSelect) {
+          eventSelect.addEventListener("change", () => {
+            // We would typically fetch data for the selected event here
+            // For demo purposes, we're just displaying a message
+            if (eventSelect.value) {
+              const eventText = eventSelect.options[eventSelect.selectedIndex].text;
+              console.log(`Selected event: ${eventText}`);
+            }
+          });
+        }
+
+        // QR Code generation
+
+
 
         // Add animation effect
         qrcodeContainer.classList.add("pulse-animation");
@@ -777,7 +751,7 @@
         if (successIndicator) {
           successIndicator.innerHTML = `<i class="fas fa-check-circle"></i><span>QR Code generated successfully</span>`;
           successIndicator.classList.add("visible");
-          
+
           // Hide the success message after 3 seconds
           setTimeout(() => {
             successIndicator.classList.remove("visible");
@@ -789,59 +763,14 @@
           firstClick = false;
           generateQRBtn.innerHTML = `<i class="fas fa-sync-alt"></i><span>Regenerate QR Code</span>`;
         }
-        
+
         // In a real app, you would record this QR code generation in your database
-        logQRGeneration(eventId);
+
       }
-      
-      function logQRGeneration(eventId) {
-        // Simulate logging to a database
-        console.log(`QR code generated for event ID: ${eventId} at ${new Date().toLocaleString()}`);
-        
-        // In a real application, you would send this data to your backend
-        // Example:
-        // fetch('/api/log-qr-generation', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ eventId, timestamp: new Date() })
-        // });
-        
-        // Update the table with the new entry (for demo purposes)
-        const table = document.querySelector('.attendance-table tbody');
-        if (table) {
-          const now = new Date();
-          const formattedTime = now.toLocaleString('en-US', { 
-            month: 'short', 
-            day: 'numeric', 
-            hour: 'numeric', 
-            minute: '2-digit', 
-            hour12: true 
-          });
-          
-          const eventText = document.getElementById("event-select").options[
-            document.getElementById("event-select").selectedIndex
-          ].text;
-          
-          const newRow = table.insertRow(0);
-          newRow.innerHTML = `
-            <td>${formattedTime}</td>
-            <td>${eventText.split(' - ')[0]}</td>
-            <td>15 minutes</td>
-            <td><span class="status-active"><i class="fas fa-circle"></i> Active</span></td>
-            <td><span class="badge badge-success">0</span></td>
-          `;
-          
-          // If there was a previously active QR code, mark it as expired
-          const activeRows = table.querySelectorAll('.status-active');
-          if (activeRows.length > 1) {
-            for (let i = 1; i < activeRows.length; i++) {
-              activeRows[i].className = 'status-expired';
-              activeRows[i].innerHTML = '<i class="fas fa-circle"></i> Expired';
-            }
-          }
-        }
-      }
+
+
     }
   </script>
 </body>
+
 </html>
