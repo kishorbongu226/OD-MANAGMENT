@@ -29,50 +29,65 @@ public class AttendanceController {
     @Autowired
     private EventService eventService;
     
-    @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
-    @GetMapping("/event/{id}")
-    @SecurityRequirement(name = "studyeasy-demo-api")
-    public  String getEvent(@PathVariable Long id,Model model){
-        Optional<Event> optionalEvent = eventService.findById(id);
-        if(optionalEvent.isPresent()){
-            Event event = optionalEvent.get();
-            model.addAttribute("event",event);
-            return "qrCode";
-        }
 
-        
-return "Not Found ";
-    }
 
 @GetMapping("/events/")
    public String getAllEvents(Model model) {
+
+    
     List<Event> events = eventService.findAll(); // fetch all events
     model.addAttribute("events", events); // add list to model
-    return "eventList"; // points to eventList.html in templates/
+    return "teacherAttendance"; // points to eventList.html in templates/
 }
 
-@PostMapping("/event/{id}")
-public String generateQR(@PathVariable long id, Model model) {
-    try {
-        // Example: encode event link or event details
-        Optional<Event> optionalEvent= eventService.findById(id) ;
-        Event event = optionalEvent.get();
-        String qrText =   event.getEventKey();
+@GetMapping("/event/{id}")
+public String getEventByID(@PathVariable Long id,Model model){
 
-        String qrCodeBase64 = QRCodeGenerator.generateQRCodeImage(qrText, 300, 300);
-
-        // Add QR Code to model
-        model.addAttribute("qrCode", qrCodeBase64);
-         model.addAttribute("event", event);
-            
+    List<Event> events = eventService.findAll();
+    Optional<Event> optionalEvent = eventService.findById(id);
+    Event event = optionalEvent.get();
+    model.addAttribute("event", event);
+    model.addAttribute("events", events);
 
 
-        return "qrCode"; // qrView.html inside templates/
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "error";
+
+    return "teacherAttendance";
+}
+
+
+
+
+  @PostMapping("/event/{id}/generateQR")
+    public String generateQR(@PathVariable long id, Model model) {
+        try {
+            // Fetch event by id
+            Optional<Event> optionalEvent = eventService.findById(id);
+            if (!optionalEvent.isPresent()) {
+                model.addAttribute("error", "Event not found");
+                return "error";
+            }
+
+            Event event = optionalEvent.get();
+            List<Event> events = eventService.findAll();
+
+            // QR code text (can be event key, link, etc.)
+            String qrText = event.getEventKey();
+
+            // Generate QR in base64
+            String qrCodeBase64 = QRCodeGenerator.generateQRCodeImage(qrText, 300, 300);
+
+            // Add to model
+            model.addAttribute("qrCode", qrCodeBase64);
+            model.addAttribute("event", event);
+            model.addAttribute("events", events);
+
+            return "teacherAttendance"; // Thymeleaf template
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error generating QR code");
+            return "error";
+        }
     }
-}
 
 
 }

@@ -15,8 +15,6 @@
     <root level="INFO">
         <appender-ref ref="DAILY"/>
     </root>
-<<<<<<< HEAD
+
+
 </configuration>
-=======
-</configuration>
->>>>>>> 4bd1753d97f05dc1935283cf0afc0a09b619c31c

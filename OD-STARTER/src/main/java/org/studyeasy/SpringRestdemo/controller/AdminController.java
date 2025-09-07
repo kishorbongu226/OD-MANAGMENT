@@ -34,108 +34,107 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/api/v1")
-@Tag(name="Event Controller",description = "controller for event management")
+@Tag(name = "Event Controller", description = "controller for event management")
 @Slf4j
 public class AdminController {
 
     @Autowired
     private EventService eventService;
 
-      private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/events/add")
-  
-    @SecurityRequirement(name="studyeasy-demo-api")
-    public String createEvent(@Valid @ModelAttribute Event event,BindingResult bindingResult) {
 
-log.info("➡️ Received request to create event");
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public String createEvent(@Valid @ModelAttribute Event event, BindingResult bindingResult) {
 
-    if (bindingResult.hasErrors()) {
-        log.warn("❌ Validation failed for event: {}", event);
-        return "event-form"; // back to form page
+        log.info("➡️ Received request to create event");
+
+        if (bindingResult.hasErrors()) {
+            log.warn("❌ Validation failed for event: {}", event);
+            return "event-form"; // back to form page
+        }
+
+        log.debug(
+                "Event data received: title={}, type={}, venue={}, start={}, end={}, coordinator={}, eligibleYears={}",
+                event.getTitle(), event.getType(), event.getLocation(),
+                event.getStartTime(), event.getEndTime(),
+                event.getEventCordinator(), event.getEligibleYears());
+
+        Event create_event = new Event();
+        create_event.setType(event.getType());
+        create_event.setTitle(event.getTitle());
+        create_event.setDescription(event.getDescription());
+        create_event.setEventCordinator(event.getEventCordinator());
+        create_event.setLocation(event.getLocation());
+        create_event.setStartTime(event.getStartTime());
+        create_event.setEndTime(event.getEndTime());
+        create_event.setEligibleYears(event.getEligibleYears());
+
+        log.info("📌 Saving new event: {}", create_event.getTitle());
+        eventService.createEvent(create_event, "ADMIN");
+        log.info("✅ Event '{}' created successfully", create_event.getTitle());
+
+        return "redirect:/api/v1/events/add";
     }
 
-    log.debug("Event data received: title={}, type={}, venue={}, start={}, end={}, coordinator={}, eligibleYears={}",
-            event.getTitle(), event.getType(), event.getLocation(),
-            event.getStartTime(), event.getEndTime(),
-            event.getEventCordinator(), event.getEligibleYears());
+    @GetMapping("/events/add")
+    public String getUpcomingevents(Model model) {
 
-    Event create_event = new Event();
-    create_event.setType(event.getType());
-    create_event.setTitle(event.getTitle());
-    create_event.setDescription(event.getDescription());
-    create_event.setEventCordinator(event.getEventCordinator());
-    create_event.setLocation(event.getLocation());
-    create_event.setStartTime(event.getStartTime());
-    create_event.setEndTime(event.getEndTime());
-    create_event.setEligibleYears(event.getEligibleYears());
+        List<Event> events = eventService.findAll();
+        model.addAttribute("events", events);
+        model.addAttribute("event", new Event());
 
-    log.info("📌 Saving new event: {}", create_event.getTitle());
-    eventService.createEvent(create_event, "ADMIN");
-    log.info("✅ Event '{}' created successfully", create_event.getTitle());
-
-    return "redirect:/api/v1/events/add";
-}
-
-@GetMapping("/events/add")
-public String getUpcomingevents(Model model){
-
- List<Event> events = eventService.findAll();
-        model.addAttribute("events",events);
-     model.addAttribute("event", new Event());
-     
         return "adminUpcoming";
-}
+    }
 
-    //  Get Event by ID
-//     @GetMapping("/{id}")
-//     public ResponseEntity<EventResponseDTO> getEvent(@PathVariable Long id) {
-//         Event event = eventService.findById(id)
-//                 .orElseThrow(() -> new RuntimeException("Event not found"));
+    // Get Event by ID
+    // @GetMapping("/{id}")
+    // public ResponseEntity<EventResponseDTO> getEvent(@PathVariable Long id) {
+    // Event event = eventService.findById(id)
+    // .orElseThrow(() -> new RuntimeException("Event not found"));
 
-//         EventResponseDTO response = new EventResponseDTO(
-//                 event.getId(),
-//                 event.getTitle(),
-//                 event.getDescription(),
-//                 event.getLocation(),
-//                 event.getStartTime(),
-//                 event.getEndTime()
-//         );
+    // EventResponseDTO response = new EventResponseDTO(
+    // event.getId(),
+    // event.getTitle(),
+    // event.getDescription(),
+    // event.getLocation(),
+    // event.getStartTime(),
+    // event.getEndTime()
+    // );
 
-//         return ResponseEntity.ok(response);
-//     }
+    // return ResponseEntity.ok(response);
+    // }
 
+    @GetMapping("/events/pending")
+    public String getPendingEvents(Model model) {
+        List<Event> events = eventService.findByStatus(EventStatus.PENDING);
 
- 
-@GetMapping("/events/pending")
-public String getPendingEvents(Model model) {
-    List<Event> events = eventService.findByStatus(EventStatus.PENDING);
+        List<EventResponseDTO> response = events.stream()
+                .map(event -> new EventResponseDTO(
+                        event.getId(),
+                        event.getTitle(),
+                        event.getDescription(),
+                        event.getLocation(),
+                        event.getStartTime(),
+                        event.getEndTime(),
+                        event.getEventCordinator(),
+                        event.getEligibleYears(),
+                        event.getStatus()))
+                .toList();
 
-    List<EventResponseDTO> response = events.stream()
-            .map(event -> new EventResponseDTO(
-                    event.getId(),
-                    event.getTitle(),
-                    event.getDescription(),
-                    event.getLocation(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    event.getEventCordinator(),
-                    event.getEligibleYears(),
-                    event.getStatus()
-            ))
-            .toList();
+        // Add data to the model
+        model.addAttribute("events", response);
 
-    // Add data to the model
-    model.addAttribute("events", response);
+        // return the name of your HTML template (e.g., pending-events.html in
+        // templates/)
+        return "redirect:/api/v1/events";
+    }
 
-    // return the name of your HTML template (e.g., pending-events.html in templates/)
-    return "redirect:/api/v1/events";
-}
-
-
-      @PreAuthorize("hasAuthority('ADMIN')")
-@PostMapping("/events/{id}/approve")
-@SecurityRequirement(name="studyeasy-demo-api")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/events/{id}/approve")
+    @SecurityRequirement(name = "studyeasy-demo-api")
     public String approveEvent(@PathVariable Long id) {
         logger.info("Received request to approve event with id: {}", id);
 
@@ -156,23 +155,20 @@ public String getPendingEvents(Model model) {
         return "redirect:/api/v1/events";
     }
 
-@PreAuthorize("hasAuthority('ADMIN')")
-@PostMapping("/events/{id}/decline")
-@SecurityRequirement(name="studyeasy-demo-api")
-public String declineEvent(@PathVariable Long id) {
-    Event event = eventService.findById(id)
-            .orElseThrow(() -> new RuntimeException("Event not found"));
-    event.setStatus(EventStatus.DECLINED);
-    eventService.save(event);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/events/{id}/decline")
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public String declineEvent(@PathVariable Long id) {
+        Event event = eventService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        event.setStatus(EventStatus.DECLINED);
+        eventService.save(event);
 
-    // Redirect to the event list page
-    return "redirect:/api/v1/events";
-}
+        // Redirect to the event list page
+        return "redirect:/api/v1/events";
+    }
 
-
-        // ✅ Get All Events
-
-
+    // ✅ Get All Events
 
     @GetMapping("/events")
     public String eventsPage(Model model) {
@@ -187,62 +183,57 @@ public String declineEvent(@PathVariable Long id) {
                         event.getEndTime(),
                         event.getEventCordinator(),
                         event.getEligibleYears(),
-                        event.getStatus()
-                ))
+                        event.getStatus()))
                 .toList();
 
         model.addAttribute("events", events);
         return "adminApproval"; // maps to templates/events.html
     }
 
-
-
     // ✅ Update Event
     // @PutMapping(value="/events/{id}/update",consumes="application/json",produces="application/json")
     // @ResponseStatus(HttpStatus.CREATED)
-    // @ApiResponse(responseCode="400",description="please add valid name and description")
+    // @ApiResponse(responseCode="400",description="please add valid name and
+    // description")
     // @ApiResponse(responseCode="204",description="Event update")
     // @Operation(summary="Update an event")
     // @SecurityRequirement(name="studyeasy-demo-api")
     // public ResponseEntity<EventResponseDTO> updateEvent(@Valid
-    //         @PathVariable Long id,
-    //         @RequestBody EventRequestDTO request,Authentication authentication) {
+    // @PathVariable Long id,
+    // @RequestBody EventRequestDTO request,Authentication authentication) {
 
-    //     try
-    //     {
-    //             Event event = eventService.findById(id)
-    //             .orElseThrow(() -> new RuntimeException("Event not found"));
+    // try
+    // {
+    // Event event = eventService.findById(id)
+    // .orElseThrow(() -> new RuntimeException("Event not found"));
 
-    //     event.setTitle(request.getTitle());
-    //     event.setDescription(request.getDescription());
-    //     event.setLocation(request.getLocation());
-    //     event.setStartTime(request.getStartTime());
-    //     event.setEndTime(request.getEndTime());
+    // event.setTitle(request.getTitle());
+    // event.setDescription(request.getDescription());
+    // event.setLocation(request.getLocation());
+    // event.setStartTime(request.getStartTime());
+    // event.setEndTime(request.getEndTime());
 
-    //     Event updated = eventService.save(event);
+    // Event updated = eventService.save(event);
 
-    //     EventResponseDTO response = new EventResponseDTO(
-    //             updated.getId(),
-    //             updated.getTitle(),
-    //             updated.getDescription(),
-    //             updated.getLocation(),
-    //             updated.getStartTime(),
-    //             updated.getEndTime(),
-    //             updated.getEventCordinator(),
-    //             updated.getEligibleYears(),
-    //             updated.getStatus()
-    //     );
+    // EventResponseDTO response = new EventResponseDTO(
+    // updated.getId(),
+    // updated.getTitle(),
+    // updated.getDescription(),
+    // updated.getLocation(),
+    // updated.getStartTime(),
+    // updated.getEndTime(),
+    // updated.getEventCordinator(),
+    // updated.getEligibleYears(),
+    // updated.getStatus()
+    // );
 
-    //     return ResponseEntity.ok(response);
-    //     }
-    //     catch(Exception e)
-    //     {
-    //             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    //     }
+    // return ResponseEntity.ok(response);
     // }
-
-
-
+    // catch(Exception e)
+    // {
+    // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    // }
+    // }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
@@ -300,10 +291,10 @@ public String declineEvent(@PathVariable Long id) {
     // ✅ Delete Event
     @DeleteMapping("/events/{id}/delete")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiResponse(responseCode="202",description="Event deleted")
-    @Operation(summary="delete an event")
-    @SecurityRequirement(name="studyeasy-demo-api")
-    public ResponseEntity<String> deleteEvent(@PathVariable Long id,Authentication authentication) {
+    @ApiResponse(responseCode = "202", description = "Event deleted")
+    @Operation(summary = "delete an event")
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id, Authentication authentication) {
         Event event = eventService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
@@ -313,20 +304,20 @@ public String declineEvent(@PathVariable Long id) {
 
     @GetMapping("/events/ongoing")
     public String ongoingEventsPage(Model model) {
-    List<Event> events = eventService.getOngoingApprovedEvents();
+        List<Event> events = eventService.getOngoingApprovedEvents();
 
-    model.addAttribute("events", events);
-    return "adminOngoing";  // maps to templates/adminOngoing.html
-}
-
+        model.addAttribute("events", events);
+        return "adminOngoing"; // maps to templates/adminOngoing.html
+    }
 
     // @GetMapping("/events/ongoing/api")
     // @ResponseBody
     // public List<Event> getOngoingEvents() {
-    //     logger.info("API call: Fetching ongoing approved events...");
-    //     List<Event> events = eventService.getOngoingApprovedEvents();
-    //     logger.info("API call: Number of ongoing approved events returned: {}", events.size());
-    //     return events;
+    // logger.info("API call: Fetching ongoing approved events...");
+    // List<Event> events = eventService.getOngoingApprovedEvents();
+    // logger.info("API call: Number of ongoing approved events returned: {}",
+    // events.size());
+    // return events;
     // }
 
 }
