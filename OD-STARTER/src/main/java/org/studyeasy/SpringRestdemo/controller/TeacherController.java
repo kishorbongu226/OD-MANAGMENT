@@ -11,7 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +55,13 @@ public class TeacherController {
     private static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
     
 
+    @GetMapping("/events/status")
+    public String getEventStatus(Model model){
+        List<Event> events = eventService.findAll();
+        model.addAttribute("events", events);
+        return "teacherApproval";
+    }
+
     // @PreAuthorize("hasAuthority('SCOPE_TEACHER')")
     @GetMapping("/events/od-requests")
     public String getODRequests(Model model) {
@@ -89,39 +98,93 @@ public class TeacherController {
         return "redirect:/api/v1/teacher/events/od-requests";
     }
 
-    // Submit Event (goes into PENDING state)
-    @PreAuthorize("hasAuthority('TEACHER')")
-    @PostMapping("/events/submit")
-    @SecurityRequirement(name="studyeasy-demo-api")
 
-    public ResponseEntity<EventResponseDTO> submitEvent(@Valid @RequestBody EventRequestDTO dto,Authentication authentication) {
-        String register = authentication.getName();
-        Event event = new Event();
-        event.setTitle(dto.getTitle());
-        event.setDescription(dto.getDescription());
-        event.setLocation(dto.getLocation());
-        event.setStartTime(dto.getStartTime());
-        event.setEndTime(dto.getEndTime());
-        event.setStatus(EventStatus.PENDING);
-        event.setEventCordinator(dto.getEventCordinator());
-        event.setEligibleYears(dto.getEligibleYears());
-        event.setCreatedBy(register);
 
-        Event saved = eventService.save(event);
 
-        EventResponseDTO response = new EventResponseDTO(
-            saved.getId(),
-            saved.getTitle(),
-            saved.getDescription(),
-            saved.getLocation(),
-            saved.getStartTime(),
-            saved.getEndTime(),
-            saved.getEventCordinator(),
-            saved.getEligibleYears(),
-            saved.getStatus()
-        );
-        return ResponseEntity.ok(response);
+    
+    @GetMapping("/events/Upcoming")
+    public String getUpcomingevents(Model model) {
+
+        List<Event> events = eventService.getUpcomingApprovedEvents();
+        model.addAttribute("events", events);
+        model.addAttribute("event", new Event());
+
+        return "teacherUpcoming";
     }
+    @GetMapping("/events/Ongoing")
+    public String getOngoingevents(Model model) {
+
+        List<Event> events = eventService.getOngoingApprovedEvents();
+        model.addAttribute("events", events);
+        model.addAttribute("event", new Event());
+
+        return "teacherOngoing";
+    }
+
+
+    // Submit Event (goes into PENDING state)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/events/add")
+
+    @SecurityRequirement(name = "studyeasy-demo-api")
+    public String createEvent(@Valid @ModelAttribute Event event, BindingResult bindingResult) {
+
+        log.info("➡️ Received request to create event");
+
+        if (bindingResult.hasErrors()) {
+            log.warn("❌ Validation failed for event: {}", event);
+            return "event-form"; // back to form page
+        }
+
+        log.debug(
+                "Event data received: title={}, type={}, venue={}, start={}, end={}, coordinator={}, eligibleYears={}",
+                event.getTitle(), event.getType(), event.getLocation(),
+                event.getStartTime(), event.getEndTime(),
+                event.getEventCordinator(), event.getEligibleYears());
+
+        Event create_event = new Event();
+        create_event.setType(event.getType());
+        create_event.setTitle(event.getTitle());
+        create_event.setDescription(event.getDescription());
+        create_event.setEventCordinator(event.getEventCordinator());
+        create_event.setLocation(event.getLocation());
+        create_event.setStartTime(event.getStartTime());
+        create_event.setEndTime(event.getEndTime());
+        create_event.setEligibleYears(event.getEligibleYears());
+        create_event.setStatus(EventStatus.PENDING);
+
+        log.info("📌 Saving new event: {}", create_event.getTitle());
+        eventService.save(create_event);
+        log.info("✅ Event '{}' created successfully", create_event.getTitle());
+
+        return "redirect:/api/v1/teacher/events/Upcoming";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @PreAuthorize("hasAuthority('SCOPE_TEACHER')")

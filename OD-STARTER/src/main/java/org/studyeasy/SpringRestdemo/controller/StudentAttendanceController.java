@@ -218,20 +218,41 @@ public String getAttendance(){
 
 
 
-    @GetMapping("/participated")
+   @GetMapping("/participated")
     public String participatedEvents(Model model) {
-        // Get logged-in student
+        logger.info("📌 Handling request for /participated");
+
+        // Get logged-in student (hardcoded for now)
         String registerNo = "43111437";
+        logger.debug("Looking up account with register number: {}", registerNo);
+
         Account account = accountService.findByRegisterNumber(registerNo)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Student not found"));
+                .orElseThrow(() -> {
+                    logger.error("❌ No student found with register number: {}", registerNo);
+                    return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Student not found");
+                });
+
+        logger.info("✅ Found student account: {} ({})", account.getStudentName(), account.getRegisterNo());
 
         // Fetch only PRESENT enrollments (participated)
-        List<Enrollment> enrollments = enrollmentService.findByAccountAndAttendenceStatus(account, AttendenceStatus.PRESENT);
+        List<Enrollment> enrollments =
+                enrollmentService.findByAccountAndAttendenceStatus(account, AttendenceStatus.PRESENT);
+
+        logger.info("📊 Found {} participated enrollments for student {}", enrollments.size(), registerNo);
+
+        // Print event titles for debugging
+        for (Enrollment e : enrollments) {
+            logger.debug("Enrollment -> Event: {}, Status: {}",
+                    e.getEvent().getTitle(), e.getAttendenceStatus());
+        }
 
         model.addAttribute("enrollments", enrollments);
+        logger.info("➡️ Returning Thymeleaf view: studentParticipated");
+
         return "studentParticipated"; // thymeleaf template
     }
 }
+
 
 
 

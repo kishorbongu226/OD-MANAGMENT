@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,49 +8,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        
+
         :root {
-              --primary: #6a233e;            /* Changed to burgundy/maroon */
-              --primary-dark: #4e1a2e;       /* Darker shade of primary */
-              --primary-gradient: linear-gradient(135deg, #6a233e, #8b3450); /* Updated gradient */
-              --secondary: #f9f1f3;          /* Light pink-beige */
-              --accent: #c17b8d;             /* Complementary rose accent */
-              --text-primary: #2e1520;       /* Dark burgundy text */
-              --text-secondary: #5d4348;     /* Muted burgundy text */
-              --text-light: #ffffff;         /* White text */
-              --bg-light: #ffffff;           /* White background */
-              --bg-dark: #2e1520;            /* Dark burgundy background */
-              --card-bg-light: #ffffff;      /* White card background */
-              --card-bg-dark: #3a1d29;       /* Dark burgundy card background */
-              --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-              --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
-              --shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.1);
-              --shadow-primary: 0 8px 16px rgba(106, 35, 62, 0.25); /* Updated shadow color */
-              --radius-sm: 8px;
-              --radius-md: 12px;
-              --radius-lg: 24px;
-              --radius-full: 9999px;
-              --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-              --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-          }
+            --primary: #6a233e;
+            /* Changed to burgundy/maroon */
+            --primary-dark: #4e1a2e;
+            /* Darker shade of primary */
+            --primary-gradient: linear-gradient(135deg, #6a233e, #8b3450);
+            /* Updated gradient */
+            --secondary: #f9f1f3;
+            /* Light pink-beige */
+            --accent: #c17b8d;
+            /* Complementary rose accent */
+            --text-primary: #2e1520;
+            /* Dark burgundy text */
+            --text-secondary: #5d4348;
+            /* Muted burgundy text */
+            --text-light: #ffffff;
+            /* White text */
+            --bg-light: #ffffff;
+            /* White background */
+            --bg-dark: #2e1520;
+            /* Dark burgundy background */
+            --card-bg-light: #ffffff;
+            /* White card background */
+            --card-bg-dark: #3a1d29;
+            /* Dark burgundy card background */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.1);
+            --shadow-primary: 0 8px 16px rgba(106, 35, 62, 0.25);
+            /* Updated shadow color */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
 
-          
-          .shape {
-              background: linear-gradient(to right, var(--primary), var(--accent));
-          }
 
-          .shape-2 {
-              background: linear-gradient(to right, var(--accent), var(--primary));
-          }
+        .shape {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
 
-          .logo-content h1::after {
-              background: var(--accent);
-          }
-          
-          .dark-mode .btn {
-              box-shadow: 0 8px 16px rgba(106, 35, 62, 0.4);
-              box-shadow: 0 10px 20px rgba(106, 35, 62, 0.3);
-          }
+        .shape-2 {
+            background: linear-gradient(to right, var(--accent), var(--primary));
+        }
+
+        .logo-content h1::after {
+            background: var(--accent);
+        }
+
+        .dark-mode .btn {
+            box-shadow: 0 8px 16px rgba(106, 35, 62, 0.4);
+            box-shadow: 0 10px 20px rgba(106, 35, 62, 0.3);
+        }
 
         * {
             margin: 0;
@@ -57,10 +71,12 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
+            /* Prevent scrolling */
         }
 
         body {
@@ -73,10 +89,10 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background-image: 
-                  radial-gradient(circle at 10% 20%, rgba(106, 35, 62, 0.05) 0%, transparent 20%),
-                  radial-gradient(circle at 90% 80%, rgba(193, 123, 141, 0.05) 0%, transparent 25%);
-          background-attachment: fixed;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(106, 35, 62, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(193, 123, 141, 0.05) 0%, transparent 25%);
+            background-attachment: fixed;
         }
 
         .container {
@@ -90,11 +106,12 @@
             backdrop-filter: blur(10px);
             background-color: rgba(255, 255, 255, 0.5);
             box-shadow: var(--shadow-lg),
-                        0 0 20px rgba(0, 0, 0, 0.1);
+                0 0 20px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
         }
 
-        .login-section, .logo-section {
+        .login-section,
+        .logo-section {
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
@@ -218,7 +235,8 @@
             text-transform: uppercase;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
             padding: 14px 14px 14px 44px;
             border: 2px solid transparent;
@@ -232,7 +250,8 @@
             box-shadow: var(--shadow-sm);
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary);
             background-color: rgba(245, 243, 255, 0.8);
@@ -253,8 +272,8 @@
             transition: var(--transition);
         }
 
-        input:focus + .input-icon,
-        select:focus + .input-icon {
+        input:focus+.input-icon,
+        select:focus+.input-icon {
             color: var(--primary-dark);
             transform: translateY(-50%) scale(1.1);
         }
@@ -373,7 +392,7 @@
         .dark-mode {
             background-color: var(--bg-dark);
             color: var(--text-light);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, rgba(108, 43, 217, 0.1) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(0, 196, 255, 0.1) 0%, transparent 25%);
         }
@@ -394,13 +413,15 @@
             color: #d1d5db;
         }
 
-        .dark-mode input, .dark-mode select {
+        .dark-mode input,
+        .dark-mode select {
             background-color: rgba(30, 41, 59, 0.8);
             color: var(--text-light);
             border-color: rgba(59, 67, 90, 0.5);
         }
 
-        .dark-mode input:focus, .dark-mode select:focus {
+        .dark-mode input:focus,
+        .dark-mode select:focus {
             border-color: var(--primary);
             background-color: rgba(30, 41, 59, 0.95);
         }
@@ -415,10 +436,11 @@
         }
 
         .dark-mode .btn {
-          box-shadow: 0 10px 20px rgba(106, 35, 62, 0.3);
+            box-shadow: 0 10px 20px rgba(106, 35, 62, 0.3);
         }
-        .dark-mode .btn:hover{
-          box-shadow: 0 8px 16px rgba(108, 43, 217, 0.4);
+
+        .dark-mode .btn:hover {
+            box-shadow: 0 8px 16px rgba(108, 43, 217, 0.4);
         }
 
         .dark-mode .forgot-password {
@@ -441,7 +463,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .success-checkmark {
@@ -452,8 +476,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .floating-shapes {
@@ -495,8 +526,9 @@
                 min-height: 600px;
                 height: auto;
             }
-            
-            .login-section, .logo-section {
+
+            .login-section,
+            .logo-section {
                 flex: 1;
                 padding: 60px 40px;
             }
@@ -509,16 +541,16 @@
             .section-header h1 {
                 font-size: 2.5rem;
             }
-            
+
             .section-header p {
                 font-size: 1.1rem;
             }
-            
+
             .logo-section h1 {
                 font-size: 3rem;
                 margin-bottom: 20px;
             }
-            
+
             .logo-section p {
                 font-size: 1.3rem;
             }
@@ -542,7 +574,8 @@
                 font-size: 1.1rem;
             }
 
-            input, select {
+            input,
+            select {
                 padding: 16px 16px 16px 48px;
             }
         }
@@ -554,21 +587,22 @@
                 display: flex;
                 height: auto;
             }
-            
+
             .container {
                 border-radius: var(--radius-md);
                 margin: 20px 0;
             }
-            
-            .login-section, .logo-section {
+
+            .login-section,
+            .logo-section {
                 padding: 30px 15px;
             }
-            
+
             .logo-section h1 {
                 font-size: 2rem;
                 margin-bottom: 10px;
             }
-            
+
             .logo-section p {
                 font-size: 1rem;
             }
@@ -581,30 +615,42 @@
 
         /* Prevent horizontal scrolling on mobile */
         @media (max-width: 480px) {
-            html, body {
-                overflow: hidden; /* Prevent scrolling */
+
+            html,
+            body {
+                overflow: hidden;
+                /* Prevent scrolling */
                 width: 100%;
             }
-            
+
             body {
                 padding: 0;
             }
-            
+
             .container {
                 border-radius: 0;
                 min-height: 100vh;
             }
-            
-            .login-section, .logo-section {
+
+            .login-section,
+            .logo-section {
                 padding: 30px 15px;
             }
         }
 
         /* Animations */
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .floating {
@@ -680,6 +726,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="floating-shapes">
         <div class="shape shape-1"></div>
@@ -695,9 +742,9 @@
             <div class="section-header">
                 <p>Sign in to your account</p>
             </div>
-            
-            <form id="loginForm">
-                
+
+            <form action="#" th:action="@{/login}" method="post">
+
                 <div class="input-group">
                     <label for="userType">User Type</label>
                     <div class="input-field">
@@ -709,42 +756,43 @@
                         <i class="fas fa-user-graduate input-icon"></i>
                     </div>
                 </div>
-                
+
                 <div class="input-group">
                     <label for="username">Username</label>
                     <div class="input-field">
-                        <input type="text" id="username" required placeholder="Enter your username">
+                        <input type="text" name = "registerNo" id="registerNo" required placeholder="Enter your register no">
                         <i class="fas fa-user input-icon"></i>
                     </div>
                 </div>
-                
+
                 <div class="input-group">
                     <label for="password">Password</label>
                     <div class="input-field">
-                        <input type="password" id="password" required placeholder="Enter your password">
+                        <input type="password" name="password" id="password" required placeholder="Enter your password">
                         <i class="fas fa-lock input-icon"></i>
                         <button type="button" class="password-toggle" onclick="togglePassword()">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
-                
+
                 <button type="submit" id="loginButton" class="btn">
-                    Sign In 
+                    Sign In
                     <i class="fas fa-arrow-right"></i>
                     <div class="loading" id="loadingSpinner" style="display: none;"></div>
                     <i class="fas fa-check-circle success-checkmark" id="successIcon"></i>
                 </button>
-                
-                <a href="forgot-password.html" class="forgot-password">Forgot your password?</a>
+
+
             </form>
-            
+
             <div class="status" id="loginStatus"></div>
         </div>
-        
+
         <div class="logo-section">
             <div class="logo-content floating">
-              <img src="1744866606001.png" alt="Sathyabama Logo" style="max-width: 100%; height: auto; max-height: 120px;">
+                <img src="1744866606001.png" alt="Sathyabama Logo"
+                    style="max-width: 100%; height: auto; max-height: 120px;">
                 <h1>SATHYABAMA</h1>
                 <p>Event Management System</p>
             </div>
@@ -756,7 +804,7 @@
             const body = document.body;
             const isDarkMode = body.classList.toggle('dark-mode');
             localStorage.setItem('mode', isDarkMode ? 'dark' : 'light');
-            
+
             const themeIcon = document.querySelector('.theme-toggle i');
             if (isDarkMode) {
                 themeIcon.classList.remove('fa-moon');
@@ -770,7 +818,7 @@
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const passwordToggle = document.querySelector('.password-toggle i');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 passwordToggle.classList.remove('fa-eye');
@@ -792,89 +840,8 @@
             }
         }
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const userType = document.getElementById('userType').value;
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if(!username || !password) {
-                const statusElement = document.getElementById('loginStatus');
-                statusElement.textContent = 'Please enter both username and password';
-                statusElement.classList.add('error');
-                statusElement.classList.remove('success');
-                
-                // Highlight empty fields
-                if(!username) {
-                    document.getElementById('username').classList.add('error');
-                }
-                if(!password) {
-                    document.getElementById('password').classList.add('error');
-                }
-                return;
-            }
-            
-            console.log(`User type: ${userType}, Username: ${username}, Password: ${password}`);
-            
-            // Show loading animation
-            const button = document.getElementById('loginButton');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const successIcon = document.getElementById('successIcon');
-            const statusElement = document.getElementById('loginStatus');
-            
-            button.disabled = true;
-            loadingSpinner.style.display = 'inline-block';
-            statusElement.textContent = 'Signing in...';
-            statusElement.classList.remove('error');
-            statusElement.classList.remove('success');
-            
-            setTimeout(() => {
-                loadingSpinner.style.display = 'none';
-                successIcon.style.display = 'inline-block';
-                statusElement.textContent = 'Sign in successful!';
-                statusElement.classList.add('success');
-                
-                // Add success animation to button
-                button.style.backgroundColor = '#38a169';
-                
-                setTimeout(() => {
-                    if (userType === 'STUDENT') {
-                        window.location.href = 'student.profile.html';
-                    } else if (userType === 'TEACHER') {
-                        window.location.href = 'teacher.profile.html';
-                    } else {
-                        window.location.href = 'admin.profile.html';
-                    }
-                }, 1000);
-            }, 2000);
-        }
 
-        // Add input focus effects
-        const inputs = document.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', () => {
-                input.parentElement.classList.remove('focused');
-                
-                // Remove error class if field is filled
-                if(input.value) {
-                    input.classList.remove('error');
-                }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadMode();
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            
-            // Prevent zooming on mobile devices
-            document.addEventListener('touchmove', function(event) {
-                if (event.scale !== 1) { event.preventDefault(); }
-            }, { passive: false });
-        });
     </script>
 </body>
+
 </html>

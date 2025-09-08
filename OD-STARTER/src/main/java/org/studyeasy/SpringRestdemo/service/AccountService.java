@@ -21,11 +21,14 @@ import org.studyeasy.SpringRestdemo.util.constants.Authority;
 
 @Service
 public class AccountService implements UserDetailsService{
-    @Autowired
-    private AccountRepository accountRepository;
+  
+    private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Account save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));

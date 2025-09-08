@@ -1,10 +1,15 @@
 package org.studyeasy.SpringRestdemo.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
+@Controller
 public class HomeController {
-
+  @GetMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
   
 
     

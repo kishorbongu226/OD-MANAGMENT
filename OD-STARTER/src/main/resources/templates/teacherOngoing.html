@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Events Page</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --primary: #831238;
+            --primary-color: #831238;
             --primary-dark: #6d0f2a;
-            --primary-light: #a51649;
-            --accent: #66bb6a;
+            --accent-color: #66bb6a;
             --accent-hover: #5aa456;
-            --bg-light: #f8f9fa;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-light: #ffffff;
             --bg-gray: #f5f5f7;
-            --text-dark: #333;
-            --text-light: #fff;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.16);
             --border-radius: 12px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
-            --shadow-lg: 0 6px 16px rgba(0,0,0,0.16);
             --transition: all 0.3s ease;
             --gray-100: #f3f4f6;
         }
@@ -31,13 +32,20 @@
         }
 
         body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f9fafb;
             color: var(--text-dark);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            width: 100%;
         }
 
         header {
@@ -58,25 +66,19 @@
             margin: 0 auto;
         }
 
-        .left-section {
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 0.5rem;
         }
 
         .header-title {
             font-weight: 700;
             font-size: 1.25rem;
             color: #5c1e3c;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .header-actions {
@@ -94,16 +96,11 @@
             padding: 0.5rem;
             border-radius: 50%;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
         }
 
         .icon-button:hover {
             background-color: var(--gray-100);
-            color: var(--primary);
+            color: var(--primary-color);
         }
 
         .menu-button {
@@ -122,7 +119,7 @@
 
         .menu-button:hover {
             background-color: var(--gray-100);
-            color: var(--primary);
+            color: var(--primary-color);
         }
 
         .mobile-menu {
@@ -151,7 +148,7 @@
             width: 80%;
             max-width: 300px;
             height: 100%;
-            background-color:  rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.5);
             box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
             transform: translateX(-100%);
             transition: transform 0.3s ease;
@@ -182,7 +179,7 @@
         }
 
         .menu-close:hover {
-            color: var(--primary);
+            color: var(--primary-color);
         }
 
         .menu-links {
@@ -204,36 +201,41 @@
         }
 
         .menu-links a i {
-            color: var(--primary);
+            color: var(--primary-color);
             font-size: 1.1rem;
             width: 20px;
         }
 
         .menu-links a:hover {
-        background-color: var(--gray-100);
-        color: var(--primary);
+            background-color: var(--gray-100);
+            color: var(--primary);
         }
 
         .menu-links a.active {
-        background-color:  rgba(255, 255, 255, 0.5);
-        color: var(--primary);
-        font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: var(--primary);
+            font-weight: 600;
         }
 
-
-        .container {
+        main {
             flex: 1;
-            padding: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
         }
 
         .page-title {
             margin-bottom: 24px;
-            color: var(--primary);
-            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .upcoming-events {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 24px;
             font-weight: 600;
+            box-shadow: var(--shadow-sm);
         }
 
         .search-container {
@@ -243,10 +245,11 @@
 
         #search {
             width: 100%;
-            padding: 14px 20px 14px 48px;
+            padding: 14px 20px;
+            padding-left: 45px;
             border: none;
             border-radius: var(--border-radius);
-            background-color: white;
+            background-color: var(--bg-light);
             box-shadow: var(--shadow-sm);
             font-size: 16px;
             transition: var(--transition);
@@ -254,274 +257,145 @@
 
         #search:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.2);
+            box-shadow: var(--shadow-md);
         }
 
         .search-icon {
             position: absolute;
-            left: 16px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
         }
 
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .event-card {
-            background-color: white;
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-light);
+            box-shadow: var(--shadow-sm);
             border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
         }
 
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+        table th,
+        table td {
+            padding: 16px;
+            text-align: left;
         }
 
-        .event-image {
-            height: 180px;
-            overflow: hidden;
-            position: relative;
+        table th {
+            background-color: var(--bg-gray);
+            font-weight: 600;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        table tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        table tr:hover {
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        .view-btn,
+        .edit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-        }
-
-        .event-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
             transition: var(--transition);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .event-card:hover .event-image img {
-            transform: scale(1.05);
+        .view-btn:hover,
+        .edit-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
-        .event-type-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
+        .event-type {
+            display: inline-block;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 500;
         }
 
-        .event-type-badge.technical {
+        .event-type.technical {
             background-color: #e3f2fd;
             color: #1976d2;
         }
 
-        .event-type-badge.non-technical {
+        .event-type.non-technical {
             background-color: #fff8e1;
             color: #ff8f00;
         }
 
-        .eligibility-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
+        .eligibility {
+            display: inline-block;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 500;
         }
 
-        .eligibility-badge.yes {
+        .eligibility.yes {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
 
-        .eligibility-badge.no {
+        .eligibility.no {
             background-color: #ffebee;
             color: #c62828;
         }
 
-        .event-details {
+        .image-container {
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .image-container.show {
+            max-height: 600px;
+            opacity: 1;
             padding: 20px;
+            margin: 10px 0;
+            box-shadow: var(--shadow-sm);
         }
 
-        .event-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-dark);
-        }
-
-        .event-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .event-info i {
-            width: 20px;
-            margin-right: 8px;
-            color: var(--primary);
-        }
-
-        .event-actions {
-            margin-top: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
+        .image-container img {
+            max-width: 100%;
             border-radius: var(--border-radius);
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: block;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(131, 18, 56, 0.1);
-        }
-
-        .btn-success {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-warning {
-            background-color:var(--primary);
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-success:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        /* Modal */
-        .modal {
+        .hidden {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 24px;
-            border-radius: var(--border-radius);
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalOpen 0.3s ease;
-        }
-
-        @keyframes modalOpen {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #666;
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            color: var(--primary);
-        }
-
-        .modal-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: var(--border-radius);
-            margin-bottom: 16px;
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .modal-details {
-            margin-bottom: 20px;
-        }
-
-        .modal-details p {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .modal-details i {
-            width: 24px;
-            color: var(--primary);
-            margin-right: 8px;
-        }
-
-        .modal-description {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
         }
 
         .no-events {
             text-align: center;
             padding: 40px 20px;
-            background-color: white;
+            background-color: var(--bg-light);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-sm);
             margin-top: 20px;
@@ -538,74 +412,120 @@
             font-size: 18px;
         }
 
-        /* Image Gallery in Modal */
-        .modal-gallery {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-
-        .modal-gallery img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-}
-
-        .modal-gallery img:hover {
-            transform: scale(1.05);
-        }
-
-        .modal-gallery img.active {
-            border-color: var(--primary);
-        }
-
-        /* Edit Modal */
-        .edit-modal {
+        /* Modal styles */
+        .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 1050;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
         }
 
-        .edit-modal-content {
-            background-color: white;
-            padding: 24px;
-            border-radius: var(--border-radius);
-            max-width: 600px;
-            width: 90%;
+        .modal-content {
+            max-width: 90%;
             max-height: 90vh;
-            overflow-y: auto;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1051;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* Add Event Button */
+        .add-event-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .add-event-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Add/Edit Event Modal */
+        .add-event-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-event-content {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--shadow-lg);
             position: relative;
-            animation: modalOpen 0.3s ease;
+        }
+
+        .add-event-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .add-event-close:hover {
+            color: var(--primary-color);
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: var(--text-dark);
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-control {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -614,199 +534,74 @@
             transition: var(--transition);
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-control:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(131, 18, 56, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 18, 56, 0.2);
         }
 
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
         }
 
-        .image-upload {
+        .file-upload {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .image-preview-item {
-            position: relative;
-            width: 100px;
-            height: 80px;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .image-preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-image {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .remove-image:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input-button {
-            padding: 10px 16px;
-            background-color: var(--primary);
-            color: white;
+            padding: 20px;
+            border: 2px dashed #ddd;
             border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .file-input-button:hover {
+        .file-upload:hover {
+            border-color: var(--primary-color);
+        }
+
+        .file-upload i {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .file-upload p {
+            margin-bottom: 0;
+            color: #666;
+        }
+
+        #file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--primary-color);
+            display: none;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
             background-color: var(--primary-dark);
         }
 
-        .file-input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        /* Zoom Modal */
-        .zoom-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .zoom-container {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .zoom-image {
-            max-width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-
-        .zoom-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            background: none;
-            border: none;
-            transition: all 0.2s ease;
-        }
-
-        .zoom-close:hover {
-            color: #ddd;
-        }
-
-        .zoom-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 16px;
-        }
-
-        .zoom-control {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-        }
-
-        .zoom-control:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .zoom-indicators {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .zoom-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .zoom-indicator.active {
-            background-color: white;
-            transform: scale(1.2);
-        }
-
-        /* Responsive styles */
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .events-grid {
-                grid-template-columns: 1fr;
-            }
-
             .header-container {
                 padding: 12px 16px;
             }
@@ -818,9 +613,18 @@
             .container {
                 padding: 16px;
             }
-            
-            .zoom-container {
-                width: 95%;
+
+            table th,
+            table td {
+                padding: 12px;
+            }
+
+            .event-details {
+                display: none;
+            }
+
+            .add-event-content {
+                padding: 20px;
             }
         }
 
@@ -830,27 +634,30 @@
                 padding: 8px 12px;
             }
 
-            .btn {
-                padding: 8px 16px;
+            table th,
+            table td {
+                padding: 10px 8px;
                 font-size: 14px;
+            }
+
+            .view-btn,
+            .edit-btn {
+                padding: 8px 12px;
+                font-size: 12px;
             }
 
             .page-title {
                 font-size: 20px;
             }
-            
-            .zoom-controls {
-                gap: 12px;
-            }
-            
-            .zoom-control {
-                font-size: 20px;
-                width: 40px;
-                height: 40px;
+
+            .add-event-btn {
+                padding: 10px 16px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -859,11 +666,9 @@
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-            
-            <div class="header-title">
-                Events Ongoing
-            </div>
-            
+
+            <div class="header-title">Ongoing Events</div>
+
             <div class="header-actions">
                 <button class="icon-button" title="Language" aria-label="Language">
                     <i class="fas fa-globe"></i>
@@ -871,7 +676,8 @@
                 <button class="icon-button" title="Notifications" aria-label="Notifications">
                     <i class="fas fa-bell"></i>
                 </button>
-                <button class="icon-button" title="Account" aria-label="Account" onclick="window.location.href='teacher.profile.html'">
+                <button class="icon-button" title="Account" aria-label="Account"
+                    onclick="window.location.href='admin.profile.html'">
                     <i class="fas fa-user-circle"></i>
                 </button>
             </div>
@@ -883,8 +689,8 @@
         <div class="menu-content">
             <div class="menu-header">
                 <div class="logo">
-                    <i class="fas fa-users"></i>
-                    <span>Faculty Portal</span>
+                    <i class="fas fa-user-tie"></i>
+                    <span>Admin Portal</span>
                 </div>
                 <button class="menu-close" id="menu-close" aria-label="Close menu">
                     <i class="fas fa-times"></i>
@@ -892,741 +698,284 @@
             </div>
             <div class="menu-links">
                 <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-                <a href="teacher.profile.html"><i class="fas fa-user"></i> Profile</a>
-                <a href="teacher.upcoming.html"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
-                <a href="teacher.ongoing.html"class="active"><i class="fas fa-check-circle"></i> Events Ongoing</a>
-                <a href="teacher.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>        
-                <a href="teacher.approval.html" ><i class="fas fa-clipboard-check"></i>Event Request</a>
-                <a href="teacher.odapproval.html" ><i class="fas fa-clipboard-check"></i>Od Approval</a>
-                <a href="teacher.attendance.html" ><i class="fas fa-clipboard-list"></i> Attendance</a>
-                <a href="teacher.feedback.html" ><i class="fas fa-comment-alt"></i> Feedback</a>
-              </div>
+                <a href="admin.profile.html"><i class="fas fa-user"></i> Profile</a>
+                <a href="admin.upcoming.html" class="active"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+                <a href="admin.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+                <a href="admin.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>
+                <a href="./adminApproval.html"><i class="fas fa-clipboard-check"></i>Events Approval</a>
+                <a href="admin.messenger.html"><i class="fas fa-comments"></i> Messenger</a>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <h1 class="page-title">Events Ongoing</h1>
-        <div class="search-container">
-            <i class="fas fa-search search-icon"></i>
-            <input id="search" type="text" placeholder="Search events or faculty" autocomplete="off">
-        </div>
+    <main>
+        <div class="container">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="header-title">Ongoing Events</h1>
 
-        <div class="events-grid" id="events-container">
-            <!-- Event cards will be dynamically generated -->
-        </div>
-    </div>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input id="search" type="text" placeholder="Search events or venues" autocomplete="off" />
+            </div>
+            <table id="events-table">
+                <thead>
+                    <tr>
+                        <th>EVENT NAME</th>
+                        <th>EVENT VENUE</th>
+                        <th>DATE & TIME</th>
+                        <th>TYPE</th>
+                        <th>ELIGIBILITY</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td th:text="${event.title}">Tech Symposium</td>
+                        <td th:text="${event.location}">Main Auditorium</td>
 
-    <!-- Event Detail Modal -->
-    <div class="modal" id="event-modal">
-        <div class="modal-content">
-            <i class="fas fa-times modal-close" onclick="closeModal()"></i>
-            <img class="modal-image" id="modal-image" src="" alt="Event Image">
-            
-            <!-- Gallery for event images -->
-            <div class="modal-gallery" id="modal-gallery-container">
-                <!-- Images will be dynamically added here -->
-            </div>
-            
-            <h2 class="modal-title" id="modal-title"></h2>
-            <div class="modal-details">
-                <p><i class="fas fa-map-marker-alt"></i> <span id="modal-venue"></span></p>
-                <p><i class="fas fa-calendar"></i> <span id="modal-date"></span></p>
-                <p><i class="fas fa-clock"></i> <span id="modal-time"></span></p>
-                <p><i class="fas fa-tag"></i> <span id="modal-type"></span></p>
-                <p><i class="fas fa-check-circle"></i> <span id="modal-eligibility"></span></p>
-            </div>
-            <div class="modal-description" id="modal-description">
-                <!-- Event description will be dynamically updated -->
-            </div>
-            <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal()">Close</button>
-                <button class="btn btn-warning" id="modal-edit" onclick="editEvent(this)">
-                    <i class="fas fa-edit"></i> EDIT
-                </button>
-            </div>
-        </div>
-    </div>
+                        <td th:text="${#temporals.format(event.startTime, 'dd/MM/yyyy (hh:mm a)')}"></td>
 
-    <!-- Edit Event Modal -->
-    <div class="edit-modal" id="edit-modal">
-        <div class="edit-modal-content">
-            <i class="fas fa-times modal-close" onclick="closeEditModal()"></i>
-            <h2 class="modal-title">Edit Event</h2>
-            
-            <form id="edit-event-form">
-                <div class="form-group">
-                    <label for="edit-name">Event Name</label>
-                    <input type="text" id="edit-name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-venue">Venue</label>
-                    <input type="text" id="edit-venue" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-date">Date</label>
-                    <input type="text" id="edit-date" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-time">Time</label>
-                    <input type="text" id="edit-time" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-type">Event Type</label>
-                    <select id="edit-type" required>
-                        <option value="Technical">Technical</option>
-                        <option value="Non-Technical">Non-Technical</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-eligibility">Eligibility</label>
-                    <input type="text" id="edit-eligibility" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-description">Description</label>
-                    <textarea id="edit-description" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Images</label>
-                    <div class="image-upload">
-                        <div class="file-input-wrapper">
-                            <div class="file-input-button">
-                                <i class="fas fa-plus"></i> Add Images
+                        <td>
+                            <span
+                                th:class="'event-type ' + (${event.type} == 'technical' ? 'technical' : 'non-technical')"
+                                th:text="${event.type}">Technical</span>
+                        </td>
+                        <td>
+                            <span class="eligibility">
+                                <span th:each="year, iterStat : ${event.eligibleYears}">
+                                    <span th:text="${year}"></span><span th:if="${!iterStat.last}">, </span>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+
+                            <button class="btn view-btn" onclick="toggleImage(this)">View</button>
+                            <div class="image-container hidden">
+                                <img th:src="@{/images/Copy of CODE_HUB_EVENT_20250315_145422_0000}"
+                                    alt="Event Banner" />
                             </div>
-                            <input type="file" class="file-input" id="edit-images" multiple accept="image/*">
-                        </div>
-                        <div class="image-preview" id="image-preview">
-                            <!-- Image previews will be added here -->
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Changes
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Image Zoom Modal -->
-    <div class="zoom-modal" id="zoom-modal">
-        <div class="zoom-container">
-            <button class="zoom-close" onclick="closeZoom()">
-                <i class="fas fa-times"></i>
-            </button>
-            <img class="zoom-image" id="zoom-image" src="" alt="Zoomed Event Image">
-            <div class="zoom-controls">
-                <button class="zoom-control" onclick="zoomSlideImage(-1)">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="zoom-control" onclick="zoomSlideImage(1)">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="zoom-indicators" id="zoom-indicators">
-                <!-- Indicators will be dynamically added here -->
-            </div>
+                            <button class="btn edit-btn" type="button" onclick="openEditModal(this)"
+                                th:data-id="${event.id}" th:data-title="${event.title}"
+                                th:data-description="${event.description}" th:data-location="${event.location}"
+                                th:data-startTime="${#temporals.format(event.startTime, 'yyyy-MM-dd''T''HH:mm')}"
+                                th:data-endTime="${#temporals.format(event.endTime, 'yyyy-MM-dd''T''HH:mm')}"
+                                th:data-type="${event.type}" th:data-eligibleYears="${event.eligibleYears}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
-    </div>
+    </main>
+
+
+
+
 
     <script>
-        // Sample event data - replace with your actual data or API call
-        const events = [
-            {
-                id: 1,
-                name: "Technical Workshop on AI",
-                venue: "Main Auditorium",
-                date: "April 20, 2025",
-                time: "10:00 AM - 2:00 PM",
-                type: "Technical",
-                eligibility: "Open for all students",
-                description: "Join us for an immersive workshop on artificial intelligence fundamentals and applications. Learn from industry experts about machine learning algorithms, neural networks, and how AI is transforming industries.",
-                images: [
-                    "https://picsum.photos/id/0/800/600",
-                    "https://picsum.photos/id/1/800/600",
-                    "https://picsum.photos/id/2/800/600"
-                ],
-                isEligible: true,
-            },
-            {
-                id: 2,
-                name: "Cultural Fest",
-                venue: "Campus Grounds",
-                date: "May 5, 2025",
-                time: "5:00 PM - 10:00 PM",
-                type: "Non-Technical",
-                eligibility: "Open for all students",
-                description: "Experience the vibrant cultural diversity of our campus with musical performances, dance shows, and art exhibitions. Food stalls and games will be available throughout the event.",
-                images: [
-                    "https://picsum.photos/id/3/800/600",
-                    "https://picsum.photos/id/4/800/600",
-                    "https://picsum.photos/id/5/800/600"
-                ],
-                isEligible: true,
-            },
-            {
-                id: 3,
-                name: "Coding Competition",
-                venue: "Computer Science Block",
-                date: "April 25, 2025",
-                time: "9:00 AM - 6:00 PM",
-                type: "Technical",
-                eligibility: "Computer Science students only",
-                description: "Test your programming skills in this intensive coding competition. Solve complex algorithmic problems and compete with the best coders from across the university. Attractive prizes for winners!",
-                images: [
-                    "https://picsum.photos/id/6/800/600",
-                    "https://picsum.photos/id/7/800/600",
-                    "https://picsum.photos/id/8/800/600"
-                ],
-                isEligible: false,
-            },
-            {
-                id: 4,
-                name: "Coding Competition",
-                venue: "Computer Science Block",
-                date: "April 25, 2025",
-                time: "9:00 AM - 6:00 PM",
-                type: "Technical",
-                eligibility: "Computer Science students only",
-                description: "Test your programming skills in this intensive coding competition. Solve complex algorithmic problems and compete with the best coders from across the university. Attractive prizes for winners!",
-                images: [
-                    "https://picsum.photos/id/6/800/600",
-                    "https://picsum.photos/id/7/800/600",
-                    "https://picsum.photos/id/8/800/600"
-                ],
-                isEligible: false,
-            },
-            {
-                id: 5,
-                name: "Coding Competition",
-                venue: "Computer Science Block",
-                date: "April 25, 2025",
-                time: "9:00 AM - 6:00 PM",
-                type: "Technical",
-                eligibility: "Computer Science students only",
-                description: "Test your programming skills in this intensive coding competition. Solve complex algorithmic problems and compete with the best coders from across the university. Attractive prizes for winners!",
-                images: [
-                    "https://picsum.photos/id/6/800/600",
-                    "https://picsum.photos/id/7/800/600",
-                    "https://picsum.photos/id/8/800/600"
-                ],
-                isEligible: true,
-            },
-            {
-                id: 6,
-                name: "Coding Competition",
-                venue: "Computer Science Block",
-                date: "April 26, 2025",
-                time: "9:00 AM - 6:00 PM",
-                type: "Technical",
-                eligibility: "Computer Science students only",
-                description: "Test your programming skills in this intensive coding competition. Solve complex algorithmic problems and compete with the best coders from across the university. Attractive prizes for winners!",
-                images: [
-                    "https://picsum.photos/id/6/800/600",
-                    "https://picsum.photos/id/7/800/600",
-                    "https://picsum.photos/id/8/800/600"
-                ],
-                isEligible: true,
-            }
-        ];
+        // Toggle menu
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuClose = document.getElementById("menu-close");
+        const menuContent = document.querySelector(".menu-content");
 
-        // Global variables to track current event and image
-        let currentEventId = null;
-        let currentImageIndex = 0;
-        let currentEventImages = [];
-        let currentEventBeingEdited = null;
-
-        // Initialize page when DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize menu functionality
-            initializeMenu();
-            
-            // Render all events
-            renderEvents();
-            
-            // Initialize search functionality
-            initializeSearch();
-            
-            // Initialize edit form
-            initializeEditForm();
+        // Open mobile menu
+        menuToggle.addEventListener("click", function () {
+            mobileMenu.classList.add("active");
         });
 
-        // Handle menu toggle
-        function initializeMenu() {
-            const menuToggle = document.getElementById('menu-toggle');
-            const menuClose = document.getElementById('menu-close');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            menuToggle.addEventListener('click', function() {
-                mobileMenu.classList.add('active');
-            });
-            
-            menuClose.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-            });
-            
-            // Close menu when clicking outside
-            mobileMenu.addEventListener('click', function(e) {
-                if (e.target === mobileMenu) {
-                    mobileMenu.classList.remove('active');
+        // Close mobile menu with close button
+        menuClose.addEventListener("click", function (e) {
+            e.stopPropagation(); // Stop event from bubbling up
+            mobileMenu.classList.remove("active");
+        });
+
+        // Close mobile menu when clicking outside the menu content
+        mobileMenu.addEventListener("click", function (e) {
+            // Check if the click is on the menu-content itself or one of its children
+            if (!menuContent.contains(e.target) || e.target === menuContent) {
+                mobileMenu.classList.remove("active");
+            }
+        });
+
+        // Prevent clicks inside menu content from closing the menu
+        menuContent.addEventListener("click", function (e) {
+            e.stopPropagation();
+        });
+
+        // Search functionality
+        document.getElementById("search").addEventListener("input", function () {
+            const searchText = this.value.toLowerCase();
+            const rows = document.querySelectorAll("#events-table tbody tr");
+            let hasMatches = false;
+
+            for (let i = 0; i < rows.length; i += 2) {
+                const row = rows[i];
+                if (row.cells) {
+                    const eventName = row.cells[0].textContent.toLowerCase();
+                    const eventVenue = row.cells[1].textContent.toLowerCase();
+                    const eventDate = row.cells[2].textContent.toLowerCase();
+
+                    if (
+                        eventName.includes(searchText) ||
+                        eventVenue.includes(searchText) ||
+                        eventDate.includes(searchText)
+                    ) {
+                        row.classList.remove("hidden");
+                        if (rows[i + 1]) rows[i + 1].classList.remove("hidden");
+                        hasMatches = true;
+                    } else {
+                        row.classList.add("hidden");
+                        if (rows[i + 1]) rows[i + 1].classList.add("hidden");
+                    }
                 }
-            });
-        }
-
-        // Render all events to the page
-        function renderEvents() {
-            const eventsContainer = document.getElementById('events-container');
-            eventsContainer.innerHTML = '';
-            
-            if (events.length === 0) {
-                eventsContainer.innerHTML = `
-                    <div class="no-events">
-                        <i class="fas fa-calendar-times"></i>
-                        <p>No events found</p>
-                    </div>
-                `;
-                return;
             }
-            
-            events.forEach(event => {
-                const eventCard = document.createElement('div');
-                eventCard.className = 'event-card';
-                eventCard.innerHTML = `
-                    <div class="event-image" data-event-id="${event.id}">
-                        <img src="${event.images[0]}" alt="${event.name}">
-                        <div class="event-type-badge ${event.type.toLowerCase()}">${event.type}</div>
-                        <div class="eligibility-badge ${event.isEligible ? 'yes' : 'no'}">
-                            ${event.isEligible ? 'Eligible' : 'Not Eligible'}
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <h3 class="event-name">${event.name}</h3>
-                        <div class="event-info">
-                            <i class="fas fa-map-marker-alt"></i> ${event.venue}
-                        </div>
-                        <div class="event-info">
-                            <i class="fas fa-calendar"></i> ${event.date}
-                        </div>
-                        <div class="event-info">
-                            <i class="fas fa-clock"></i> ${event.time}
-                        </div>
-                        <div class="event-actions">
-                            <button class="btn btn-outline view-details" data-event-id="${event.id}">
-                                <i class="fas fa-info-circle"></i> View Details
-                            </button>
-                            <button class="btn btn-warning edit-btn" data-event-id="${event.id}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                eventsContainer.appendChild(eventCard);
-            });
-            
-            // Add event listeners for event images and details buttons
-            attachEventListeners();
+
+            // Show no-events message if no matches
+            const existingNoEvents = document.querySelector(".no-events");
+            if (existingNoEvents) {
+                existingNoEvents.remove();
+            }
+
+            if (!hasMatches && searchText !== "") {
+                const noEventsMessage = document.createElement("div");
+                noEventsMessage.className = "no-events";
+                noEventsMessage.innerHTML =
+                    '<i class="far fa-frown"></i><p>No events match your search.</p>';
+                document.querySelector(".container").appendChild(noEventsMessage);
+            }
+        });
+
+        function toggleImage(button) {
+            const imageContainer = button.parentElement.querySelector(".image-container");
+            imageContainer.classList.toggle("show");
+            imageContainer.classList.toggle("hidden");
+
+            button.innerHTML = imageContainer.classList.contains("show")
+                ? '<i class="fas fa-eye-slash"></i> Hide'
+                : '<i class="fas fa-eye"></i> View';
+        }
+        // Modal functionality for event images using event delegation
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const closeModal = document.getElementById("closeModal");
+        const eventsTableBody = document.querySelector("#events-table tbody");
+
+        // Use event delegation to handle clicks on images inside image-container
+        eventsTableBody.addEventListener("click", function (e) {
+            if (
+                e.target &&
+                e.target.tagName === "IMG" &&
+                e.target.closest(".image-container")
+            ) {
+                modal.style.display = "flex";
+                modalImg.src = e.target.src;
+            }
+        });
+
+        closeModal.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Close modal when clicking outside the image
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        //   Add/Edit Event Modal functionality
+        const addEventBtn = document.getElementById("add-event-btn");
+        const addEventModal = document.getElementById("add-event-modal");
+        const addEventClose = document.getElementById("add-event-close");
+        const addEventForm = document.getElementById("add-event-form");
+        const fileUpload = document.getElementById("file-upload");
+        const eventImageInput = document.getElementById("event-image");
+        const fileName = document.getElementById("file-name");
+        const modalTitle = document.getElementById("modal-title");
+        const submitBtn = document.getElementById("submit-btn");
+        const eventIdInput = document.getElementById("event-id");
+
+        // Open add event modal
+        addEventBtn.addEventListener("click", function () {
+            modalTitle.textContent = "Add New Event";
+            submitBtn.innerHTML = '<i class="fas fa-plus mr-2"></i> Add Event';
+            addEventModal.style.display = "flex";
+            resetForm();
+        });
+
+        // Close add event modal
+        addEventClose.addEventListener("click", function () {
+            addEventModal.style.display = "none";
+            resetForm();
+        });
+
+        // Close modal when clicking outside
+        addEventModal.addEventListener("click", function (e) {
+            if (e.target === addEventModal) {
+                addEventModal.style.display = "none";
+                resetForm();
+            }
+        });
+
+        // Form submission
+
+        // Reset form function
+        function resetForm() {
+            addEventForm.reset();
+            fileName.style.display = "none";
+            uploadedImage = null;
+            eventIdInput.value = "";
+            currentEventRow = null;
         }
 
-        // Attach event listeners to the event cards
-        function attachEventListeners() {
-            // Event listeners for image clicks
-            const eventImages = document.querySelectorAll('.event-image');
-            eventImages.forEach(imageContainer => {
-                imageContainer.addEventListener('click', function() {
-                    const eventId = parseInt(this.getAttribute('data-event-id'));
-                    openZoomModal(eventId, 0); // Open with the first image
-                });
-            });
-            
-            // Event listeners for view details buttons
-            const viewDetailsButtons = document.querySelectorAll('.view-details');
-            viewDetailsButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const eventId = parseInt(this.getAttribute('data-event-id'));
-                    openEventModal(eventId);
-                });
-            });
-            
-            // Event listeners for edit buttons
-            const editButtons = document.querySelectorAll('.edit-btn');
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const eventId = parseInt(this.getAttribute('data-event-id'));
-                    openEditModal(eventId);
-                });
-            });
-        }
+        function openEditModal(button) {
+            const modalTitle = document.getElementById("modal-title");
+            const submitBtn = document.getElementById("submit-btn");
+            const eventIdInput = document.getElementById("event-id");
 
-        // Open event details modal
-        function openEventModal(eventId) {
-            const event = events.find(e => e.id === eventId);
-            if (!event) return;
-            
-            currentEventId = eventId;
-            currentEventImages = event.images;
-            currentImageIndex = 0;
-            
-            // Set modal content
-            document.getElementById('modal-image').src = event.images[0];
-            document.getElementById('modal-title').textContent = event.name;
-            document.getElementById('modal-venue').textContent = event.venue;
-            document.getElementById('modal-date').textContent = event.date;
-            document.getElementById('modal-time').textContent = event.time;
-            document.getElementById('modal-type').textContent = event.type;
-            document.getElementById('modal-eligibility').textContent = event.eligibility;
-            document.getElementById('modal-description').textContent = event.description;
-            
-            // Generate image gallery
-            const galleryContainer = document.getElementById('modal-gallery-container');
-            galleryContainer.innerHTML = '';
-            
-            event.images.forEach((image, index) => {
-                const imgElement = document.createElement('img');
-                imgElement.src = image;
-                imgElement.alt = `${event.name} - Image ${index + 1}`;
-                imgElement.className = index === 0 ? 'active' : '';
-                
-                // Add click event to switch main image
-                imgElement.addEventListener('click', function() {
-                    document.getElementById('modal-image').src = image;
-                    currentImageIndex = index;
-                    
-                    // Update active state in gallery
-                    const galleryImages = galleryContainer.querySelectorAll('img');
-                    galleryImages.forEach((img, i) => {
-                        img.className = i === index ? 'active' : '';
-                    });
-                });
-                
-                galleryContainer.appendChild(imgElement);
+            // Set modal title & button
+            modalTitle.textContent = "Edit Event";
+            submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Update Event';
+
+            // Fill form values from button data
+            eventIdInput.value = button.getAttribute("data-id");
+            document.querySelector('[name="title"]').value =
+                button.getAttribute("data-title");
+            document.querySelector('[name="description"]').value =
+                button.getAttribute("data-description");
+            document.querySelector('[name="location"]').value =
+                button.getAttribute("data-location");
+            document.querySelector('[name="startTime"]').value =
+                button.getAttribute("data-startTime");
+            document.querySelector('[name="endTime"]').value =
+                button.getAttribute("data-endTime");
+            document.querySelector('[name="type"]').value =
+                button.getAttribute("data-type");
+
+            // Eligible years (split comma separated values into multiple selection)
+            const eligibleYears = button
+                .getAttribute("data-eligibleYears")
+                .split(",");
+            const select = document.querySelector('[name="eligibleYears"]');
+            Array.from(select.options).forEach((option) => {
+                option.selected = eligibleYears.includes(option.value);
             });
-            
+
+            // Change form action for update
+            document
+                .getElementById("add-event-form")
+                .setAttribute("action", `/api/v1/${eventIdInput.value}/update`);
+
             // Show modal
-            document.getElementById('event-modal').style.display = 'flex';
-        }
-
-        // Close event details modal
-        function closeModal() {
-            document.getElementById('event-modal').style.display = 'none';
-        }
-
-        // Open edit modal
-        function openEditModal(eventId) {
-            const event = events.find(e => e.id === eventId);
-            if (!event) return;
-            
-            currentEventBeingEdited = event;
-            
-            // Set form values
-            document.getElementById('edit-name').value = event.name;
-            document.getElementById('edit-venue').value = event.venue;
-            document.getElementById('edit-date').value = event.date;
-            document.getElementById('edit-time').value = event.time;
-            document.getElementById('edit-type').value = event.type;
-            document.getElementById('edit-eligibility').value = event.eligibility;
-            document.getElementById('edit-description').value = event.description;
-            
-            // Display image previews
-            const imagePreview = document.getElementById('image-preview');
-            imagePreview.innerHTML = '';
-            
-            event.images.forEach((image, index) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'image-preview-item';
-                previewItem.innerHTML = `
-                    <img src="${image}" alt="Event Image ${index + 1}">
-                    <button class="remove-image" data-index="${index}">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                imagePreview.appendChild(previewItem);
-                
-                // Add event listener for remove button
-                previewItem.querySelector('.remove-image').addEventListener('click', function() {
-                    removeImageFromEvent(index);
-                });
-            });
-            
-            // Show modal
-            document.getElementById('edit-modal').style.display = 'flex';
-        }
-
-        // Close edit modal
-        function closeEditModal() {
-            document.getElementById('edit-modal').style.display = 'none';
-            currentEventBeingEdited = null;
-        }
-
-        // Initialize edit form
-        function initializeEditForm() {
-            const form = document.getElementById('edit-event-form');
-            const fileInput = document.getElementById('edit-images');
-            
-            // Handle form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                saveEventChanges();
-            });
-            
-            // Handle file input change
-            fileInput.addEventListener('change', function(e) {
-                const files = e.target.files;
-                if (files.length > 0) {
-                    addImagesToEvent(files);
-                }
-            });
-        }
-
-        // Save event changes
-        function saveEventChanges() {
-            if (!currentEventBeingEdited) return;
-            
-            // Update event data
-            currentEventBeingEdited.name = document.getElementById('edit-name').value;
-            currentEventBeingEdited.venue = document.getElementById('edit-venue').value;
-            currentEventBeingEdited.date = document.getElementById('edit-date').value;
-            currentEventBeingEdited.time = document.getElementById('edit-time').value;
-            currentEventBeingEdited.type = document.getElementById('edit-type').value;
-            currentEventBeingEdited.eligibility = document.getElementById('edit-eligibility').value;
-            currentEventBeingEdited.description = document.getElementById('edit-description').value;
-            
-            // In a real application, you would send this data to the server here
-            console.log('Event updated:', currentEventBeingEdited);
-            
-            // Re-render events to show changes
-            renderEvents();
-            
-            // Close modal
-            closeEditModal();
-            
-            // Show success message
-            alert('Event updated successfully!');
-        }
-
-        // Add images to event
-        function addImagesToEvent(files) {
-            if (!currentEventBeingEdited) return;
-            
-            // In a real application, you would upload these files to a server
-            // For this demo, we'll just add placeholder URLs
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Add the image to the event
-                    currentEventBeingEdited.images.push(e.target.result);
-                    
-                    // Add the image to the preview
-                    const imagePreview = document.getElementById('image-preview');
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="New Event Image">
-                        <button class="remove-image" data-index="${currentEventBeingEdited.images.length - 1}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    imagePreview.appendChild(previewItem);
-                    
-                    // Add event listener for remove button
-                    previewItem.querySelector('.remove-image').addEventListener('click', function() {
-                        removeImageFromEvent(currentEventBeingEdited.images.length - 1);
-                    });
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Remove image from event
-        function removeImageFromEvent(index) {
-            if (!currentEventBeingEdited || !currentEventBeingEdited.images[index]) return;
-            
-            // Remove the image
-            currentEventBeingEdited.images.splice(index, 1);
-            
-            // Re-render the preview
-            const imagePreview = document.getElementById('image-preview');
-            imagePreview.innerHTML = '';
-            
-            currentEventBeingEdited.images.forEach((image, newIndex) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'image-preview-item';
-                previewItem.innerHTML = `
-                    <img src="${image}" alt="Event Image ${newIndex + 1}">
-                    <button class="remove-image" data-index="${newIndex}">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                imagePreview.appendChild(previewItem);
-                
-                // Add event listener for remove button
-                previewItem.querySelector('.remove-image').addEventListener('click', function() {
-                    removeImageFromEvent(newIndex);
-                });
-            });
-        }
-
-        // Open zoom modal for images
-        function openZoomModal(eventId, imageIndex = 0) {
-            const event = events.find(e => e.id === eventId);
-            if (!event) return;
-            
-            currentEventId = eventId;
-            currentEventImages = event.images;
-            currentImageIndex = imageIndex;
-            
-            // Set zoom image
-            document.getElementById('zoom-image').src = event.images[imageIndex];
-            
-            // Generate indicators
-            const indicatorsContainer = document.getElementById('zoom-indicators');
-            indicatorsContainer.innerHTML = '';
-            
-            event.images.forEach((_, index) => {
-                const indicator = document.createElement('div');
-                indicator.className = `zoom-indicator ${index === imageIndex ? 'active' : ''}`;
-                indicator.setAttribute('data-index', index);
-                
-                indicator.addEventListener('click', function() {
-                    const newIndex = parseInt(this.getAttribute('data-index'));
-                    updateZoomImage(newIndex);
-                });
-                
-                indicatorsContainer.appendChild(indicator);
-            });
-            
-            // Show zoom modal
-            document.getElementById('zoom-modal').style.display = 'flex';
-        }
-
-        // Close zoom modal
-        function closeZoom() {
-            document.getElementById('zoom-modal').style.display = 'none';
-        }
-
-        // Navigate through images in zoom modal
-        function zoomSlideImage(direction) {
-            let newIndex = currentImageIndex + direction;
-            
-            // Handle wrapping around
-            if (newIndex < 0) {
-                newIndex = currentEventImages.length - 1;
-            } else if (newIndex >= currentEventImages.length) {
-                newIndex = 0;
-            }
-            
-            updateZoomImage(newIndex);
-        }
-
-        // Update zoom image based on index
-        function updateZoomImage(newIndex) {
-            currentImageIndex = newIndex;
-            
-            // Update image
-            document.getElementById('zoom-image').src = currentEventImages[newIndex];
-            
-            // Update indicators
-            const indicators = document.querySelectorAll('.zoom-indicator');
-            indicators.forEach((indicator, index) => {
-                indicator.className = `zoom-indicator ${index === newIndex ? 'active' : ''}`;
-            });
-        }
-
-        // Edit event from modal
-        function editEvent(button) {
-            if (currentEventId) {
-                openEditModal(currentEventId);
-                closeModal();
-            }
-        }
-
-        // Initialize search functionality
-        function initializeSearch() {
-            const searchInput = document.getElementById('search');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                // Filter events based on search term
-                const filteredEvents = events.filter(event => {
-                    return (
-                        event.name.toLowerCase().includes(searchTerm) ||
-                        event.venue.toLowerCase().includes(searchTerm) ||
-                        event.type.toLowerCase().includes(searchTerm) ||
-                        event.description.toLowerCase().includes(searchTerm) ||
-                        event.eligibility.toLowerCase().includes(searchTerm)
-                    );
-                });
-                
-                // Re-render events with filtered list
-                renderFilteredEvents(filteredEvents);
-            });
-        }
-
-        // Render filtered events
-        function renderFilteredEvents(filteredEvents) {
-            const eventsContainer = document.getElementById('events-container');
-            eventsContainer.innerHTML = '';
-            
-            if (filteredEvents.length === 0) {
-                eventsContainer.innerHTML = `
-                    <div class="no-events">
-                        <i class="fas fa-search"></i>
-                        <p>No events found matching your search</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            filteredEvents.forEach(event => {
-                const eventCard = document.createElement('div');
-                eventCard.className = 'event-card';
-                eventCard.innerHTML = `
-                    <div class="event-image" data-event-id="${event.id}">
-                        <img src="${event.images[0]}" alt="${event.name}">
-                        <div class="event-type-badge ${event.type.toLowerCase()}">${event.type}</div>
-                        <div class="eligibility-badge ${event.isEligible ? 'yes' : 'no'}">
-                            ${event.isEligible ? 'Eligible' : 'Not Eligible'}
-                        </div>
-                    </div>
-                    <div class="event-details">
-                        <h3 class="event-name">${event.name}</h3>
-                        <div class="event-info">
-                            <i class="fas fa-map-marker-alt"></i> ${event.venue}
-                        </div>
-                        <div class="event-info">
-                            <i class="fas fa-calendar"></i> ${event.date}
-                        </div>
-                        <div class="event-info">
-                            <i class="fas fa-clock"></i> ${event.time}
-                        </div>
-                        <div class="event-actions">
-                            <button class="btn btn-outline view-details" data-event-id="${event.id}">
-                                <i class="fas fa-info-circle"></i> View Details
-                            </button>
-                            <button class="btn btn-warning edit-btn" data-event-id="${event.id}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                eventsContainer.appendChild(eventCard);
-            });
-            
-            // Re-attach event listeners
-            attachEventListeners();
+            document.getElementById("add-event-modal").style.display = "flex";
         }
     </script>
 </body>
+
 </html>

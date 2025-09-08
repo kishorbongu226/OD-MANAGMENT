@@ -59,5 +59,12 @@ public class Event {
     public void generateEventKey() {
         this.eventKey = "EVT-" + java.util.UUID.randomUUID().toString().substring(0, 8);
     }
+    public String getStatusClass() {
+    switch (status) {
+        case APPROVED: return "status-approved";
+        case DECLINED: return "status-declined";
+        default: return "status-pending";
+    }
+}
 
 }

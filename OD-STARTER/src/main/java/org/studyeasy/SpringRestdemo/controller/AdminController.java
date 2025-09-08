@@ -80,7 +80,7 @@ public class AdminController {
         eventService.createEvent(create_event, "ADMIN");
         log.info("✅ Event '{}' created successfully", create_event.getTitle());
 
-        return "redirect:/api/v1/events/add";
+        return "redirect:/api/v1/teacher/events/Upcoming";
     }
 
     @GetMapping("/events/add")

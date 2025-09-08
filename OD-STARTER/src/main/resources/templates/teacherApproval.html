@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Approval</title>
@@ -718,222 +718,50 @@
     </div>
   </div>
 
-  <main>
-    <div class="container">
-        <h1 class="page-title">Event Approval Dashboard</h1>
-        
-        <button class="add-request-btn" id="add-request-btn">
-          <i class="fas fa-plus"></i> Add Approval Request
-        </button>
-        
-        <div class="search-container">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" id="search" class="search-input" placeholder="Search events...">
-        </div>
-        
-        <div class="events-grid" id="events-container">
-          <!-- Event Card 1 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">AI Workshop</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>May 15, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>REMIBAI AUDITORIUM</span>
-              </div>
-              <div class="event-status status-declined">DECLINED</div>
-              <button class="details-btn" data-target="details-1">View Details</button>
-              <div class="event-details" id="details-1">
-                  <p>This technical AI workshop covers machine learning fundamentals and applications. The event will include hands-on sessions and keynote speakers from the industry.</p>
-              </div>
-              </div>
-          </div>
+<main>
+  <div class="container">
+      <h1 class="page-title">Event Approval Dashboard</h1>
 
-          <!-- Event Card 2 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">Hackathon 2025</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>June 10, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>ECE SEMINAR HALL</span>
-              </div>
-              <div class="event-status status-approved">APPROVED</div>
-              <button class="details-btn" data-target="details-2">View Details</button>
-              <div class="event-details" id="details-2">
-                  <p>A 24-hour coding competition for students to build innovative solutions. Prizes will be awarded to the top three teams.</p>
-              </div>
-              </div>
-          </div>
-
-          <!-- Event Card 3 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">Web Dev Bootcamp</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>July 5, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>ECE SEMINAR HALL</span>
-              </div>
-              <div class="event-status status-approved">APPROVED</div>
-              <button class="details-btn" data-target="details-3">View Details</button>
-              <div class="event-details" id="details-3">
-                  <p>Learn modern web development frameworks and technologies in this intensive three-day bootcamp.</p>
-              </div>
-              </div>
-          </div>
-
-          <!-- Event Card 4 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">Data Science Summit</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>July 20, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>ECE SEMINAR HALL</span>
-              </div>
-              <div class="event-status status-pending">STATUS PENDING</div>
-              <button class="details-btn" data-target="details-4">View Details</button>
-              <div class="event-details" id="details-4">
-                  <p>A conference focused on the latest trends in data science, featuring speakers from leading tech companies.</p>
-              </div>
-              </div>
-          </div>
-
-          <!-- Event Card 5 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">Robotics Workshop</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>August 2, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>ECE SEMINAR HALL</span>
-              </div>
-              <div class="event-status status-approved">APPROVED</div>
-              <button class="details-btn" data-target="details-5">View Details</button>
-              <div class="event-details" id="details-5">
-                  <p>Hands-on workshop on building and programming autonomous robots. Materials will be provided.</p>
-              </div>
-              </div>
-          </div>
-
-          <!-- Event Card 6 -->
-          <div class="event-card">
-              <div class="event-header">
-              <img src="Jeppiar_two.jpg" alt="Event Image" class="event-img">
-              <span class="event-badge">TECHNICAL</span>
-              </div>
-              <div class="event-body">
-              <h3 class="event-name">Cloud Computing Seminar</h3>
-              <div class="event-info">
-                  <i class="far fa-calendar-alt"></i>
-                  <span>August 15, 2025</span>
-              </div>
-              <div class="event-info">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>ECE SEMINAR HALL</span>
-              </div>
-              <div class="event-status status-pending">STATUS PENDING</div>
-              <button class="details-btn" data-target="details-6">View Details</button>
-              <div class="event-details" id="details-6">
-                  <p>Learn about cloud platforms, serverless architecture, and best practices in cloud security.</p>
-              </div>
-              </div>
-          </div>
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search" class="search-input" placeholder="Search events...">
       </div>
-    </div>
-  </main>
 
-  <!-- Request Modal -->
-  <div class="request-modal" id="request-modal">
-    <div class="request-modal-content">
-      <button class="request-modal-close" id="request-modal-close">&times;</button>
-      <h2 class="request-modal-title">New Event Request</h2>
-      <form id="event-request-form">
-        <div class="form-group">
-          <label for="event-name" class="form-label">Event Name</label>
-          <input type="text" id="event-name" class="form-input" placeholder="Enter event name" required>
+      <div class="events-grid" id="events-container">
+        <!-- Thymeleaf loop to iterate over events from backend -->
+        <div th:each="event : ${events}" class="event-card">
+            <div class="event-header">
+              <img th:src="@{/images/Jeppiar_two.jpg}" alt="Event Image" class="event-img">
+              <span class="event-badge" th:text="${event.type}">TECHNICAL</span>
+            </div>
+            <div class="event-body">
+              <h3 class="event-name" th:text="${event.title}">Event Title</h3>
+              <div class="event-info">
+                  <i class="far fa-calendar-alt"></i>
+                 <span th:text="${#temporals.format(event.startTime, 'MMMM dd, yyyy')}"></span>
+              </div>
+              <div class="event-info">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span th:text="${event.location}">Event Location</span>
+              </div>
+              <div class="event-status" th:classappend="${event.statusClass}" 
+                   th:text="${event.status.toString()}">STATUS</div>
+              <button class="details-btn" th:attr="data-target='details-' + ${event.id}">View Details</button>
+              <div class="event-details" th:attr="id='details-' + ${event.id}">
+                  <p th:text="${event.description}">Event description here</p>
+              </div>
+            </div>
         </div>
         
-        <div class="form-group">
-          <label class="form-label">Event Type</label>
-          <div class="event-type-select">
-            <button type="button" class="event-type-btn active" data-type="TECHNICAL">Technical</button>
-            <button type="button" class="event-type-btn" data-type="NON-TECHNICAL">Non-Technical</button>
-            <button type="button" class="event-type-btn" data-type="WORKSHOP">Workshop</button>
-          </div>
-          <input type="hidden" id="event-type" value="TECHNICAL" required>
+        <!-- Show message if no events -->
+        <div th:if="${#lists.isEmpty(events)}" class="no-events">
+          <i class="far fa-frown"></i>
+          <p>No events available.</p>
         </div>
-        
-        <div class="form-group">
-          <label for="event-date" class="form-label">Event Date</label>
-          <input type="date" id="event-date" class="form-input" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="event-venue" class="form-label">Venue</label>
-          <input type="text" id="event-venue" class="form-input" placeholder="Enter venue" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="event-description" class="form-label">Description</label>
-          <textarea id="event-description" class="form-input form-textarea" placeholder="Enter event description" required></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Event Image</label>
-          <input type="file" id="event-image" accept="image/*" style="display: none;">
-          <label for="event-image" class="image-upload-btn">
-            <i class="fas fa-upload"></i> Choose Image
-          </label>
-          <img id="image-preview" class="image-preview" alt="Image preview">
-        </div>
-        
-        <button type="submit" class="form-submit">Submit Request</button>
-      </form>
-    </div>
+      </div>
   </div>
+</main>
 
-  <!-- Modal for zoomed image -->
-  <div id="myModal" class="modal">
-    <span class="close" id="closeModal">&times;</span>
-    <img class="modal-content" id="img01" alt="Zoomed Profile Image">
-  </div>
 
   <script>
     // Toggle menu
