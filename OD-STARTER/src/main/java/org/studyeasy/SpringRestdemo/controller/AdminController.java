@@ -1,5 +1,6 @@
 package org.studyeasy.SpringRestdemo.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.studyeasy.SpringRestdemo.model.Event;
+import org.studyeasy.SpringRestdemo.model.ProfessorAccount;
 import org.studyeasy.SpringRestdemo.payload.auth.EventResponseDTO;
 import org.studyeasy.SpringRestdemo.service.EnrollmentService;
 import org.studyeasy.SpringRestdemo.service.EventService;
+import org.studyeasy.SpringRestdemo.service.ProfessorService;
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +44,8 @@ public class AdminController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private ProfessorService professorService;
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -87,9 +92,10 @@ public class AdminController {
     public String getUpcomingevents(Model model) {
 
         List<Event> events = eventService.findAll();
+        List<ProfessorAccount> coordinators = professorService.findall();
         model.addAttribute("events", events);
         model.addAttribute("event", new Event());
-
+        model.addAttribute("coordinators",coordinators);
         return "adminUpcoming";
     }
 
@@ -112,10 +118,14 @@ public class AdminController {
     // }
 
     @GetMapping("/events/pending")
-    public String getPendingEvents(Model model) {
-        List<Event> events = eventService.findByStatus(EventStatus.PENDING);
+    public String getPendingEvents(Model model,Principal principal) {
 
+        List<Event> events = eventService.findByStatus(EventStatus.PENDING);
+        String username = principal.getName();
+
+        log.info(username);
         List<EventResponseDTO> response = events.stream()
+        
                 .map(event -> new EventResponseDTO(
                         event.getId(),
                         event.getTitle(),
@@ -251,7 +261,7 @@ public class AdminController {
 
         logger.debug("Loaded event for edit: {}", event);
         model.addAttribute("event", event);
-        return "adminUpcoming"; 
+        return "adminUpcoming";
     }
 
     @PostMapping("/{id}/update")
@@ -325,36 +335,34 @@ public class AdminController {
     // }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-@GetMapping("/admin/events/statistics")
-public String getEventStatistics(Model model) {
-    long completedEvents = eventService.findByStatus(EventStatus.APPROVED).size();
-    long studentsPresent = enrollmentService.countStudentsPresent();
-    long certificatesIssued = enrollmentService.countStudentsPresent(); // custom method
+    @GetMapping("/admin/events/statistics")
+    public String getEventStatistics(Model model) {
+        long completedEvents = eventService.findByStatus(EventStatus.APPROVED).size();
+        long studentsPresent = enrollmentService.countStudentsPresent();
+        long certificatesIssued = enrollmentService.countStudentsPresent(); // custom method
 
-    model.addAttribute("completedEvents", completedEvents);
-    model.addAttribute("studentsPresent", studentsPresent);
-    model.addAttribute("certificatesIssued", certificatesIssued);
+        model.addAttribute("completedEvents", completedEvents);
+        model.addAttribute("studentsPresent", studentsPresent);
+        model.addAttribute("certificatesIssued", certificatesIssued);
 
-    return "adminCompleted"; // Thymeleaf template name
-}
+        return "adminCompleted"; // Thymeleaf template name
+    }
 
-@PreAuthorize("hasAuthority('ADMIN')")
-@GetMapping("/admin/events/completed")
-public String getCompletedEvents(Model model) {
-    List<Event> completedEvents = eventService.findByStatus(EventStatus.COMPLETED);
-    model.addAttribute("events", completedEvents);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/admin/events/completed")
+    public String getCompletedEvents(Model model) {
+        List<Event> completedEvents = eventService.findByStatus(EventStatus.COMPLETED);
+        model.addAttribute("events", completedEvents);
 
-    return "adminCompleted"; 
-}
+        return "adminCompleted";
+    }
 
-
-@PreAuthorize("hasAuthority('ADMIN')")
-@GetMapping("/admin/events/enrolled-students")
-public String countEnrolledStudents(Model model) {
-    long enrolledStudents = enrollmentService.countEnrolledStudents();
-    model.addAttribute("enrolled", enrolledStudents);
-    return "adminCompleted";
-}
-
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/admin/events/enrolled-students")
+    public String countEnrolledStudents(Model model) {
+        long enrolledStudents = enrollmentService.countEnrolledStudents();
+        model.addAttribute("enrolled", enrolledStudents);
+        return "adminCompleted";
+    }
 
 }

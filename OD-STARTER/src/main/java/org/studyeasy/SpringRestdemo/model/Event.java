@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.studyeasy.SpringRestdemo.util.constants.EventStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,6 +36,8 @@ public class Event {
     private String description;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(nullable = false)
+
     private List<String> eventCordinator;
 
     private String location;

@@ -1,1147 +1,1068 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Events Page</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      :root {
-        --primary-color: #831238;
-        --primary-dark: #6d0f2a;
-        --accent-color: #66bb6a;
-        --accent-hover: #5aa456;
-        --text-light: #ffffff;
-        --text-dark: #333333;
-        --bg-light: #ffffff;
-        --bg-gray: #f5f5f7;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
-        --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.16);
-        --border-radius: 12px;
-        --transition: all 0.3s ease;
-        --gray-100: #f3f4f6;
-      }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary-color: #831238;
+      --primary-dark: #6d0f2a;
+      --accent-color: #66bb6a;
+      --accent-hover: #5aa456;
+      --text-light: #ffffff;
+      --text-dark: #333333;
+      --bg-light: #ffffff;
+      --bg-gray: #f5f5f7;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.16);
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+      --gray-100: #f3f4f6;
+    }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f9fafb;
-        color: var(--text-dark);
-        line-height: 1.6;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 24px;
-        width: 100%;
-      }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-      header {
-        background-color: rgba(255, 255, 255, 0.95);
-        box-shadow: var(--shadow-lg);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        backdrop-filter: blur(10px);
-      }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
+    }
 
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #5c1e3c;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-dark);
+      font-size: 1.25rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .icon-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary-color);
+    }
+
+    .menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .menu-button:hover {
+      background-color: var(--gray-100);
+      color: var(--primary-color);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu.active .menu-content {
+      transform: translateX(0);
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .menu-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+
+    .menu-close:hover {
+      color: var(--primary-color);
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .menu-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-links a i {
+      color: var(--primary-color);
+      font-size: 1.1rem;
+      width: 20px;
+    }
+
+    .menu-links a:hover {
+      background-color: var(--gray-100);
+      color: var(--primary);
+    }
+
+    .menu-links a.active {
+      background-color: rgba(255, 255, 255, 0.5);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .page-title {
+      margin-bottom: 24px;
+      color: var(--primary-color);
+    }
+
+    .upcoming-events {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--primary-color);
+      color: var(--text-light);
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      margin-bottom: 24px;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-container {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 14px 20px;
+      padding-left: 45px;
+      border: none;
+      border-radius: var(--border-radius);
+      background-color: var(--bg-light);
+      box-shadow: var(--shadow-sm);
+      font-size: 16px;
+      transition: var(--transition);
+    }
+
+    #search:focus {
+      outline: none;
+      box-shadow: var(--shadow-md);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--bg-light);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    table th,
+    table td {
+      padding: 16px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: var(--bg-gray);
+      font-weight: 600;
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    table tr:not(:last-child) td {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    table tr:hover {
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    .view-btn,
+    .edit-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .view-btn:hover,
+    .edit-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .event-type {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .event-type.technical {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .event-type.non-technical {
+      background-color: #fff8e1;
+      color: #ff8f00;
+    }
+
+    .eligibility {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .eligibility.yes {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .eligibility.no {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+
+    .image-container {
+      transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      background-color: var(--bg-light);
+      border-radius: var(--border-radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .image-container.show {
+      max-height: 600px;
+      opacity: 1;
+      padding: 20px;
+      margin: 10px 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .image-container img {
+      max-width: 100%;
+      border-radius: var(--border-radius);
+      display: block;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .no-events {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: var(--bg-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      margin-top: 20px;
+    }
+
+    .no-events i {
+      font-size: 48px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+
+    .no-events p {
+      color: #666;
+      font-size: 18px;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1051;
+      transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* Add Event Button */
+    .add-event-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .add-event-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    /* Add/Edit Event Modal */
+    .add-event-modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-event-content {
+      background-color: var(--bg-light);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 600px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .add-event-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      color: var(--text-dark);
+      cursor: pointer;
+    }
+
+    .add-event-close:hover {
+      color: var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(131, 18, 56, 0.2);
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+    }
+
+    .file-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border: 2px dashed #ddd;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .file-upload:hover {
+      border-color: var(--primary-color);
+    }
+
+    .file-upload i {
+      font-size: 36px;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .file-upload p {
+      margin-bottom: 0;
+      color: #666;
+    }
+
+    #file-name {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--primary-color);
+      display: none;
+    }
+
+    .submit-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
       .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .logo {
-        font-weight: 700;
-        font-size: 1.25rem;
-        color: var(--primary-color);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        padding: 12px 16px;
       }
 
       .header-title {
-        font-weight: 700;
-        font-size: 1.25rem;
-        color: #5c1e3c;
+        font-size: 18px;
       }
 
-      .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .icon-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--text-dark);
-        font-size: 1.25rem;
-        padding: 0.5rem;
-        border-radius: 50%;
-        transition: all 0.2s ease;
-      }
-
-      .icon-button:hover {
-        background-color: var(--gray-100);
-        color: var(--primary-color);
-      }
-
-      .menu-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 0.375rem;
-        font-size: 1.25rem;
-        color: var(--text-dark);
-        transition: all 0.2s ease;
-      }
-
-      .menu-button:hover {
-        background-color: var(--gray-100);
-        color: var(--primary-color);
-      }
-
-      .mobile-menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        backdrop-filter: blur(5px);
-      }
-
-      .mobile-menu.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .menu-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 80%;
-        max-width: 300px;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.5);
-        box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        padding: 2rem 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        backdrop-filter: blur(10px);
-      }
-
-      .mobile-menu.active .menu-content {
-        transform: translateX(0);
-      }
-
-      .menu-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .menu-close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--text-dark);
-      }
-
-      .menu-close:hover {
-        color: var(--primary-color);
-      }
-
-      .menu-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-
-      .menu-links a {
-        color: var(--text-dark);
-        text-decoration: none;
-        font-weight: 500;
-        padding: 0.75rem 1rem;
-        border-radius: 0.375rem;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .menu-links a i {
-        color: var(--primary-color);
-        font-size: 1.1rem;
-        width: 20px;
-      }
-
-      .menu-links a:hover {
-        background-color: var(--gray-100);
-        color: var(--primary);
-      }
-
-      .menu-links a.active {
-        background-color: rgba(255, 255, 255, 0.5);
-        color: var(--primary);
-        font-weight: 600;
-      }
-
-      main {
-        flex: 1;
-      }
-
-      .page-title {
-        margin-bottom: 24px;
-        color: var(--primary-color);
-      }
-
-      .upcoming-events {
-        display: inline-flex;
-        align-items: center;
-        background-color: var(--primary-color);
-        color: var(--text-light);
-        padding: 10px 20px;
-        border-radius: var(--border-radius);
-        margin-bottom: 24px;
-        font-weight: 600;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .search-container {
-        position: relative;
-        margin-bottom: 24px;
-      }
-
-      #search {
-        width: 100%;
-        padding: 14px 20px;
-        padding-left: 45px;
-        border: none;
-        border-radius: var(--border-radius);
-        background-color: var(--bg-light);
-        box-shadow: var(--shadow-sm);
-        font-size: 16px;
-        transition: var(--transition);
-      }
-
-      #search:focus {
-        outline: none;
-        box-shadow: var(--shadow-md);
-      }
-
-      .search-icon {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #999;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        background: var(--bg-light);
-        box-shadow: var(--shadow-sm);
-        border-radius: var(--border-radius);
-        overflow: hidden;
+      .container {
+        padding: 16px;
       }
 
       table th,
       table td {
-        padding: 16px;
-        text-align: left;
+        padding: 12px;
       }
 
-      table th {
-        background-color: var(--bg-gray);
-        font-weight: 600;
-        color: var(--text-dark);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      .event-details {
+        display: none;
       }
 
-      table tr:not(:last-child) td {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      .add-event-content {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-links a {
+        font-size: 14px;
+        padding: 8px 12px;
       }
 
-      table tr:hover {
-        background-color: rgba(0, 0, 0, 0.01);
+      table th,
+      table td {
+        padding: 10px 8px;
+        font-size: 14px;
       }
 
       .view-btn,
       .edit-btn {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        transition: var(--transition);
-        font-weight: 500;
-        text-transform: uppercase;
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
       }
 
-      .view-btn:hover,
-      .edit-btn:hover {
-        background-color: var(--primary-dark);
-        transform: translateY(-2px);
+      .page-title {
+        font-size: 20px;
       }
 
-      .event-type {
-        display: inline-block;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-      }
-
-      .event-type.technical {
-        background-color: #e3f2fd;
-        color: #1976d2;
-      }
-
-      .event-type.non-technical {
-        background-color: #fff8e1;
-        color: #ff8f00;
-      }
-
-      .eligibility {
-        display: inline-block;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-      }
-
-      .eligibility.yes {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-      }
-
-      .eligibility.no {
-        background-color: #ffebee;
-        color: #c62828;
-      }
-
-      .image-container {
-        transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
-        background-color: var(--bg-light);
-        border-radius: var(--border-radius);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0 20px;
-      }
-
-      .image-container.show {
-        max-height: 600px;
-        opacity: 1;
-        padding: 20px;
-        margin: 10px 0;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .image-container img {
-        max-width: 100%;
-        border-radius: var(--border-radius);
-        display: block;
-        margin-bottom: 20px;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .no-events {
-        text-align: center;
-        padding: 40px 20px;
-        background-color: var(--bg-light);
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-sm);
-        margin-top: 20px;
-      }
-
-      .no-events i {
-        font-size: 48px;
-        color: #ccc;
-        margin-bottom: 16px;
-      }
-
-      .no-events p {
-        color: #666;
-        font-size: 18px;
-      }
-
-      /* Modal styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1050;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.8);
-        align-items: center;
-        justify-content: center;
-      }
-
-      .modal-content {
-        max-width: 90%;
-        max-height: 90vh;
-        object-fit: contain;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        color: #f1f1f1;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-        z-index: 1051;
-        transition: 0.3s;
-      }
-
-      .close:hover,
-      .close:focus {
-        color: var(--accent-color);
-        text-decoration: none;
-      }
-
-      /* Add Event Button */
       .add-event-btn {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        transition: var(--transition);
-        font-weight: 500;
-        font-size: 16px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 24px;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .add-event-btn:hover {
-        background-color: var(--primary-dark);
-        transform: translateY(-2px);
-      }
-
-      /* Add/Edit Event Modal */
-      .add-event-modal {
-        display: none;
-        position: fixed;
-        z-index: 1050;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
-        align-items: center;
-        justify-content: center;
-      }
-
-      .add-event-content {
-        background-color: var(--bg-light);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        width: 90%;
-        max-width: 600px;
-        box-shadow: var(--shadow-lg);
-        position: relative;
-      }
-
-      .add-event-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 24px;
-        color: var(--text-dark);
-        cursor: pointer;
-      }
-
-      .add-event-close:hover {
-        color: var(--primary-color);
-      }
-
-      .form-group {
-        margin-bottom: 20px;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-      }
-
-      .form-control {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius);
-        font-size: 16px;
-        transition: var(--transition);
-      }
-
-      .form-control:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px rgba(131, 18, 56, 0.2);
-      }
-
-      .form-select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-        background-position: right 0.5rem center;
-        background-repeat: no-repeat;
-        background-size: 1.5em 1.5em;
-        padding-right: 2.5rem;
-      }
-
-      .file-upload {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        border: 2px dashed #ddd;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        transition: var(--transition);
-      }
-
-      .file-upload:hover {
-        border-color: var(--primary-color);
-      }
-
-      .file-upload i {
-        font-size: 36px;
-        color: var(--primary-color);
-        margin-bottom: 10px;
-      }
-
-      .file-upload p {
-        margin-bottom: 0;
-        color: #666;
-      }
-
-      #file-name {
-        margin-top: 10px;
+        padding: 10px 16px;
         font-size: 14px;
-        color: var(--primary-color);
-        display: none;
       }
+    }
+  </style>
+</head>
 
-      .submit-btn {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        transition: var(--transition);
-        font-weight: 500;
-        font-size: 16px;
-        width: 100%;
-        margin-top: 20px;
-      }
-
-      .submit-btn:hover {
-        background-color: var(--primary-dark);
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        .header-container {
-          padding: 12px 16px;
-        }
-
-        .header-title {
-          font-size: 18px;
-        }
-
-        .container {
-          padding: 16px;
-        }
-
-        table th,
-        table td {
-          padding: 12px;
-        }
-
-        .event-details {
-          display: none;
-        }
-
-        .add-event-content {
-          padding: 20px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .menu-links a {
-          font-size: 14px;
-          padding: 8px 12px;
-        }
-
-        table th,
-        table td {
-          padding: 10px 8px;
-          font-size: 14px;
-        }
-
-        .view-btn,
-        .edit-btn {
-          padding: 8px 12px;
-          font-size: 12px;
-        }
-
-        .page-title {
-          font-size: 20px;
-        }
-
-        .add-event-btn {
-          padding: 10px 16px;
-          font-size: 14px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="header-container">
-        <div class="left-section">
-          <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-
-        <div class="header-title">Upcoming Events</div>
-
-        <div class="header-actions">
-          <button class="icon-button" title="Language" aria-label="Language">
-            <i class="fas fa-globe"></i>
-          </button>
-          <button
-            class="icon-button"
-            title="Notifications"
-            aria-label="Notifications"
-          >
-            <i class="fas fa-bell"></i>
-          </button>
-          <button
-            class="icon-button"
-            title="Account"
-            aria-label="Account"
-            onclick="window.location.href='admin.profile.html'"
-          >
-            <i class="fas fa-user-circle"></i>
-          </button>
-        </div>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="left-section">
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
-    </header>
 
-    <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobile-menu">
-      <div class="menu-content">
-        <div class="menu-header">
-          <div class="logo">
-            <i class="fas fa-user-tie"></i>
-            <span>Admin Portal</span>
-          </div>
-          <button class="menu-close" id="menu-close" aria-label="Close menu">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="menu-links">
-          <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-          <a href="admin.profile.html"><i class="fas fa-user"></i> Profile</a>
-          <a href="admin.upcoming.html" class="active"
-            ><i class="fas fa-calendar-day"></i> Events Upcoming</a
-          >
-          <a href="admin.ongoing.html"
-            ><i class="fas fa-check-circle"></i> Events Ongoing</a
-          >
-          <a href="admin.completed.html"
-            ><i class="fas fa-calendar"></i> Events Completed</a
-          >
-          <a href="./adminApproval.html"
-            ><i class="fas fa-clipboard-check"></i>Events Approval</a
-          >
-          <a href="admin.messenger.html"
-            ><i class="fas fa-comments"></i> Messenger</a
-          >
-        </div>
+      <div class="header-title">Upcoming Events</div>
+
+      <div class="header-actions">
+        <button class="icon-button" title="Language" aria-label="Language">
+          <i class="fas fa-globe"></i>
+        </button>
+        <button class="icon-button" title="Notifications" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-button" title="Account" aria-label="Account"
+          onclick="window.location.href='admin.profile.html'">
+          <i class="fas fa-user-circle"></i>
+        </button>
       </div>
     </div>
+  </header>
 
-    <main>
-      <div class="container">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="header-title">Upcoming Events</h1>
-          <button id="add-event-btn" class="add-event-btn">
-            <i class="fas fa-plus"></i> Add Event
-          </button>
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="menu-content">
+      <div class="menu-header">
+        <div class="logo">
+          <i class="fas fa-user-tie"></i>
+          <span>Admin Portal</span>
         </div>
-        <div class="search-container">
-          <i class="fas fa-search search-icon"></i>
-          <input
-            id="search"
-            type="text"
-            placeholder="Search events or venues"
-            autocomplete="off"
-          />
-        </div>
-        <table id="events-table">
-          <thead>
-            <tr>
-              <th>EVENT NAME</th>
-              <th>EVENT VENUE</th>
-              <th>DATE & TIME</th>
-              <th>TYPE</th>
-              <th>ELIGIBILITY</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="event : ${events}">
-              <td th:text="${event.title}">Tech Symposium</td>
-              <td th:text="${event.location}">Main Auditorium</td>
+        <button class="menu-close" id="menu-close" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="menu-links">
+        <a href="index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="admin.profile.html"><i class="fas fa-user"></i> Profile</a>
+        <a href="admin.upcoming.html" class="active"><i class="fas fa-calendar-day"></i> Events Upcoming</a>
+        <a href="admin.ongoing.html"><i class="fas fa-check-circle"></i> Events Ongoing</a>
+        <a href="admin.completed.html"><i class="fas fa-calendar"></i> Events Completed</a>
+        <a href="./adminApproval.html"><i class="fas fa-clipboard-check"></i>Events Approval</a>
+        <a href="admin.messenger.html"><i class="fas fa-comments"></i> Messenger</a>
+      </div>
+    </div>
+  </div>
 
-              <td
-                th:text="${#temporals.format(event.startTime, 'dd/MM/yyyy (hh:mm a)')}"
-              ></td>
+  <main>
+    <div class="container">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="header-title">Upcoming Events</h1>
+        <button id="add-event-btn" class="add-event-btn">
+          <i class="fas fa-plus"></i> Add Event
+        </button>
+      </div>
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input id="search" type="text" placeholder="Search events or venues" autocomplete="off" />
+      </div>
+      <table id="events-table">
+        <thead>
+          <tr>
+            <th>EVENT NAME</th>
+            <th>EVENT VENUE</th>
+            <th>DATE & TIME</th>
+            <th>TYPE</th>
+            <th>ELIGIBILITY</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="event : ${events}">
+            <td th:text="${event.title}">Tech Symposium</td>
+            <td th:text="${event.location}">Main Auditorium</td>
 
-              <td>
-                <span
-                  th:class="'event-type ' + (${event.type} == 'technical' ? 'technical' : 'non-technical')"
-                  th:text="${event.type}"
-                  >Technical</span
-                >
-              </td>
-              <td>
-                <span class="eligibility">
-                  <span th:each="year, iterStat : ${event.eligibleYears}">
-                    <span th:text="${year}"></span
-                    ><span th:if="${!iterStat.last}">, </span>
-                  </span>
+            <td th:text="${#temporals.format(event.startTime, 'dd/MM/yyyy (hh:mm a)')}"></td>
+
+            <td>
+              <span th:class="'event-type ' + (${event.type} == 'technical' ? 'technical' : 'non-technical')"
+                th:text="${event.type}">Technical</span>
+            </td>
+            <td>
+              <span class="eligibility">
+                <span th:each="year, iterStat : ${event.eligibleYears}">
+                  <span th:text="${year}"></span><span th:if="${!iterStat.last}">, </span>
                 </span>
-              </td>
-              <td>
-                <button class="btn view-btn" onclick="toggleImage(this)">
-                  <i class="fas fa-eye"></i> View
-                </button>
-                <button
-                  class="btn edit-btn"
-                  type="button"
-                  onclick="openEditModal(this)"
-                  th:data-id="${event.id}"
-                  th:data-title="${event.title}"
-                  th:data-description="${event.description}"
-                  th:data-location="${event.location}"
-                  th:data-startTime="${#temporals.format(event.startTime, 'yyyy-MM-dd''T''HH:mm')}"
-                  th:data-endTime="${#temporals.format(event.endTime, 'yyyy-MM-dd''T''HH:mm')}"
-                  th:data-type="${event.type}"
-                  th:data-eligibleYears="${event.eligibleYears}"
-                >
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="6">
-                <div class="image-container hidden">
-                  <img
-                    src="Copy of CODE_HUB_EVENT_20250315_145422_0000.png"
-                    alt="Tech Symposium Banner"
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-
-    <!-- Add/Edit Event Modal -->
-    <div id="add-event-modal" class="add-event-modal">
-      <div class="add-event-content">
-        <span class="add-event-close" id="add-event-close">&times;</span>
-        <h2 class="text-2xl font-bold mb-6 text-primary" id="modal-title">
-          Add New Event
-        </h2>
-        <form
-          id="add-event-form"
-          th:action="@{/api/v1/events/add}"
-          th:object="${event}"
-          method="post"
-        >
-          <input type="hidden" id="event-id" th:field="*{id}" />
-
-          <div class="form-group">
-            <label for="event-name">Event Name</label>
-            <input
-              type="text"
-              th:field="*{title}"
-              class="form-control"
-              required
-            />
-            <p
-              th:if="${#fields.hasErrors('title')}"
-              th:errors="*{title}"
-              class="alert alert-danger"
-            >
-              Title Error
-            </p>
-          </div>
-
-          <div class="form-group">
-            <label for="event-name">Description</label>
-            <input
-              type="text"
-              th:field="*{description}"
-              class="form-control"
-              required
-            />
-            <p
-              th:if="${#fields.hasErrors('description')}"
-              th:errors="*{description}"
-              class="alert alert-danger"
-            >
-              Description Error
-            </p>
-          </div>
-
-          <div class="form-group">
-            <label for="event-venue">Event Venue</label>
-            <input
-              type="text"
-              th:field="*{location}"
-              class="form-control"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="event-date">Start Date & Time</label>
-            <input
-              type="datetime-local"
-              th:field="*{startTime}"
-              class="form-control"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="event-date">End Date & Time</label>
-            <input
-              type="datetime-local"
-              th:field="*{endTime}"
-              class="form-control"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="event-type">Event Type</label>
-            <select
-              th:field="*{type}"
-              class="form-control form-select"
-              required
-            >
-              <option value="">Select Type</option>
-              <option value="technical">Technical</option>
-              <option value="non-technical">Non-Technical</option>
-            </select>
-          </div>
-
-          <!-- ✅ Updated eligibility to multiple years -->
-          <div class="form-group">
-            <label for="event-eligibility">Eligible Years</label>
-            <select
-              th:field="*{eligibleYears}"
-              class="form-control form-select"
-              multiple
-              required
-            >
-              <option value="1">1st Year</option>
-              <option value="2">2nd Year</option>
-              <option value="3">3rd Year</option>
-              <option value="4">4th Year</option>
-            </select>
-            <small class="form-text text-muted"
-              >Hold CTRL (Windows) or CMD (Mac) to select multiple years.</small
-            >
-          </div>
-
-          <button type="submit" class="submit-btn" id="submit-btn">
-            <i class="fas fa-plus mr-2"></i> Add Event
-          </button>
-        </form>
-      </div>
+              </span>
+            </td>
+            <td>
+              <button class="btn view-btn" onclick="toggleImage(this)">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn edit-btn" type="button" onclick="openEditModal(this)" th:data-id="${event.id}"
+                th:data-title="${event.title}" th:data-description="${event.description}"
+                th:data-location="${event.location}"
+                th:data-startTime="${#temporals.format(event.startTime, 'yyyy-MM-dd''T''HH:mm')}"
+                th:data-endTime="${#temporals.format(event.endTime, 'yyyy-MM-dd''T''HH:mm')}"
+                th:data-type="${event.type}" th:data-eligibleYears="${event.eligibleYears}">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <div class="image-container hidden">
+                <img src="Copy of CODE_HUB_EVENT_20250315_145422_0000.png" alt="Tech Symposium Banner" />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </main>
 
-    <!-- Modal for zoomed image -->
-    <div id="myModal" class="modal">
-      <span class="close" id="closeModal">&times;</span>
-      <img class="modal-content" id="img01" alt="Zoomed Profile Image" />
+  <!-- Add/Edit Event Modal -->
+  <div id="add-event-modal" class="add-event-modal">
+    <div class="add-event-content">
+      <span class="add-event-close" id="add-event-close">&times;</span>
+      <h2 class="text-2xl font-bold mb-6 text-primary" id="modal-title">
+        Add New Event
+      </h2>
+      <form id="add-event-form" th:action="@{/api/v1/events/add}" th:object="${event}" method="post">
+        <input type="hidden" id="event-id" th:field="*{id}" />
+
+        <div class="form-group">
+          <label for="event-name">Event Name</label>
+          <input type="text" th:field="*{title}" class="form-control" required />
+          <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="alert alert-danger">
+            Title Error
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="event-name">Description</label>
+          <input type="text" th:field="*{description}" class="form-control" required />
+          <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger">
+            Description Error
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="event-venue">Event Venue</label>
+          <input type="text" th:field="*{location}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="event-date">Start Date & Time</label>
+          <input type="datetime-local" th:field="*{startTime}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="event-date">End Date & Time</label>
+          <input type="datetime-local" th:field="*{endTime}" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="event-type">Event Type</label>
+          <select th:field="*{type}" class="form-control form-select" required>
+            <option value="">Select Type</option>
+            <option value="technical">Technical</option>
+            <option value="non-technical">Non-Technical</option>
+          </select>
+        </div>
+
+        <!-- ✅ Updated eligibility to multiple years -->
+        <div class="form-group">
+          <label for="event-eligibility">Eligible Years</label>
+          <select th:field="*{eligibleYears}" class="form-control form-select" multiple required>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+          <small class="form-text text-muted">Hold CTRL (Windows) or CMD (Mac) to select multiple years.</small>
+        </div>
+        <!-- For Selecting Co-ordinators -->
+        <div class="form-group">
+          <label for="event-coordinators">Event Coordinators</label>
+          <select th:field="*{eventCordinator}" class="form-control form-select" multiple required>
+            <option th:each="coordinator : ${coordinators}" th:value="${coordinator.registerNo}"
+              th:text="${coordinator.name}">Coordinator Name</option>
+          </select>
+          <small class="form-text text-muted">Hold CTRL (Windows) or CMD (Mac) to select multiple coordinators.</small>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <i class="fas fa-plus mr-2"></i> Add Event
+        </button>
+      </form>
     </div>
+  </div>
 
-    <script>
-      // Toggle menu
-      const menuToggle = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
-      const menuClose = document.getElementById("menu-close");
-      const menuContent = document.querySelector(".menu-content");
+  <!-- Modal for zoomed image -->
+  <div id="myModal" class="modal">
+    <span class="close" id="closeModal">&times;</span>
+    <img class="modal-content" id="img01" alt="Zoomed Profile Image" />
+  </div>
 
-      // Open mobile menu
-      menuToggle.addEventListener("click", function () {
-        mobileMenu.classList.add("active");
-      });
+  <script>
+    // Toggle menu
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuClose = document.getElementById("menu-close");
+    const menuContent = document.querySelector(".menu-content");
 
-      // Close mobile menu with close button
-      menuClose.addEventListener("click", function (e) {
-        e.stopPropagation(); // Stop event from bubbling up
+    // Open mobile menu
+    menuToggle.addEventListener("click", function () {
+      mobileMenu.classList.add("active");
+    });
+
+    // Close mobile menu with close button
+    menuClose.addEventListener("click", function (e) {
+      e.stopPropagation(); // Stop event from bubbling up
+      mobileMenu.classList.remove("active");
+    });
+
+    // Close mobile menu when clicking outside the menu content
+    mobileMenu.addEventListener("click", function (e) {
+      // Check if the click is on the menu-content itself or one of its children
+      if (!menuContent.contains(e.target) || e.target === menuContent) {
         mobileMenu.classList.remove("active");
-      });
+      }
+    });
 
-      // Close mobile menu when clicking outside the menu content
-      mobileMenu.addEventListener("click", function (e) {
-        // Check if the click is on the menu-content itself or one of its children
-        if (!menuContent.contains(e.target) || e.target === menuContent) {
-          mobileMenu.classList.remove("active");
-        }
-      });
+    // Prevent clicks inside menu content from closing the menu
+    menuContent.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
 
-      // Prevent clicks inside menu content from closing the menu
-      menuContent.addEventListener("click", function (e) {
-        e.stopPropagation();
-      });
+    // Search functionality
+    document.getElementById("search").addEventListener("input", function () {
+      const searchText = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#events-table tbody tr");
+      let hasMatches = false;
 
-      // Search functionality
-      document.getElementById("search").addEventListener("input", function () {
-        const searchText = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#events-table tbody tr");
-        let hasMatches = false;
+      for (let i = 0; i < rows.length; i += 2) {
+        const row = rows[i];
+        if (row.cells) {
+          const eventName = row.cells[0].textContent.toLowerCase();
+          const eventVenue = row.cells[1].textContent.toLowerCase();
+          const eventDate = row.cells[2].textContent.toLowerCase();
 
-        for (let i = 0; i < rows.length; i += 2) {
-          const row = rows[i];
-          if (row.cells) {
-            const eventName = row.cells[0].textContent.toLowerCase();
-            const eventVenue = row.cells[1].textContent.toLowerCase();
-            const eventDate = row.cells[2].textContent.toLowerCase();
-
-            if (
-              eventName.includes(searchText) ||
-              eventVenue.includes(searchText) ||
-              eventDate.includes(searchText)
-            ) {
-              row.classList.remove("hidden");
-              if (rows[i + 1]) rows[i + 1].classList.remove("hidden");
-              hasMatches = true;
-            } else {
-              row.classList.add("hidden");
-              if (rows[i + 1]) rows[i + 1].classList.add("hidden");
-            }
+          if (
+            eventName.includes(searchText) ||
+            eventVenue.includes(searchText) ||
+            eventDate.includes(searchText)
+          ) {
+            row.classList.remove("hidden");
+            if (rows[i + 1]) rows[i + 1].classList.remove("hidden");
+            hasMatches = true;
+          } else {
+            row.classList.add("hidden");
+            if (rows[i + 1]) rows[i + 1].classList.add("hidden");
           }
         }
-
-        // Show no-events message if no matches
-        const existingNoEvents = document.querySelector(".no-events");
-        if (existingNoEvents) {
-          existingNoEvents.remove();
-        }
-
-        if (!hasMatches && searchText !== "") {
-          const noEventsMessage = document.createElement("div");
-          noEventsMessage.className = "no-events";
-          noEventsMessage.innerHTML =
-            '<i class="far fa-frown"></i><p>No events match your search.</p>';
-          document.querySelector(".container").appendChild(noEventsMessage);
-        }
-      });
-
-      function toggleImage(button) {
-        const imageContainer = button
-          .closest("tr")
-          .nextElementSibling.querySelector(".image-container");
-        imageContainer.classList.toggle("show");
-        imageContainer.classList.toggle("hidden");
-
-        if (imageContainer.classList.contains("show")) {
-          button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
-        } else {
-          button.innerHTML = '<i class="fas fa-eye"></i> View';
-        }
       }
 
-      // Modal functionality for event images using event delegation
-      const modal = document.getElementById("myModal");
-      const modalImg = document.getElementById("img01");
-      const closeModal = document.getElementById("closeModal");
-      const eventsTableBody = document.querySelector("#events-table tbody");
+      // Show no-events message if no matches
+      const existingNoEvents = document.querySelector(".no-events");
+      if (existingNoEvents) {
+        existingNoEvents.remove();
+      }
 
-      // Use event delegation to handle clicks on images inside image-container
-      eventsTableBody.addEventListener("click", function (e) {
-        if (
-          e.target &&
-          e.target.tagName === "IMG" &&
-          e.target.closest(".image-container")
-        ) {
-          modal.style.display = "flex";
-          modalImg.src = e.target.src;
-        }
-      });
+      if (!hasMatches && searchText !== "") {
+        const noEventsMessage = document.createElement("div");
+        noEventsMessage.className = "no-events";
+        noEventsMessage.innerHTML =
+          '<i class="far fa-frown"></i><p>No events match your search.</p>';
+        document.querySelector(".container").appendChild(noEventsMessage);
+      }
+    });
 
-      closeModal.addEventListener("click", function () {
+    function toggleImage(button) {
+      const imageContainer = button
+        .closest("tr")
+        .nextElementSibling.querySelector(".image-container");
+      imageContainer.classList.toggle("show");
+      imageContainer.classList.toggle("hidden");
+
+      if (imageContainer.classList.contains("show")) {
+        button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
+      } else {
+        button.innerHTML = '<i class="fas fa-eye"></i> View';
+      }
+    }
+
+    // Modal functionality for event images using event delegation
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const closeModal = document.getElementById("closeModal");
+    const eventsTableBody = document.querySelector("#events-table tbody");
+
+    // Use event delegation to handle clicks on images inside image-container
+    eventsTableBody.addEventListener("click", function (e) {
+      if (
+        e.target &&
+        e.target.tagName === "IMG" &&
+        e.target.closest(".image-container")
+      ) {
+        modal.style.display = "flex";
+        modalImg.src = e.target.src;
+      }
+    });
+
+    closeModal.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    // Close modal when clicking outside the image
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
         modal.style.display = "none";
-      });
+      }
+    });
 
-      // Close modal when clicking outside the image
-      modal.addEventListener("click", function (e) {
-        if (e.target === modal) {
-          modal.style.display = "none";
-        }
-      });
+    //   Add/Edit Event Modal functionality
+    const addEventBtn = document.getElementById("add-event-btn");
+    const addEventModal = document.getElementById("add-event-modal");
+    const addEventClose = document.getElementById("add-event-close");
+    const addEventForm = document.getElementById("add-event-form");
+    const fileUpload = document.getElementById("file-upload");
+    const eventImageInput = document.getElementById("event-image");
+    const fileName = document.getElementById("file-name");
+    const modalTitle = document.getElementById("modal-title");
+    const submitBtn = document.getElementById("submit-btn");
+    const eventIdInput = document.getElementById("event-id");
 
-      //   Add/Edit Event Modal functionality
-      const addEventBtn = document.getElementById("add-event-btn");
-      const addEventModal = document.getElementById("add-event-modal");
-      const addEventClose = document.getElementById("add-event-close");
-      const addEventForm = document.getElementById("add-event-form");
-      const fileUpload = document.getElementById("file-upload");
-      const eventImageInput = document.getElementById("event-image");
-      const fileName = document.getElementById("file-name");
+    // Open add event modal
+    addEventBtn.addEventListener("click", function () {
+      modalTitle.textContent = "Add New Event";
+      submitBtn.innerHTML = '<i class="fas fa-plus mr-2"></i> Add Event';
+      addEventModal.style.display = "flex";
+      resetForm();
+    });
+
+    // Close add event modal
+    addEventClose.addEventListener("click", function () {
+      addEventModal.style.display = "none";
+      resetForm();
+    });
+
+    // Close modal when clicking outside
+    addEventModal.addEventListener("click", function (e) {
+      if (e.target === addEventModal) {
+        addEventModal.style.display = "none";
+        resetForm();
+      }
+    });
+
+    // Form submission
+
+    // Reset form function
+    function resetForm() {
+      addEventForm.reset();
+      fileName.style.display = "none";
+      uploadedImage = null;
+      eventIdInput.value = "";
+      currentEventRow = null;
+    }
+
+    function openEditModal(button) {
       const modalTitle = document.getElementById("modal-title");
       const submitBtn = document.getElementById("submit-btn");
       const eventIdInput = document.getElementById("event-id");
 
-      // Open add event modal
-      addEventBtn.addEventListener("click", function () {
-        modalTitle.textContent = "Add New Event";
-        submitBtn.innerHTML = '<i class="fas fa-plus mr-2"></i> Add Event';
-        addEventModal.style.display = "flex";
-        resetForm();
+      // Set modal title & button
+      modalTitle.textContent = "Edit Event";
+      submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Update Event';
+
+      // Fill form values from button data
+      eventIdInput.value = button.getAttribute("data-id");
+      document.querySelector('[name="title"]').value =
+        button.getAttribute("data-title");
+      document.querySelector('[name="description"]').value =
+        button.getAttribute("data-description");
+      document.querySelector('[name="location"]').value =
+        button.getAttribute("data-location");
+      document.querySelector('[name="startTime"]').value =
+        button.getAttribute("data-startTime");
+      document.querySelector('[name="endTime"]').value =
+        button.getAttribute("data-endTime");
+      document.querySelector('[name="type"]').value =
+        button.getAttribute("data-type");
+
+      // Eligible years (split comma separated values into multiple selection)
+      const eligibleYears = button
+        .getAttribute("data-eligibleYears")
+        .split(",");
+      const select = document.querySelector('[name="eligibleYears"]');
+      Array.from(select.options).forEach((option) => {
+        option.selected = eligibleYears.includes(option.value);
       });
 
-      // Close add event modal
-      addEventClose.addEventListener("click", function () {
-        addEventModal.style.display = "none";
-        resetForm();
-      });
+      // Change form action for update
+      document
+        .getElementById("add-event-form")
+        .setAttribute("action", `/api/v1/${eventIdInput.value}/update`);
 
-      // Close modal when clicking outside
-      addEventModal.addEventListener("click", function (e) {
-        if (e.target === addEventModal) {
-          addEventModal.style.display = "none";
-          resetForm();
-        }
-      });
+      // Show modal
+      document.getElementById("add-event-modal").style.display = "flex";
+    }
+  </script>
+</body>
 
-      // Form submission
-
-      // Reset form function
-      function resetForm() {
-        addEventForm.reset();
-        fileName.style.display = "none";
-        uploadedImage = null;
-        eventIdInput.value = "";
-        currentEventRow = null;
-      }
-
-      function openEditModal(button) {
-        const modalTitle = document.getElementById("modal-title");
-        const submitBtn = document.getElementById("submit-btn");
-        const eventIdInput = document.getElementById("event-id");
-
-        // Set modal title & button
-        modalTitle.textContent = "Edit Event";
-        submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Update Event';
-
-        // Fill form values from button data
-        eventIdInput.value = button.getAttribute("data-id");
-        document.querySelector('[name="title"]').value =
-          button.getAttribute("data-title");
-        document.querySelector('[name="description"]').value =
-          button.getAttribute("data-description");
-        document.querySelector('[name="location"]').value =
-          button.getAttribute("data-location");
-        document.querySelector('[name="startTime"]').value =
-          button.getAttribute("data-startTime");
-        document.querySelector('[name="endTime"]').value =
-          button.getAttribute("data-endTime");
-        document.querySelector('[name="type"]').value =
-          button.getAttribute("data-type");
-
-        // Eligible years (split comma separated values into multiple selection)
-        const eligibleYears = button
-          .getAttribute("data-eligibleYears")
-          .split(",");
-        const select = document.querySelector('[name="eligibleYears"]');
-        Array.from(select.options).forEach((option) => {
-          option.selected = eligibleYears.includes(option.value);
-        });
-
-        // Change form action for update
-        document
-          .getElementById("add-event-form")
-          .setAttribute("action", `/api/v1/${eventIdInput.value}/update`);
-
-        // Show modal
-        document.getElementById("add-event-modal").style.display = "flex";
-      }
-    </script>
-  </body>
 </html>
